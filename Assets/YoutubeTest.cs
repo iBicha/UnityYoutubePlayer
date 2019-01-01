@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,12 +19,12 @@ public class YoutubeTest : MonoBehaviour, IProgress<double>
     public Image bufferProgress;
     public Image playbackProgress;
     
-    
     private VideoPlayer videoPlayer;
     private double downloadProgress;
     private string fileNameUrl;
     private string fileName;
     private float requiredProgress = 1f;
+    private CancellationTokenSource cancellationTokenSource;
     
     private void Awake()
     {
@@ -136,9 +137,10 @@ public class YoutubeTest : MonoBehaviour, IProgress<double>
         // Download video
         Debug.Log("Downloading... ");
 
+        cancellationTokenSource = new CancellationTokenSource();
         using (var stream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
         {
-            await client.DownloadMediaStreamAsync(streamInfo, stream, this);
+            await client.DownloadMediaStreamAsync(streamInfo, stream, this, cancellationTokenSource.Token);
         }
         
         Debug.Log("");
@@ -167,6 +169,7 @@ public class YoutubeTest : MonoBehaviour, IProgress<double>
     private void OnDestroy()
     {
         videoPlayer.Stop();
+        cancellationTokenSource?.Cancel();
         if (File.Exists(fileName))
         {
             File.Delete(fileName);
