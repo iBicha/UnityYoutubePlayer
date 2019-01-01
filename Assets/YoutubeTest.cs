@@ -36,9 +36,9 @@ public class YoutubeTest : MonoBehaviour, IProgress<double>
     }
 
     // Start is called before the first frame update
-    async void Start()
+    void Start()
     {
-        MainAsync();
+        var downloadTask = DownloadYoutubeVideo();
         StartCoroutine(PlayVideoAfterProgress());
     }
 
@@ -77,7 +77,7 @@ public class YoutubeTest : MonoBehaviour, IProgress<double>
         return $"{size:0.#} {units[unit]}";
     }
 
-    private async Task MainAsync()
+    private async Task DownloadYoutubeVideo()
     {
         // Client
         var client = new YoutubeClient();
@@ -94,7 +94,7 @@ public class YoutubeTest : MonoBehaviour, IProgress<double>
         Debug.Log($"> {video.Title} by {video.Author}");
         Debug.Log("");
         
-        requiredProgress = bufferTime / (float)video.Duration.TotalSeconds;
+        requiredProgress = Mathf.Min(bufferTime / (float)video.Duration.TotalSeconds, 1f);
         
         // Get media stream info set
         Debug.Log("Obtaining media stream info set... ");
