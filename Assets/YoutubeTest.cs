@@ -173,10 +173,36 @@ public class YoutubeTest : MonoBehaviour, IProgress<double>
         downloadProgress = value;
     }
 
+    public bool Seek(float progress)
+    {
+        if(!(videoPlayer.length > 0))
+            return false;
+
+        if(!videoPlayer.canSetTime)
+            return false;
+        
+        progress = Mathf.Clamp01(progress);
+        if (downloadProgress < 1f)
+        {
+            //You can't seek too close if it's still buffering, say 2 seconds
+            var safetyRange = 2f / videoPlayer.length;
+            if (progress > downloadProgress + safetyRange)
+            {
+                return false;
+            }
+        }
+
+        videoPlayer.time = videoPlayer.length * progress;
+        return true;
+    }
+    
     private void Update()
     {
         bufferProgress.fillAmount = (float) downloadProgress;
-        playbackProgress.fillAmount = (float) (videoPlayer.length > 0 ? videoPlayer.time / videoPlayer.length : 0);
+        if (videoPlayer.isPlaying)
+        {
+            playbackProgress.fillAmount = (float) (videoPlayer.length > 0 ? videoPlayer.time / videoPlayer.length : 0);
+        }
         UpdateCaption();
     }
 
