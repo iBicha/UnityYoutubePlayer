@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using iBicha;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,21 +40,32 @@ public class YoutubeTest : MonoBehaviour, IProgress<double>
     private float requiredProgress = 1f;
     private CancellationTokenSource cancellationTokenSource;
 
-    private void Awake()
+    private AsyncHttpServer _server;
+
+    private async void Awake()
     {
+        cancellationTokenSource = new CancellationTokenSource();
+//        _server = new YoutubeServer(8080);
+        _server = new AsyncHttpServer(portNumber: 8080);
+        
         videoPlayer = GetComponent<VideoPlayer>();
         videoPlayer.started += source => captionStartIndex = captionEndIndex = -1;
         var texture = Texture2D.whiteTexture;
         var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero, 100);
         bufferProgress.sprite = playbackProgress.sprite = sprite;
+        
+        await Task.Run(() => _server.Start(), cancellationTokenSource.Token);
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        videoPlayer.Play();
+
         //await this task for full download
-        var downloadTask = DownloadYoutubeVideo();
-        StartCoroutine(PlayVideoAfterProgress());
+//        var downloadTask = DownloadYoutubeVideo();
+//        StartCoroutine(PlayVideoAfterProgress());
     }
 
     IEnumerator PlayVideoAfterProgress()
@@ -253,6 +265,7 @@ public class YoutubeTest : MonoBehaviour, IProgress<double>
 
     private void OnDestroy()
     {
+        _server.Stop();
         videoPlayer.Stop();
         cancellationTokenSource?.Cancel();
         if (File.Exists(fileName))
