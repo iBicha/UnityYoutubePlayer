@@ -208,14 +208,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 484162780}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 623dda5632b7b4242ac81ccc3dbd4311, type: 3}
+  m_Script: {fileID: 11500000, guid: 3768fe280903842fdaa2a016022624f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bufferTime: 20
-  targetVideo: https://www.youtube.com/watch?v=1PuGuqpHQGo
-  captions: {fileID: 1367630314}
-  bufferProgress: {fileID: 1291937357}
-  playbackProgress: {fileID: 1769056857}
+  Port: 8080
 --- !u!4 &484162782
 Transform:
   m_ObjectHideFlags: 0
@@ -246,8 +242,8 @@ VideoPlayer:
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: _MainTex
-  m_RenderMode: 0
-  m_AspectRatio: 2
+  m_RenderMode: 1
+  m_AspectRatio: 3
   m_DataSource: 1
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
@@ -255,11 +251,11 @@ VideoPlayer:
   - {fileID: 0}
   m_DirectAudioVolumes:
   - 1
-  m_Url: 
+  m_Url: https://www.youtube.com/watch?v=1PuGuqpHQGo
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_SkipOnDrop: 1
   m_Looping: 1
   m_WaitForFirstFrame: 1
@@ -422,6 +418,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1291937356}
   - component: {fileID: 1291937358}
+  - component: {fileID: 1291937359}
   - component: {fileID: 1291937357}
   m_Layer: 5
   m_Name: Buffer
@@ -486,6 +483,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1291937355}
   m_CullTransparentMesh: 0
+--- !u!114 &1291937359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291937355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cfc0559c2d9d4d879759f73709c8933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  youtubePlayer: {fileID: 484162781}
 --- !u!1 &1367630312
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,6 +506,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1367630313}
   - component: {fileID: 1367630315}
+  - component: {fileID: 1367630316}
   - component: {fileID: 1367630314}
   m_Layer: 5
   m_Name: Captions
@@ -646,6 +657,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1367630312}
   m_CullTransparentMesh: 0
+--- !u!114 &1367630316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367630312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf8e2e3c0cd84173b47b90fb373846b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  youtubePlayer: {fileID: 484162781}
 --- !u!1 &1543039954
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,7 +823,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -831,7 +855,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1769056855}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fa6ca7b1bcfb41548c17d56be7e39bc, type: 3}
+  m_Script: {fileID: 11500000, guid: 9551654bbf09d4bf6aa9eca7bbc2e2b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  youtubePlayer: {fileID: 484162781}
+  videoPlayer: {fileID: 484162783}
