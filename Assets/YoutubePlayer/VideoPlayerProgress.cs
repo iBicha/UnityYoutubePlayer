@@ -1,18 +1,23 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
 namespace YoutubePlayer
 {
-    [RequireComponent(typeof(Image))]
-    public class VideoPlayerProgress : MonoBehaviour
+    [RequireComponent(typeof(Image), typeof(RectTransform))]
+    public class VideoPlayerProgress : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
     {
+        public bool SeekingEnabled;
         public VideoPlayer videoPlayer;
 
         private Image playbackProgress;
+        private RectTransform rectTransform;
         private void Start()
         {
+            rectTransform = GetComponent<RectTransform>();
             playbackProgress = GetComponent<Image>();
+            
             if (playbackProgress.sprite == null)
             {
                 var texture = Texture2D.whiteTexture;
@@ -29,6 +34,42 @@ namespace YoutubePlayer
                 playbackProgress.fillAmount =
                     (float) (videoPlayer.length > 0 ? videoPlayer.time / videoPlayer.length : 0);
             }
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            Seek(Input.mousePosition);
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            Seek(Input.mousePosition);
+        }
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            videoPlayer.Pause();
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            videoPlayer.Play();
+        }
+
+        private void Seek(Vector2 cursorPosition)
+        {
+            if(!SeekingEnabled || !videoPlayer.canSetTime)
+                return;
+
+            if(!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rectTransform, cursorPosition, null, out var localPoint))
+                return;
+
+            var rect = rectTransform.rect;
+            var progress = (localPoint.x - rect.x)  / rect.width;
+
+            videoPlayer.time = videoPlayer.length * progress;
+            playbackProgress.fillAmount = progress;
         }
     }
 }

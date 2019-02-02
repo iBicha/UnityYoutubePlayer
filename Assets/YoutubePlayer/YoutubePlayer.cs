@@ -1,58 +1,62 @@
-﻿using System;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Video;
+using YoutubeExplode;
 using YoutubeExplode.Models.ClosedCaptions;
+using YoutubeExplode.Models.MediaStreams;
 
 namespace YoutubePlayer
 {
     [RequireComponent(typeof(VideoPlayer))]
     public class YoutubePlayer : MonoBehaviour
-    { 
-        public int ServerPort;
+    {
+        public string youtubeUrl;
         
         private VideoPlayer videoPlayer;
-        private YoutubeServer youtubeServer;
+        private YoutubeClient youtubeClient;
         
         private void Awake()
         {
+            youtubeClient = new YoutubeClient();
             videoPlayer = GetComponent<VideoPlayer>();
         }
 
-
-        private void OnEnable()
+        private async void OnEnable()
         {
-            //We start a server
-            youtubeServer = new YoutubeServer(ServerPort);
-            //And get the port back, in case we chose a random port
-            ServerPort = youtubeServer.Port;
+            if(videoPlayer.playOnAwake)
+                await PlayVideoAsync(youtubeUrl);
+        }
+
+        public async Task PlayVideoAsync(string url)
+        {
+            if (!YoutubeClient.TryParseVideoId(url, out var videoId))
+                return;
+
+            youtubeUrl = url;
             
-            //And feed that back to the player
-            videoPlayer.url = GetLocalHostUrl(videoPlayer.url, ServerPort);
+            var streamInfoSet = await youtubeClient.GetVideoMediaStreamInfosAsync(videoId);
+            var streamInfo = streamInfoSet.Muxed.WithHighestVideoQuality();
+          
+            videoPlayer.source = VideoSource.Url;
+            if (videoPlayer.url != streamInfo.Url)
+            {
+                videoPlayer.url = streamInfo.Url;
+            }
         }
 
-        public float GetDownloadProgressForVideo(string videoId)
+        public async Task<ClosedCaptionTrack> DownloadClosedCaptions(string videoId = null)
         {
-            return youtubeServer.GetDownloadProgressForVideo(videoId);
-        }
-
-        public async Task<ClosedCaptionTrack> DownloadClosedCaptions(string videoId)
-        {
-            return await youtubeServer.DownloadClosedCaptions(videoId);
-        }
-
-        private static string GetLocalHostUrl(string url, int port)
-        {
-            var builder = new UriBuilder(new Uri(url));
-            builder.Scheme = "http";
-            builder.Host = "localhost";
-            builder.Port = port;
-            return builder.Uri.ToString();
+            if (string.IsNullOrEmpty(videoId))
+            {
+                if (!YoutubeClient.TryParseVideoId(youtubeUrl, out videoId))
+                    return null;
+            }
+            
+            var trackInfos = await youtubeClient.GetVideoClosedCaptionTrackInfosAsync(videoId);
+            var trackInfo = trackInfos.First(t => t.Language.Code == "en");
+            return await youtubeClient.GetClosedCaptionTrackAsync(trackInfo);
         }
         
-        private void OnDisable()
-        {
-            youtubeServer.Dispose();
-        }
     }
 }
