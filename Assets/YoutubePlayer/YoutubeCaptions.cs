@@ -18,7 +18,6 @@ namespace YoutubePlayer
         private TMP_Text captionsText;
         private StringBuilder currentCaption = new StringBuilder();
 
-        private ClosedCaptionTrack closedCaptionTrack;
         private List<ClosedCaption> captionList;
         private int captionStartIndex;
         private int captionEndIndex;
@@ -29,12 +28,14 @@ namespace YoutubePlayer
             captionsText = GetComponent<TMP_Text>();
 
             captionList = await DownloadCaptionsAsync();
+            if (captionList == null)
+                enabled = false;
         }
 
         public async Task<List<ClosedCaption>> DownloadCaptionsAsync()
         {
-            closedCaptionTrack = await youtubePlayer.DownloadClosedCaptions();
-            return new List<ClosedCaption>(closedCaptionTrack.Captions);
+            var track = await youtubePlayer.DownloadClosedCaptions();
+            return (track?.Captions?.Count ?? 0) == 0 ? null : new List<ClosedCaption>(track.Captions);
         }
 
         void Update()

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Video;
@@ -30,18 +31,27 @@ namespace YoutubePlayer
 
         public async Task PlayVideoAsync(string url)
         {
-            if (!YoutubeClient.TryParseVideoId(url, out var videoId))
-                return;
-
-            youtubeUrl = url;
-            
-            var streamInfoSet = await youtubeClient.GetVideoMediaStreamInfosAsync(videoId);
-            var streamInfo = streamInfoSet.Muxed.WithHighestVideoQuality();
-          
-            videoPlayer.source = VideoSource.Url;
-            if (videoPlayer.url != streamInfo.Url)
+            try
             {
-                videoPlayer.url = streamInfo.Url;
+                if (!YoutubeClient.TryParseVideoId(url, out var videoId))
+                    throw new ArgumentException("Invalid youtube url", nameof(url));
+               
+                youtubeUrl = url;
+            
+                var streamInfoSet = await youtubeClient.GetVideoMediaStreamInfosAsync(videoId);
+                var streamInfo = streamInfoSet.Muxed.WithHighestVideoQuality();
+                if (streamInfo == null)
+                    throw new NotSupportedException($"No muxed streams in youtube video '{url}'");
+                
+                videoPlayer.source = VideoSource.Url;
+                if (videoPlayer.url != streamInfo.Url)
+                {
+                    videoPlayer.url = streamInfo.Url;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
             }
         }
 
@@ -54,7 +64,10 @@ namespace YoutubePlayer
             }
             
             var trackInfos = await youtubeClient.GetVideoClosedCaptionTrackInfosAsync(videoId);
-            var trackInfo = trackInfos.First(t => t.Language.Code == "en");
+            if (trackInfos?.Count == 0)
+                return null;
+            
+            var trackInfo = trackInfos.FirstOrDefault(t => t.Language.Code == "en") ?? trackInfos.First();
             return await youtubeClient.GetClosedCaptionTrackAsync(trackInfo);
         }
         
