@@ -5,10 +5,20 @@ using UnityEngine.Video;
 
 namespace YoutubePlayer
 {
+    /// <summary>
+    /// A progress bar for VideoPlayer
+    /// </summary>
     [RequireComponent(typeof(Image), typeof(RectTransform))]
     public class VideoPlayerProgress : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
     {
+        /// <summary>
+        /// Is seeking through the video enabled?
+        /// </summary>
         public bool SeekingEnabled;
+        
+        /// <summary>
+        /// The VideoPlayer to synchronize with
+        /// </summary>
         public VideoPlayer videoPlayer;
 
         private Image playbackProgress;
@@ -27,7 +37,7 @@ namespace YoutubePlayer
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (videoPlayer.isPlaying)
             {
