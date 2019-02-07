@@ -46,7 +46,7 @@ namespace YoutubePlayer
         private async void OnEnable()
         {
             if (videoPlayer.playOnAwake)
-                await PlayVideoAsync(youtubeUrl);
+                await PlayVideoAsync();
         }
 
         /// <summary>
@@ -55,10 +55,11 @@ namespace YoutubePlayer
         /// <param name="videoUrl">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
         /// <returns>A Task to await</returns>
         /// <exception cref="NotSupportedException">When the youtube url doesn't contain any supported streams</exception>
-        public async Task PlayVideoAsync(string videoUrl)
+        public async Task PlayVideoAsync(string videoUrl = null)
         {
             try
             {
+                videoUrl = videoUrl ?? youtubeUrl;
                 var videoId = GetVideoId(videoUrl);
                 var streamInfoSet = await youtubeClient.GetVideoMediaStreamInfosAsync(videoId);
                 var streamInfo = streamInfoSet.WithHighestVideoQualitySupported();
@@ -72,6 +73,7 @@ namespace YoutubePlayer
                     videoPlayer.url = streamInfo.Url;
 
                 videoPlayer.Play();
+                youtubeUrl = videoUrl;
                 YoutubeVideoStarting?.Invoke(youtubeUrl);
             }
             catch (Exception ex)
@@ -94,6 +96,7 @@ namespace YoutubePlayer
         {
             try
             {
+                videoUrl = videoUrl ?? youtubeUrl;
                 var videoId = GetVideoId(videoUrl);
                 var video = await youtubeClient.GetVideoAsync(videoId);
                 var streamInfoSet = await youtubeClient.GetVideoMediaStreamInfosAsync(videoId);
@@ -138,6 +141,7 @@ namespace YoutubePlayer
         /// <returns>A ClosedCaptionTrack object.</returns>
         public async Task<ClosedCaptionTrack> DownloadClosedCaptions(string videoUrl = null)
         {
+            videoUrl = videoUrl ?? youtubeUrl;
             var videoId = GetVideoId(videoUrl);
             var trackInfos = await youtubeClient.GetVideoClosedCaptionTrackInfosAsync(videoId);
             if (trackInfos?.Count == 0)
@@ -156,9 +160,6 @@ namespace YoutubePlayer
         /// <exception cref="ArgumentException">If the videoUrl is not a valid youtube url</exception>
         public string GetVideoId(string videoUrl = null)
         {
-            if (string.IsNullOrEmpty(videoUrl))
-                videoUrl = youtubeUrl;
-
             if (!YoutubeClient.TryParseVideoId(videoUrl, out var videoId))
                 throw new ArgumentException("Invalid youtube url", nameof(videoUrl));
 
