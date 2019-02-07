@@ -9,10 +9,10 @@ namespace YoutubePlayer
     public class DownloadYoutubeVideo : MonoBehaviour, IProgress<double>
     {
         public YoutubePlayer youtubePlayer;
-
+        public Environment.SpecialFolder destination;
         private Image downloadProgress;
         private float progress;
-        
+
         private void Start()
         {
             downloadProgress = GetComponentsInChildren<Image>().First(image => image.gameObject != gameObject);
@@ -22,14 +22,13 @@ namespace YoutubePlayer
                 var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero, 100);
                 downloadProgress.sprite = sprite;
             }
-
         }
 
         public async void Download()
         {
-           Debug.Log("Downloading, please wait...");
-           var filePath = await youtubePlayer.DownloadVideoAsync(null, null, this);
-           Debug.Log($"Video saved to {Path.GetFullPath(filePath)}");
+            Debug.Log("Downloading, please wait...");
+            var filePath = await youtubePlayer.DownloadVideoAsync(Environment.GetFolderPath(destination), null, this);
+            Debug.Log($"Video saved to {Path.GetFullPath(filePath)}");
         }
 
         public void Report(double value)
