@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,7 +28,16 @@ namespace YoutubePlayer
         public async void Download()
         {
             Debug.Log("Downloading, please wait...");
-            var filePath = await youtubePlayer.DownloadVideoAsync(Environment.GetFolderPath(destination), null, this);
+            
+            var videoDownloadTask = youtubePlayer.DownloadVideoAsync(Environment.GetFolderPath(destination), null, this);
+            var captionsDownloadTask = youtubePlayer.DownloadClosedCaptions();
+
+            var filePath = await videoDownloadTask;
+            var captionTrack = await captionsDownloadTask;
+            
+            var srtPath = Path.ChangeExtension(filePath, ".srt");
+            File.WriteAllText(srtPath, captionTrack.ToSRT());
+            
             Debug.Log($"Video saved to {Path.GetFullPath(filePath)}");
         }
 

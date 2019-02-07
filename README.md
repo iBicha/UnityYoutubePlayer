@@ -11,7 +11,7 @@ Uses for handling video and caption downloading.
 - Add a `YoutubePlayer` component on a `GameObject` with a `VideoPlayer`. Set the url in the inspector.
 The `YoutubePlayer` will follow the `Play On Awake` setting of the video player. You can also call `YoutubePlayer.PlayVideoAsync`.
 
-- In addition, you can call `YoutubePlayer.DownloadVideoAsync` to download the video to a file instead. See the `DownloadYoutubeVideo` as an example.
+- In addition, you can call `YoutubePlayer.DownloadVideoAsync` to download the video to a file instead, with captions in a `.srt` file format. See the `DownloadYoutubeVideo` as an example.
 
 - `VideoPlayerProgress` allows to display the progress of the video, as well as seeking.
 
