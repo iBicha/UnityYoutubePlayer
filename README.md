@@ -17,7 +17,7 @@ The `YoutubePlayer` will follow the `Play On Awake` setting of the video player.
 
 - Captions can be downloaded and displayed on a TextMesh Pro component with the `YoutubeCaptions` script.
 
-- See `Scenes\SampleScene` for a complete example.
+- See `YoutubePlayer\Scenes\Player` for a complete example, and `YoutubePlayer\Scenes\Panoramic` for playing a 360 video on the skybox.
 
 ## Dependencies
 UnityYoutubePlayer relies heavily on the work done in [Tyrrrz/YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode) which is responsible for parsing and downloading videos and captions. This library has the following dependencies:
