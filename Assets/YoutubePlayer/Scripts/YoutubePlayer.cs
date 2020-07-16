@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Video;
 using YoutubeExplode;
-using YoutubeExplode.Models.ClosedCaptions;
-using YoutubeExplode.Models.MediaStreams;
+using YoutubeExplode.Videos.ClosedCaptions;
+using YoutubeExplode.Videos.Streams;
 
 namespace YoutubePlayer
 {
@@ -60,11 +60,10 @@ namespace YoutubePlayer
             try
             {
                 videoUrl = videoUrl ?? youtubeUrl;
-                var videoId = GetVideoId(videoUrl);
-                var streamInfoSet = await youtubeClient.GetVideoMediaStreamInfosAsync(videoId);
-                var streamInfo = streamInfoSet.WithHighestVideoQualitySupported();
+                var streamManifest = await youtubeClient.Videos.Streams.GetManifestAsync(videoUrl);
+                var streamInfo = streamManifest.WithHighestVideoQualitySupported();
                 if (streamInfo == null)
-                    throw new NotSupportedException($"No supported streams in youtube video '{videoId}'");
+                    throw new NotSupportedException($"No supported streams in youtube video '{videoUrl}'");
 
                 videoPlayer.source = VideoSource.Url;
 
@@ -97,16 +96,15 @@ namespace YoutubePlayer
             try
             {
                 videoUrl = videoUrl ?? youtubeUrl;
-                var videoId = GetVideoId(videoUrl);
-                var video = await youtubeClient.GetVideoAsync(videoId);
-                var streamInfoSet = await youtubeClient.GetVideoMediaStreamInfosAsync(videoId);
+                var video = await youtubeClient.Videos.GetAsync(videoUrl);
+                var streamManifest = await youtubeClient.Videos.Streams.GetManifestAsync(videoUrl);
                 
                 cancellationToken.ThrowIfCancellationRequested();
-                var streamInfo = streamInfoSet.Muxed.WithHighestVideoQuality();
+                var streamInfo = streamManifest.GetMuxed().WithHighestVideoQuality();
                 if (streamInfo == null)
-                    throw new NotSupportedException($"No supported streams in youtube video '{videoId}'");
+                    throw new NotSupportedException($"No supported streams in youtube video '{videoUrl}'");
 
-                var fileExtension = streamInfo.Container.GetFileExtension();
+                var fileExtension = streamInfo.Container;
                 var fileName = $"{video.Title}.{fileExtension}";
 
                 var invalidChars = Path.GetInvalidFileNameChars();
@@ -122,9 +120,7 @@ namespace YoutubePlayer
                     filePath = Path.Combine(destinationFolder, fileName);
                 }
 
-                using (var output = File.Create(filePath))
-                    await youtubeClient.DownloadMediaStreamAsync(streamInfo, output, progress, cancellationToken);
-
+                await youtubeClient.Videos.Streams.DownloadAsync(streamInfo, filePath, progress, cancellationToken);
                 return filePath;
             }
             catch (Exception ex)
@@ -139,31 +135,16 @@ namespace YoutubePlayer
         /// </summary>
         /// <param name="videoUrl">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
         /// <returns>A ClosedCaptionTrack object.</returns>
-        public async Task<ClosedCaptionTrack> DownloadClosedCaptions(string videoUrl = null)
+        public async Task<ClosedCaptionTrack> DownloadClosedCaptions(string videoUrl = null, string language = "en")
         {
             videoUrl = videoUrl ?? youtubeUrl;
-            var videoId = GetVideoId(videoUrl);
-            var trackInfos = await youtubeClient.GetVideoClosedCaptionTrackInfosAsync(videoId);
-            if (trackInfos?.Count == 0)
+            var trackManifest = await youtubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
+
+            if (trackManifest.Tracks.Count == 0)
                 return null;
-
-            var trackInfo = trackInfos.FirstOrDefault(t => t.Language.Code == "en") ?? trackInfos.First();
-            return await youtubeClient.GetClosedCaptionTrackAsync(trackInfo);
-        }
-
-        /// <summary>
-        /// Try to parse a video ID from a video Url.
-        /// If null is passed, it will use the current url of the Youtube Player instance.
-        /// </summary>
-        /// <param name="videoUrl">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
-        /// <returns>The video ID</returns>
-        /// <exception cref="ArgumentException">If the videoUrl is not a valid youtube url</exception>
-        public string GetVideoId(string videoUrl = null)
-        {
-            if (!YoutubeClient.TryParseVideoId(videoUrl, out var videoId))
-                throw new ArgumentException("Invalid youtube url", nameof(videoUrl));
-
-            return videoId;
+            
+            var trackInfo = trackManifest.TryGetByLanguage(language) ?? trackManifest.Tracks.First();
+            return await youtubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Video;
-using YoutubeExplode.Models.ClosedCaptions;
+using YoutubeExplode.Videos.ClosedCaptions;
 
 namespace YoutubePlayer
 {
