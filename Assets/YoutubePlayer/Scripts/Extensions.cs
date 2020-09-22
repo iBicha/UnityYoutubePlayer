@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using YoutubeExplode.Models.ClosedCaptions;
-using YoutubeExplode.Models.MediaStreams;
+using YoutubeExplode.Videos.ClosedCaptions;
+using YoutubeExplode.Videos.Streams;
 
 namespace YoutubePlayer
 {
@@ -26,11 +26,11 @@ namespace YoutubePlayer
         /// Gets the muxed stream with highest video quality and Mp4 container.
         /// Returns null if sequence is empty.
         /// </summary>
-        public static MuxedStreamInfo WithHighestVideoQualitySupported(this MediaStreamInfoSet streamInfoSet)
+        public static MuxedStreamInfo WithHighestVideoQualitySupported(this StreamManifest streamManifest)
         {
-            if(streamInfoSet == null)
-                throw new ArgumentNullException(nameof(streamInfoSet));
-            return streamInfoSet.Muxed.WithHighestVideoQualitySupported();
+            if(streamManifest == null)
+                throw new ArgumentNullException(nameof(streamManifest));
+            return streamManifest.GetMuxed().WithHighestVideoQualitySupported();
         }
 
         /// <summary>

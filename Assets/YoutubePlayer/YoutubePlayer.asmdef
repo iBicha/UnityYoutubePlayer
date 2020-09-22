@@ -1,7 +1,6 @@
 {
     "name": "YoutubePlayer",
     "references": [
-        "YoutubeExplode",
         "Unity.TextMeshPro"
     ],
     "optionalUnityReferences": [],
