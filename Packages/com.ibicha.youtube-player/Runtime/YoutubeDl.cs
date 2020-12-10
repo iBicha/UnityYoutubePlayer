@@ -29,7 +29,7 @@ namespace YoutubePlayer
                 optionFlags.Add("--sub-lang end");
             }
 
-            var requestUrl = $"{k_DefaultServer}/video?url={youtubeUrl}";
+            var requestUrl = $"{k_DefaultServer}/v1/video?url={youtubeUrl}";
             if (optionFlags.Count > 0)
             {
                 requestUrl += $"&options={HttpUtility.UrlEncode(string.Join(" ", optionFlags))}";
