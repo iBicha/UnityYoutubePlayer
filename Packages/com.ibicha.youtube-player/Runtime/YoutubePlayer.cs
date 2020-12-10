@@ -82,8 +82,7 @@ namespace YoutubePlayer
         /// <param name="cancellationToken">A CancellationToken used to cancel the current async task</param>
         /// <returns>Returns the path to the file where the video was downloaded</returns>
         /// <exception cref="NotSupportedException">When the youtube url doesn't contain any supported streams</exception>
-        public async Task<string> DownloadVideoAsync(string destinationFolder = null, string videoUrl = null,
-            IProgress<double> progress = null, CancellationToken cancellationToken = default)
+        public async Task<string> DownloadVideoAsync(string destinationFolder = null, string videoUrl = null, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -108,7 +107,7 @@ namespace YoutubePlayer
                     filePath = Path.Combine(destinationFolder, fileName);
                 }
 
-                await YoutubeDownloader.DownloadAsync(video, filePath);
+                await YoutubeDownloader.DownloadAsync(video, filePath, cancellationToken);
                 return filePath;
             }
             catch (Exception ex)
