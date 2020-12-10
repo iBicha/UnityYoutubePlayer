@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,17 +10,17 @@ namespace YoutubePlayer
     {
         public YoutubePlayer youtubePlayer;
         public Environment.SpecialFolder destination;
-        private Image downloadProgress;
-        private float progress;
+        Image m_DownloadProgress;
+        float m_Progress;
 
-        private void Start()
+        void Start()
         {
-            downloadProgress = GetComponentsInChildren<Image>().First(image => image.gameObject != gameObject);
-            if (downloadProgress.sprite == null)
+            m_DownloadProgress = GetComponentsInChildren<Image>().First(image => image.gameObject != gameObject);
+            if (m_DownloadProgress.sprite == null)
             {
                 var texture = Texture2D.whiteTexture;
                 var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero, 100);
-                downloadProgress.sprite = sprite;
+                m_DownloadProgress.sprite = sprite;
             }
         }
 
@@ -30,25 +29,19 @@ namespace YoutubePlayer
             Debug.Log("Downloading, please wait...");
             
             var videoDownloadTask = youtubePlayer.DownloadVideoAsync(Environment.GetFolderPath(destination), null, this);
-            var captionsDownloadTask = youtubePlayer.DownloadClosedCaptions();
-
             var filePath = await videoDownloadTask;
-            var captionTrack = await captionsDownloadTask;
-            
-            var srtPath = Path.ChangeExtension(filePath, ".srt");
-            File.WriteAllText(srtPath, captionTrack.ToSRT());
             
             Debug.Log($"Video saved to {Path.GetFullPath(filePath)}");
         }
 
         public void Report(double value)
         {
-            progress = (float) value;
+            m_Progress = (float) value;
         }
 
         private void Update()
         {
-            downloadProgress.fillAmount = progress;
+            m_DownloadProgress.fillAmount = m_Progress;
         }
     }
 }
