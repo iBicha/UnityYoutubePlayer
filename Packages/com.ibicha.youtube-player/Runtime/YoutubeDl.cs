@@ -9,7 +9,7 @@ namespace YoutubePlayer
 {
     public class YoutubeDl
     {
-        const string k_DefaultServer = "http://localhost:3000";
+        const string k_DefaultServer = "https://unity-youtube-dl-server.herokuapp.com";
         
         public static async Task<YoutubeVideoMetaData> GetVideoMetaDataAsync(string youtubeUrl)
         {
@@ -22,11 +22,6 @@ namespace YoutubePlayer
             if (string.IsNullOrWhiteSpace(options.Format))
             {
                 optionFlags.Add($"-f '{options.Format}'");
-            }
-            if (options.Subtitles)
-            {
-                optionFlags.Add("--sub-format str");
-                optionFlags.Add("--sub-lang end");
             }
 
             var requestUrl = $"{k_DefaultServer}/v1/video?url={youtubeUrl}";

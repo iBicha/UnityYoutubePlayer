@@ -2,16 +2,14 @@
 {
     public class YoutubeDlOptions
     {
-        public static readonly YoutubeDlOptions Default = new YoutubeDlOptions("best", false);
+        public static readonly YoutubeDlOptions Default = new YoutubeDlOptions("best");
 
-        public YoutubeDlOptions(string format, bool subtitles)
+        public YoutubeDlOptions(string format)
         {
             Format = format;
-            Subtitles = subtitles;
         }
 
         public string Format;
-        public bool Subtitles;
     }
 
 }
