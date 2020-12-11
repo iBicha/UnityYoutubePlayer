@@ -21,11 +21,11 @@ namespace YoutubePlayer
             var optionFlags = new List<string>();
             if (!string.IsNullOrWhiteSpace(options.Format))
             {
-                optionFlags.Add($"-f '{options.Format}'");
+                optionFlags.Add($"-f \"{options.Format}\"");
             }
             if (options.UserAgent != null)
             {
-                optionFlags.Add($"--user-agent '{options.UserAgent}'");
+                optionFlags.Add($"--user-agent \"{options.UserAgent}\"");
             }
 
             var requestUrl = $"{k_DefaultServer}/v1/video?url={youtubeUrl}";
