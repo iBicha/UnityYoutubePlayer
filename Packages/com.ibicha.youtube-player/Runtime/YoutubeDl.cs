@@ -19,7 +19,7 @@ namespace YoutubePlayer
         public static async Task<YoutubeVideoMetaData> GetVideoMetaDataAsync(string youtubeUrl, YoutubeDlOptions options)
         {
             var optionFlags = new List<string>();
-            if (string.IsNullOrWhiteSpace(options.Format))
+            if (!string.IsNullOrWhiteSpace(options.Format))
             {
                 optionFlags.Add($"-f '{options.Format}'");
             }
