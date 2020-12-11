@@ -20,3 +20,6 @@ To allow maximum platform compatibilty (e.g. mobile, desktop) and to be able to 
 
 The package uses a free instance of the server hosted on heroku (shared between everyone). 
 For better reliability and performance, it is recommanded to host this on your own.
+
+## Older version
+For the version used with [YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode), see the [legacy/youtube-explode](https://github.com/iBicha/UnityYoutubePlayer/tree/legacy/youtube-explode) branch. Please note that it has a different license than the current version.
