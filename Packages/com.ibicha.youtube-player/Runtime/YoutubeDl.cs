@@ -9,8 +9,8 @@ namespace YoutubePlayer
 {
     public class YoutubeDl
     {
-        const string k_DefaultServer = "https://unity-youtube-dl-server.herokuapp.com";
-        
+        public static string ServerUrl { get; set; } = "https://unity-youtube-dl-server.herokuapp.com";
+
         public static async Task<YoutubeVideoMetaData> GetVideoMetaDataAsync(string youtubeUrl)
         {
             return await GetVideoMetaDataAsync(youtubeUrl, YoutubeDlOptions.Default);
@@ -28,7 +28,7 @@ namespace YoutubePlayer
                 optionFlags.Add($"--user-agent \"{options.UserAgent}\"");
             }
 
-            var requestUrl = $"{k_DefaultServer}/v1/video?url={youtubeUrl}";
+            var requestUrl = $"{ServerUrl}/v1/video?url={youtubeUrl}";
             if (optionFlags.Count > 0)
             {
                 requestUrl += $"&options={HttpUtility.UrlEncode(string.Join(" ", optionFlags))}";
