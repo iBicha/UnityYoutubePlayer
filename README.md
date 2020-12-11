@@ -2,7 +2,7 @@
 Play and download youtube videos in Unity using [youtube-dl](https://github.com/ytdl-org/youtube-dl) and Unity's VideoPlayer, and uses [youtube-dl-server](https://github.com/iBicha/youtube-dl-server) to fetch metadata from youtube-dl.
 
 ## Preview
-![](screenshot.png)
+<img src="screenshot.png" width="400" />
 
 ## Usage
 - Add a `YoutubePlayer` component on a `GameObject` with a `VideoPlayer`. Set the url in the inspector.
