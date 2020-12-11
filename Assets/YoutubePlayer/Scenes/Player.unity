@@ -322,6 +322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   youtubeUrl: https://www.youtube.com/watch?v=1PuGuqpHQGo
+  is360Video: 0
 --- !u!4 &484162782
 Transform:
   m_ObjectHideFlags: 0

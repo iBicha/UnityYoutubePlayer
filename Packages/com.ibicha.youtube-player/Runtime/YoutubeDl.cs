@@ -23,6 +23,10 @@ namespace YoutubePlayer
             {
                 optionFlags.Add($"-f '{options.Format}'");
             }
+            if (options.UserAgent != null)
+            {
+                optionFlags.Add($"--user-agent '{options.UserAgent}'");
+            }
 
             var requestUrl = $"{k_DefaultServer}/v1/video?url={youtubeUrl}";
             if (optionFlags.Count > 0)

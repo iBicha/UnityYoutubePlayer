@@ -19,6 +19,11 @@ namespace YoutubePlayer
         public string youtubeUrl;
 
         /// <summary>
+        /// Specify whether to use 360 configuration
+        /// </summary>
+        public bool is360Video;
+        
+        /// <summary>
         /// VideoStartingDelegate 
         /// </summary>
         /// <param name="url">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
@@ -55,7 +60,8 @@ namespace YoutubePlayer
             {
                 videoUrl = videoUrl ?? youtubeUrl;
 
-                var metaData = await YoutubeDl.GetVideoMetaDataAsync(videoUrl);
+                var metaData = await YoutubeDl.GetVideoMetaDataAsync(videoUrl, 
+                    is360Video ? YoutubeDlOptions.Three60 : YoutubeDlOptions.Default);
                 
                 m_VideoPlayer.source = VideoSource.Url;
 
