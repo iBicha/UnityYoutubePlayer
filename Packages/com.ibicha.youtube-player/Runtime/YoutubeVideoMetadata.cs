@@ -13,5 +13,10 @@ namespace YoutubePlayer
         [JsonProperty("ext")]
         public string Extension;
 
+        [JsonProperty("requested_formats")]
+        public YoutubeVideoFormat[] requestedFormats;
+        
+        [JsonProperty("formats")]
+        public YoutubeVideoFormat[] Formats;
     }
 }
