@@ -26,6 +26,22 @@ To the `dependencies` section:
 "com.ibicha.youtube-player": "1.0.0"
 ```
 
+After changes, the manifest file should look like below:
+
+```
+{
+  "scopedRegistries": [
+    {
+      "name": "iBicha",
+      "url": "https://registry.npmjs.com",
+      "scopes": [ "com.ibicha" ]
+    }
+  ],
+  "dependencies": {
+    "com.ibicha.youtube-player": "1.0.0",
+    ...
+```
+
 ## Usage
 - Add a `YoutubePlayer` component on a `GameObject` with a `VideoPlayer`. Set the url in the inspector.
 The `YoutubePlayer` will follow the `Play On Awake` setting of the video player. You can also call `YoutubePlayer.PlayVideoAsync`.
