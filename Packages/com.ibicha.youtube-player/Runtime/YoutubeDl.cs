@@ -29,7 +29,11 @@ namespace YoutubePlayer
             {
                 optionFlags.Add($"--user-agent \"{options.UserAgent}\"");
             }
-
+            if (options.Custom != null)
+            {
+                optionFlags.Add(options.Custom);
+            }
+            
             var requestUrl = $"{ServerUrl}/v1/video?url={youtubeUrl}";
             if (optionFlags.Count > 0)
             {

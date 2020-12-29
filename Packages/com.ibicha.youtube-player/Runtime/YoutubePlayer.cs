@@ -58,12 +58,13 @@ namespace YoutubePlayer
         /// the VideoPlayer.
         /// </summary>
         /// <param name="videoUrl">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
+        /// <param name="options">Options for downloading the raw video</param>
         /// <param name="cancellationToken">A CancellationToken used to cancel the current async task</param>
         /// <returns>A Task to await</returns>
-        public async Task PrepareVideoAsync(string videoUrl = null, CancellationToken cancellationToken = default)
+        public async Task PrepareVideoAsync(string videoUrl = null, YoutubeDlOptions options = null, CancellationToken cancellationToken = default)
         {
             videoUrl = videoUrl ?? youtubeUrl;
-            var options = is360Video ? YoutubeDlOptions.Three60 : YoutubeDlOptions.Default;
+            options = options ?? (is360Video ? YoutubeDlOptions.Three60 : YoutubeDlOptions.Default);
             var rawUrl = await GetRawVideoUrlAsync(videoUrl, options, cancellationToken);
                 
             VideoPlayer.source = VideoSource.Url;
@@ -81,12 +82,13 @@ namespace YoutubePlayer
         /// Play the youtube video in the attached Video Player component.
         /// </summary>
         /// <param name="videoUrl">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
+        /// <param name="options">Options for downloading the raw video</param>
         /// <param name="cancellationToken">A CancellationToken used to cancel the current async task</param>
         /// <returns>A Task to await</returns>
-        /// <exception cref="NotSupportedException">When the youtube url doesn't contain any supported streams</exception>
-        public async Task PlayVideoAsync(string videoUrl = null, CancellationToken cancellationToken = default)
+        public async Task PlayVideoAsync(string videoUrl = null, YoutubeDlOptions options = null, CancellationToken cancellationToken = default)
         {
-            await PrepareVideoAsync(videoUrl, cancellationToken);
+            options = options ?? (is360Video ? YoutubeDlOptions.Three60 : YoutubeDlOptions.Default);
+            await PrepareVideoAsync(videoUrl, options, cancellationToken);
             VideoPlayer.Play();
         }
 
@@ -97,7 +99,6 @@ namespace YoutubePlayer
         /// <param name="videoUrl">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
         /// <param name="cancellationToken">A CancellationToken used to cancel the current async task</param>
         /// <returns>Returns the path to the file where the video was downloaded</returns>
-        /// <exception cref="NotSupportedException">When the youtube url doesn't contain any supported streams</exception>
         public async Task<string> DownloadVideoAsync(string destinationFolder = null, string videoUrl = null, CancellationToken cancellationToken = default)
         {
             videoUrl = videoUrl ?? youtubeUrl;
@@ -125,18 +126,16 @@ namespace YoutubePlayer
             {
                 return video.FileName;
             }
-            else
+
+            var fileName = $"{video.Title}.{video.Extension}";
+
+            var invalidChars = Path.GetInvalidFileNameChars();
+            foreach (var invalidChar in invalidChars)
             {
-                var fileName = $"{video.Title}.{video.Extension}";
-
-                var invalidChars = Path.GetInvalidFileNameChars();
-                foreach (var invalidChar in invalidChars)
-                {
-                    fileName = fileName.Replace(invalidChar.ToString(), "_");
-                }
-
-                return fileName;
+                fileName = fileName.Replace(invalidChar.ToString(), "_");
             }
+
+            return fileName;
         }
 
     }
