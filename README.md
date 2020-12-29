@@ -4,6 +4,28 @@ Play and download youtube videos in Unity using [youtube-dl](https://github.com/
 ## Preview
 <img src="screenshot.png" width="400" />
 
+## How To Install
+
+This package uses the [scoped registry](https://docs.unity3d.com/Manual/upm-scoped.html) feature to import dependent
+packages. Please add the following sections to the package manifest file
+(`Packages/manifest.json`).
+
+To the `scopedRegistries` section:
+
+```
+{
+  "name": "iBicha",
+  "url": "https://registry.npmjs.com",
+  "scopes": [ "com.ibicha" ]
+}
+```
+
+To the `dependencies` section:
+
+```
+"com.ibicha.youtube-player": "1.0.0"
+```
+
 ## Usage
 - Add a `YoutubePlayer` component on a `GameObject` with a `VideoPlayer`. Set the url in the inspector.
 The `YoutubePlayer` will follow the `Play On Awake` setting of the video player. You can also call `YoutubePlayer.PlayVideoAsync`.
