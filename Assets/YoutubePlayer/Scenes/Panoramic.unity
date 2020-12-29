@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   youtubeUrl: https://www.youtube.com/watch?v=sPyAQQklc1s
+  is360Video: 1
 --- !u!328 &512732719
 VideoPlayer:
   m_ObjectHideFlags: 0

@@ -1,28 +1,52 @@
 # UnityYoutubePlayer
-Play and download youtube videos in Unity using YoutubeExplode and Unity's VideoPlayer.
-
-Uses for handling video and caption downloading.
-
+Play and download youtube videos in Unity using [youtube-dl](https://github.com/ytdl-org/youtube-dl) and Unity's VideoPlayer, and uses [youtube-dl-server](https://github.com/iBicha/youtube-dl-server) to fetch metadata from youtube-dl.
 
 ## Preview
-![](screenshot.png)
+<img src="screenshot.png" width="400" />
+
+## How To Install
+
+This package uses the [scoped registry](https://docs.unity3d.com/Manual/upm-scoped.html) feature to import dependent
+packages. Please add the following sections to the package manifest file
+(`Packages/manifest.json`).
+
+To the `scopedRegistries` section:
+
+```
+{
+  "name": "iBicha",
+  "url": "https://registry.npmjs.com",
+  "scopes": [ "com.ibicha" ]
+}
+```
+
+To the `dependencies` section:
+
+```
+"com.ibicha.youtube-player": "1.0.0"
+```
 
 ## Usage
 - Add a `YoutubePlayer` component on a `GameObject` with a `VideoPlayer`. Set the url in the inspector.
 The `YoutubePlayer` will follow the `Play On Awake` setting of the video player. You can also call `YoutubePlayer.PlayVideoAsync`.
 
-- In addition, you can call `YoutubePlayer.DownloadVideoAsync` to download the video to a file instead, with captions in a `.srt` file format. See the `DownloadYoutubeVideo` as an example.
+- In addition, you can call `YoutubePlayer.DownloadVideoAsync` to download the video to a file instead. See the `DownloadYoutubeVideo` as an example.
 
 - `VideoPlayerProgress` allows to display the progress of the video, as well as seeking.
-
-- Captions can be downloaded and displayed on a TextMesh Pro component with the `YoutubeCaptions` script.
 
 - See `YoutubePlayer\Scenes\Player` for a complete example, and `YoutubePlayer\Scenes\Panoramic` for playing a 360 video on the skybox.
 
 ## Dependencies
-UnityYoutubePlayer relies heavily on the work done in [Tyrrrz/YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode) which is responsible for parsing and downloading videos and captions. This library has the following dependencies:
+UnityYoutubePlayer uses [youtube-dl](https://github.com/ytdl-org/youtube-dl) for parsing webpages and getting a raw video url that Unity's VideoPlayer can play.
+To allow maximum platform compatibilty (e.g. mobile, desktop) and to be able to update the library without rebuilding the game, we're using [youtube-dl-server](https://github.com/iBicha/youtube-dl-server) web API.
 
-- [AngleSharp (Github)](https://github.com/AngleSharp/AngleSharp)
-- [Newtonsoft.Json (Asset Store)](https://assetstore.unity.com/packages/tools/input-management/json-net-for-unity-11347)
+The package uses a free instance of the server hosted on heroku (shared between everyone). 
+For better reliability and performance, it is recommanded to host this on your own.
 
-In addition, we use `TextMesh Pro` to display captions (but this can be easily swapped to use another kind of text UI)
+To make `YoutubePlayer` use your instance of the server, make sure to set the `ServerUrl` before making calls to youtube APIs, e.g.
+```
+YoutubeDl.ServerUrl = "http://your-self-hosted-server.com";
+```
+
+## Older version
+For the version used with [YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode), see the [legacy/youtube-explode](https://github.com/iBicha/UnityYoutubePlayer/tree/legacy/youtube-explode) branch. Please note that it has a different license than the current version.

@@ -1,0 +1,11 @@
+{
+	"name": "com.ibicha.youtube-player",
+	"displayName":"Youtube Player",
+	"version": "1.0.0",
+    "unity": "2018.4",
+    "keywords": ["video", "youtube", "youtube-dl"],
+	"description": "Allows playing youtube videos in Unity.",
+    "dependencies": {
+      "com.unity.nuget.newtonsoft-json": "2.0.0"
+    }
+}

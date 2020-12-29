@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Video;
 
 namespace YoutubePlayer
@@ -12,28 +10,28 @@ namespace YoutubePlayer
 
         public string videoTextureName;
 
-        private VideoPlayer videoPlayer;
+        VideoPlayer m_VideoPlayer;
         void Awake()
         {
-            videoPlayer = GetComponent<VideoPlayer>();
-            videoPlayer.prepareCompleted += VideoPlayerOnPrepareCompleted;
+            m_VideoPlayer = GetComponent<VideoPlayer>();
+            m_VideoPlayer.prepareCompleted += VideoPlayerOnPrepareCompleted;
         }
 
-        private void VideoPlayerOnPrepareCompleted(VideoPlayer source)
+        void VideoPlayerOnPrepareCompleted(VideoPlayer source)
         {
             if (skyboxMaterial.HasProperty(videoTextureName))
             {
-                skyboxMaterial.SetTexture(videoTextureName, videoPlayer.texture);
+                skyboxMaterial.SetTexture(videoTextureName, m_VideoPlayer.texture);
             }
             else
             {
-                skyboxMaterial.mainTexture = videoPlayer.texture;
+                skyboxMaterial.mainTexture = m_VideoPlayer.texture;
             }
         }
 
-        private void OnDestroy()
+        void OnDestroy()
         {
-            videoPlayer.prepareCompleted -= VideoPlayerOnPrepareCompleted;
+            m_VideoPlayer.prepareCompleted -= VideoPlayerOnPrepareCompleted;
         }
     }
 }
