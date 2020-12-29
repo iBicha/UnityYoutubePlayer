@@ -24,59 +24,70 @@ namespace YoutubePlayer
         public bool is360Video;
         
         /// <summary>
-        /// VideoStartingDelegate 
+        /// VideoPlayer component associated with the current YoutubePlayer instance
         /// </summary>
-        /// <param name="url">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
-        public delegate void VideoStartingDelegate(string url);
-
-        /// <summary>
-        /// Event fired when a youtube video is starting
-        /// Useful to start downloading captions, etc.
-        /// </summary>
-        public event VideoStartingDelegate YoutubeVideoStarting;
-
-        VideoPlayer m_VideoPlayer;
+        public VideoPlayer VideoPlayer { get; private set; }
 
         void Awake()
         {
-            m_VideoPlayer = GetComponent<VideoPlayer>();
+            VideoPlayer = GetComponent<VideoPlayer>();
         }
 
         async void OnEnable()
         {
-            if (m_VideoPlayer.playOnAwake)
+            if (VideoPlayer.playOnAwake)
                 await PlayVideoAsync();
+        }
+
+        /// <summary>
+        /// Triggers a request to youtube-dl to parse the webpage for the raw video url
+        /// </summary>
+        /// <param name="videoUrl">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
+        /// <param name="options">Options for downloading the raw video</param>
+        /// <param name="cancellationToken">A CancellationToken used to cancel the current async task</param>
+        /// <returns>A Task to await</returns>
+        public static async Task<string> GetRawVideoUrlAsync(string videoUrl, YoutubeDlOptions options = null, CancellationToken cancellationToken = default)
+        {
+            options = options ?? YoutubeDlOptions.Default;
+            var metaData = await YoutubeDl.GetVideoMetaDataAsync(videoUrl, options, cancellationToken);
+            return metaData.Url;
+        }
+        
+        /// <summary>
+        /// Prepare the video for playing. This includes a web request to youtube-dl, as well as preparing/warming up
+        /// the VideoPlayer.
+        /// </summary>
+        /// <param name="videoUrl">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
+        /// <param name="cancellationToken">A CancellationToken used to cancel the current async task</param>
+        /// <returns>A Task to await</returns>
+        public async Task PrepareVideoAsync(string videoUrl = null, CancellationToken cancellationToken = default)
+        {
+            videoUrl = videoUrl ?? youtubeUrl;
+            var options = is360Video ? YoutubeDlOptions.Three60 : YoutubeDlOptions.Default;
+            var rawUrl = await GetRawVideoUrlAsync(videoUrl, options, cancellationToken);
+                
+            VideoPlayer.source = VideoSource.Url;
+
+            //Resetting the same url restarts the video...
+            if (VideoPlayer.url != rawUrl)
+                VideoPlayer.url = rawUrl;
+
+            youtubeUrl = videoUrl;
+
+            await VideoPlayer.PrepareAsync(cancellationToken);
         }
 
         /// <summary>
         /// Play the youtube video in the attached Video Player component.
         /// </summary>
         /// <param name="videoUrl">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
+        /// <param name="cancellationToken">A CancellationToken used to cancel the current async task</param>
         /// <returns>A Task to await</returns>
         /// <exception cref="NotSupportedException">When the youtube url doesn't contain any supported streams</exception>
-        public async Task PlayVideoAsync(string videoUrl = null)
+        public async Task PlayVideoAsync(string videoUrl = null, CancellationToken cancellationToken = default)
         {
-            try
-            {
-                videoUrl = videoUrl ?? youtubeUrl;
-
-                var metaData = await YoutubeDl.GetVideoMetaDataAsync(videoUrl, 
-                    is360Video ? YoutubeDlOptions.Three60 : YoutubeDlOptions.Default);
-                
-                m_VideoPlayer.source = VideoSource.Url;
-
-                //Resetting the same url restarts the video...
-                if (m_VideoPlayer.url != metaData.Url)
-                    m_VideoPlayer.url = metaData.Url;
-
-                m_VideoPlayer.Play();
-                youtubeUrl = videoUrl;
-                YoutubeVideoStarting?.Invoke(youtubeUrl);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-            }
+            await PrepareVideoAsync(videoUrl, cancellationToken);
+            VideoPlayer.Play();
         }
 
         /// <summary>
@@ -84,20 +95,38 @@ namespace YoutubePlayer
         /// </summary>
         /// <param name="destinationFolder">A folder to create the file in</param>
         /// <param name="videoUrl">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
-        /// <param name="progress">An object implementing `IProgress` to get download progress, from 0 to 1</param>
         /// <param name="cancellationToken">A CancellationToken used to cancel the current async task</param>
         /// <returns>Returns the path to the file where the video was downloaded</returns>
         /// <exception cref="NotSupportedException">When the youtube url doesn't contain any supported streams</exception>
         public async Task<string> DownloadVideoAsync(string destinationFolder = null, string videoUrl = null, CancellationToken cancellationToken = default)
         {
-            try
-            {
-                videoUrl = videoUrl ?? youtubeUrl;
+            videoUrl = videoUrl ?? youtubeUrl;
 
-                var video = await YoutubeDl.GetVideoMetaDataAsync(videoUrl);
+            var video = await YoutubeDl.GetVideoMetaDataAsync(videoUrl);
 
-                cancellationToken.ThrowIfCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
                 
+            var fileName = GetVideoFileName(video);
+            
+            var filePath = fileName;
+            if (!string.IsNullOrEmpty(destinationFolder))
+            {
+                Directory.CreateDirectory(destinationFolder);
+                filePath = Path.Combine(destinationFolder, fileName);
+            }
+
+            await YoutubeDownloader.DownloadAsync(video, filePath, cancellationToken);
+            return filePath;
+        }
+        
+        static string GetVideoFileName(YoutubeVideoMetaData video)
+        {
+            if (!string.IsNullOrWhiteSpace(video.FileName))
+            {
+                return video.FileName;
+            }
+            else
+            {
                 var fileName = $"{video.Title}.{video.Extension}";
 
                 var invalidChars = Path.GetInvalidFileNameChars();
@@ -106,21 +135,10 @@ namespace YoutubePlayer
                     fileName = fileName.Replace(invalidChar.ToString(), "_");
                 }
 
-                var filePath = fileName;
-                if (!string.IsNullOrEmpty(destinationFolder))
-                {
-                    Directory.CreateDirectory(destinationFolder);
-                    filePath = Path.Combine(destinationFolder, fileName);
-                }
-
-                await YoutubeDownloader.DownloadAsync(video, filePath, cancellationToken);
-                return filePath;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-                return null;
+                return fileName;
             }
         }
+
     }
+    
 }

@@ -18,5 +18,8 @@ namespace YoutubePlayer
         
         [JsonProperty("formats")]
         public YoutubeVideoFormat[] Formats;
+        
+        [JsonProperty("_filename")]
+        public string FileName;
     }
 }

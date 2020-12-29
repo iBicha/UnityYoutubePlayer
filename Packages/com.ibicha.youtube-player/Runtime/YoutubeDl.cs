@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Newtonsoft.Json;
@@ -11,12 +12,13 @@ namespace YoutubePlayer
     {
         public static string ServerUrl { get; set; } = "https://unity-youtube-dl-server.herokuapp.com";
 
-        public static async Task<YoutubeVideoMetaData> GetVideoMetaDataAsync(string youtubeUrl)
+        public static async Task<YoutubeVideoMetaData> GetVideoMetaDataAsync(string youtubeUrl, CancellationToken cancellationToken = default)
         {
-            return await GetVideoMetaDataAsync(youtubeUrl, YoutubeDlOptions.Default);
+            return await GetVideoMetaDataAsync(youtubeUrl, YoutubeDlOptions.Default, cancellationToken);
         }
 
-        public static async Task<YoutubeVideoMetaData> GetVideoMetaDataAsync(string youtubeUrl, YoutubeDlOptions options)
+        public static async Task<YoutubeVideoMetaData> GetVideoMetaDataAsync(string youtubeUrl, YoutubeDlOptions options, 
+            CancellationToken cancellationToken = default)
         {
             var optionFlags = new List<string>();
             if (!string.IsNullOrWhiteSpace(options.Format))
@@ -48,6 +50,13 @@ namespace YoutubePlayer
                 var video = JsonConvert.DeserializeObject<YoutubeVideoMetaData>(text);
                 tcs.TrySetResult(video);
             };
+
+            cancellationToken.Register(obj =>
+            {
+                ((UnityWebRequest)obj).Abort();
+                tcs.TrySetCanceled(cancellationToken);
+            }, request);
+            
             return await tcs.Task;
         }
         
