@@ -33,6 +33,21 @@ namespace YoutubePlayer
             videoPlayer.Prepare();
             await tcs.Task;
         }
+
+        public static async Task PlayYoutubeVideoAsync(this VideoPlayer videoPlayer, string youtubeUrl, CancellationToken cancellationToken = default)
+        {
+            var metaData = await YoutubeDl.GetVideoMetaDataAsync(youtubeUrl, YoutubeDlOptions.Default, cancellationToken);
+            var rawUrl = metaData.Url;
+                
+            videoPlayer.source = VideoSource.Url;
+
+            //Resetting the same url restarts the video...
+            if (videoPlayer.url != rawUrl)
+                videoPlayer.url = rawUrl;
+
+            await videoPlayer.PrepareAsync(cancellationToken);
+            videoPlayer.Play();
+        }
     }
  
 }

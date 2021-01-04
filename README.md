@@ -23,7 +23,7 @@ To the `scopedRegistries` section:
 To the `dependencies` section:
 
 ```
-"com.ibicha.youtube-player": "1.1.0"
+"com.ibicha.youtube-player": "1.2.0"
 ```
 
 After changes, the manifest file should look like below:
@@ -43,6 +43,18 @@ After changes, the manifest file should look like below:
 ```
 
 ## Usage
+- A minimalistic example:
+```
+public class SimpleYoutubeVideo : MonoBehaviour
+{
+    void Start()
+    {
+        GetComponent<VideoPlayer>().PlayYoutubeVideoAsync("https://www.youtube.com/watch?v=1PuGuqpHQGo");
+    }
+}
+```
+Or,
+
 - Add a `YoutubePlayer` component on a `GameObject` with a `VideoPlayer`. Set the url in the inspector.
 The `YoutubePlayer` will follow the `Play On Awake` setting of the video player. You can also call `YoutubePlayer.PlayVideoAsync`.
 
