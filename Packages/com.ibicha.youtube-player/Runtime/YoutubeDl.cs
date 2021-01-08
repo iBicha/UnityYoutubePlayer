@@ -12,12 +12,12 @@ namespace YoutubePlayer
     {
         public static string ServerUrl { get; set; } = "https://unity-youtube-dl-server.herokuapp.com";
 
-        public static async Task<YoutubeVideoMetaData> GetVideoMetaDataAsync(string youtubeUrl, CancellationToken cancellationToken = default)
+        public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, CancellationToken cancellationToken = default)
         {
-            return await GetVideoMetaDataAsync(youtubeUrl, YoutubeDlOptions.Default, cancellationToken);
+            return await GetVideoMetaDataAsync<T>(youtubeUrl, YoutubeDlOptions.Default, cancellationToken);
         }
 
-        public static async Task<YoutubeVideoMetaData> GetVideoMetaDataAsync(string youtubeUrl, YoutubeDlOptions options, 
+        public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options, 
             CancellationToken cancellationToken = default)
         {
             var optionFlags = new List<string>();
@@ -41,7 +41,7 @@ namespace YoutubePlayer
             }
 
             var request = UnityWebRequest.Get(requestUrl);
-            var tcs = new TaskCompletionSource<YoutubeVideoMetaData>();
+            var tcs = new TaskCompletionSource<T>();
             request.SendWebRequest().completed += operation =>
             {
                 if (request.isHttpError || request.isNetworkError)
@@ -51,7 +51,7 @@ namespace YoutubePlayer
                 }
 
                 var text = request.downloadHandler.text;
-                var video = JsonConvert.DeserializeObject<YoutubeVideoMetaData>(text);
+                var video = JsonConvert.DeserializeObject<T>(text);
                 tcs.TrySetResult(video);
             };
 

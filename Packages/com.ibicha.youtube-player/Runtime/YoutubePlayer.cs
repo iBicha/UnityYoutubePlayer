@@ -49,7 +49,7 @@ namespace YoutubePlayer
         public static async Task<string> GetRawVideoUrlAsync(string videoUrl, YoutubeDlOptions options = null, CancellationToken cancellationToken = default)
         {
             options = options ?? YoutubeDlOptions.Default;
-            var metaData = await YoutubeDl.GetVideoMetaDataAsync(videoUrl, options, cancellationToken);
+            var metaData = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(videoUrl, options, cancellationToken);
             return metaData.Url;
         }
         
@@ -103,7 +103,7 @@ namespace YoutubePlayer
         {
             videoUrl = videoUrl ?? youtubeUrl;
 
-            var video = await YoutubeDl.GetVideoMetaDataAsync(videoUrl);
+            var video = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(videoUrl, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
                 
