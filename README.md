@@ -23,7 +23,7 @@ To the `scopedRegistries` section:
 To the `dependencies` section:
 
 ```
-"com.ibicha.youtube-player": "1.2.0"
+"com.ibicha.youtube-player": "1.3.0"
 ```
 
 After changes, the manifest file should look like below:
@@ -38,7 +38,7 @@ After changes, the manifest file should look like below:
     }
   ],
   "dependencies": {
-    "com.ibicha.youtube-player": "1.1.0",
+    "com.ibicha.youtube-player": "1.3.0",
     ...
 ```
 
@@ -62,7 +62,7 @@ The `YoutubePlayer` will follow the `Play On Awake` setting of the video player.
 
 - `VideoPlayerProgress` allows to display the progress of the video, as well as seeking.
 
-- See `YoutubePlayer\Scenes\Player` for a complete example, and `YoutubePlayer\Scenes\Panoramic` for playing a 360 video on the skybox.
+- See `Assets\YoutubePlayer\Scenes` for more examples.
 
 ## Dependencies
 UnityYoutubePlayer uses [youtube-dl](https://github.com/ytdl-org/youtube-dl) for parsing webpages and getting a raw video url that Unity's VideoPlayer can play.
