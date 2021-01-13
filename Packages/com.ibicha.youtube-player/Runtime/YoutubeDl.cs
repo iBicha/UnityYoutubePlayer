@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using Newtonsoft.Json;
 using UnityEngine.Networking;
 
@@ -37,7 +36,7 @@ namespace YoutubePlayer
             var requestUrl = $"{ServerUrl}/v1/video?url={youtubeUrl}";
             if (optionFlags.Count > 0)
             {
-                requestUrl += $"&options={HttpUtility.UrlEncode(string.Join(" ", optionFlags))}";
+                requestUrl += $"&options={UnityWebRequest.EscapeURL(string.Join(" ", optionFlags))}";
             }
 
             var request = UnityWebRequest.Get(requestUrl);
