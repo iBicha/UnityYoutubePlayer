@@ -43,13 +43,20 @@ namespace YoutubePlayer
             var tcs = new TaskCompletionSource<T>();
             request.SendWebRequest().completed += operation =>
             {
-                if (request.isHttpError || request.isNetworkError)
+                if (request.isNetworkError)
                 {
                     tcs.TrySetException(new Exception(request.error));
                     return;
                 }
 
                 var text = request.downloadHandler.text;
+
+                if (request.isHttpError)
+                {
+                    tcs.TrySetException(new Exception(request.error + "\nResponseError:" + text));
+                    return;
+                }
+
                 var video = JsonConvert.DeserializeObject<T>(text);
                 tcs.TrySetResult(video);
             };
