@@ -43,7 +43,11 @@ namespace YoutubePlayer
             var tcs = new TaskCompletionSource<T>();
             request.SendWebRequest().completed += operation =>
             {
+#if UNITY_2020_2_OR_NEWER
+                if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.DataProcessingError)
+#else
                 if (request.isNetworkError)
+#endif
                 {
                     tcs.TrySetException(new Exception(request.error));
                     return;
@@ -51,7 +55,11 @@ namespace YoutubePlayer
 
                 var text = request.downloadHandler.text;
 
+#if UNITY_2020_2_OR_NEWER
+                if (request.result == UnityWebRequest.Result.ProtocolError)
+#else
                 if (request.isHttpError)
+#endif
                 {
                     tcs.TrySetException(new Exception(request.error + "\nResponseError:" + text));
                     return;
