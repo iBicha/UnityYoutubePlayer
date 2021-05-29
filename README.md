@@ -1,6 +1,7 @@
 # UnityYoutubePlayer
 Play and download youtube videos in Unity using [youtube-dl](https://github.com/ytdl-org/youtube-dl) and Unity's VideoPlayer, and uses [youtube-dl-server](https://github.com/iBicha/youtube-dl-server) to fetch metadata from youtube-dl.
 
+Please note that WebGL is not supported because of [CORS](https://github.com/iBicha/UnityYoutubePlayer/issues/40)
 ## Preview
 <img src="screenshot.png" width="400" />
 
