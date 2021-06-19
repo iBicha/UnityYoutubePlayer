@@ -24,4 +24,6 @@ UnityYoutubePlayer relies heavily on the work done in [Tyrrrz/YoutubeExplode](ht
 
 It's currently being installed through [GlitchEnzo/NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity)
 
+After restoring nuget packages, there's issues with references, that's why the DLLs of the nuget packages are manually moved to the same folder under `Assets/Packages`
+
 In addition, we use `TextMesh Pro` to display captions (but this can be easily swapped to use another kind of text UI)
