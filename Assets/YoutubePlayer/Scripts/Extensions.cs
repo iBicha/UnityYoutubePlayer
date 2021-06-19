@@ -30,7 +30,7 @@ namespace YoutubePlayer
         {
             if(streamManifest == null)
                 throw new ArgumentNullException(nameof(streamManifest));
-            return streamManifest.GetMuxed().WithHighestVideoQualitySupported();
+            return streamManifest.GetMuxedStreams().WithHighestVideoQualitySupported();
         }
 
         /// <summary>

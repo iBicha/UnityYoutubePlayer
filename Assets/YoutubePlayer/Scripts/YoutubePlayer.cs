@@ -100,7 +100,7 @@ namespace YoutubePlayer
                 var streamManifest = await youtubeClient.Videos.Streams.GetManifestAsync(videoUrl);
                 
                 cancellationToken.ThrowIfCancellationRequested();
-                var streamInfo = streamManifest.GetMuxed().WithHighestVideoQuality();
+                var streamInfo = streamManifest.GetMuxedStreams().GetWithHighestVideoQuality();
                 if (streamInfo == null)
                     throw new NotSupportedException($"No supported streams in youtube video '{videoUrl}'");
 
