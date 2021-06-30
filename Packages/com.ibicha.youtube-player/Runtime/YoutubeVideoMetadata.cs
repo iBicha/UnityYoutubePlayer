@@ -4,6 +4,10 @@ namespace YoutubePlayer
 {
     public class YoutubeVideoMetaData
     {
+        public YoutubeVideoMetaData()
+        {
+        }
+
         [JsonProperty("title")]
         public string Title;
 

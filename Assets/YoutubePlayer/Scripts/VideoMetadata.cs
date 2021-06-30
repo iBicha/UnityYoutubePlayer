@@ -9,6 +9,10 @@ namespace YoutubePlayer
         // Information about the video is provided by youtube-dl.
         public class MyYoutubeVideoMetadata : YoutubeVideoMetaData
         {
+            public MyYoutubeVideoMetadata() : base()
+            {
+            }
+
             [JsonProperty("description")]
             public string Description;
             
