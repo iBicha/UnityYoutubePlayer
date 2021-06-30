@@ -20,9 +20,10 @@ The `YoutubePlayer` will follow the `Play On Awake` setting of the video player.
 - See `YoutubePlayer\Scenes\Player` for a complete example, and `YoutubePlayer\Scenes\Panoramic` for playing a 360 video on the skybox.
 
 ## Dependencies
-UnityYoutubePlayer relies heavily on the work done in [Tyrrrz/YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode) which is responsible for parsing and downloading videos and captions. This library has the following dependencies:
+UnityYoutubePlayer relies heavily on the work done in [Tyrrrz/YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode) which is responsible for parsing and downloading videos and captions. 
 
-- [AngleSharp (Github)](https://github.com/AngleSharp/AngleSharp)
-- [Newtonsoft.Json (Asset Store)](https://assetstore.unity.com/packages/tools/input-management/json-net-for-unity-11347)
+It's currently being installed through [GlitchEnzo/NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity)
+
+After restoring nuget packages, there's issues with references, that's why the DLLs of the nuget packages are manually moved to the same folder under `Assets/Packages`
 
 In addition, we use `TextMesh Pro` to display captions (but this can be easily swapped to use another kind of text UI)
