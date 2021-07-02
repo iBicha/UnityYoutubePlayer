@@ -12,15 +12,15 @@ namespace YoutubePlayer
     {
         public static string ServerUrl { get; set; } = "https://unity-youtube-dl-server.herokuapp.com";
 
+        public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, CancellationToken cancellationToken = default)
+        {
+            return await GetVideoMetaDataAsync<T>(youtubeUrl, YoutubeDlOptions.Default, cancellationToken);
+        }
+
         public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, IEnumerable<string> schema,
             CancellationToken cancellationToken = default)
         {
             return await GetVideoMetaDataAsync<T>(youtubeUrl, YoutubeDlOptions.Default, schema, cancellationToken);
-        }
-
-        public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, CancellationToken cancellationToken = default)
-        {
-            return await GetVideoMetaDataAsync<T>(youtubeUrl, YoutubeDlOptions.Default, cancellationToken);
         }
 
         public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
@@ -31,7 +31,7 @@ namespace YoutubePlayer
         }
 
         public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
-            IEnumerable<string> schema = null, CancellationToken cancellationToken = default)
+            IEnumerable<string> schema, CancellationToken cancellationToken = default)
         {
             var optionFlags = new List<string>();
             if (!string.IsNullOrWhiteSpace(options.Format))
