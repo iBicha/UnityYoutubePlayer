@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.4.1] - 2021-07-02
+### Changed
+- Changed YoutubeDl Api to avoid ambiguous calls
+
 ## [1.4.0] - 2021-07-02
 ### Added
 - A CHANGELOG.md, README.md and LICENSE files.
