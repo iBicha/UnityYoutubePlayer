@@ -39,6 +39,12 @@ namespace YoutubePlayer
                 requestUrl += $"&options={UnityWebRequest.EscapeURL(string.Join(" ", optionFlags))}";
             }
 
+            var schema = GetJsonSchema<T>();
+            foreach (var schemaKey in schema)
+            {
+                requestUrl += $"&schema={schemaKey}";
+            }
+
             var request = UnityWebRequest.Get(requestUrl);
             var tcs = new TaskCompletionSource<T>();
             request.SendWebRequest().completed += operation =>
@@ -76,6 +82,11 @@ namespace YoutubePlayer
             }, request);
 
             return await tcs.Task;
+        }
+
+        private static string[] GetJsonSchema<T>()
+        {
+            return new[] { "url", "title" };
         }
     }
 }
