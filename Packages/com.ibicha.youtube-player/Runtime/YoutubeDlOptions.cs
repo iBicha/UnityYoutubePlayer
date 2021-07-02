@@ -1,4 +1,4 @@
-﻿namespace YoutubePlayer
+namespace YoutubePlayer
 {
     public class YoutubeDlOptions
     {
@@ -16,5 +16,4 @@
         public string UserAgent;
         public string Custom;
     }
-
 }

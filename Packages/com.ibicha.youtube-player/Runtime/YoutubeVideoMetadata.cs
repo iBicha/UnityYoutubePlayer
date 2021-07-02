@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace YoutubePlayer
 {
@@ -15,10 +15,10 @@ namespace YoutubePlayer
 
         [JsonProperty("requested_formats")]
         public YoutubeVideoFormat[] requestedFormats;
-        
+
         [JsonProperty("formats")]
         public YoutubeVideoFormat[] Formats;
-        
+
         [JsonProperty("_filename")]
         public string FileName;
     }

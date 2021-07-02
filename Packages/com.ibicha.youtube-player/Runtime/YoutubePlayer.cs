@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +22,7 @@ namespace YoutubePlayer
         /// Specify whether to use 360 configuration
         /// </summary>
         public bool is360Video;
-        
+
         /// <summary>
         /// VideoPlayer component associated with the current YoutubePlayer instance
         /// </summary>
@@ -52,7 +52,7 @@ namespace YoutubePlayer
             var metaData = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(videoUrl, options, cancellationToken);
             return metaData.Url;
         }
-        
+
         /// <summary>
         /// Prepare the video for playing. This includes a web request to youtube-dl, as well as preparing/warming up
         /// the VideoPlayer.
@@ -66,7 +66,7 @@ namespace YoutubePlayer
             videoUrl = videoUrl ?? youtubeUrl;
             options = options ?? (is360Video ? YoutubeDlOptions.Three60 : YoutubeDlOptions.Default);
             var rawUrl = await GetRawVideoUrlAsync(videoUrl, options, cancellationToken);
-                
+
             VideoPlayer.source = VideoSource.Url;
 
             //Resetting the same url restarts the video...
@@ -106,9 +106,9 @@ namespace YoutubePlayer
             var video = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(videoUrl, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
-                
+
             var fileName = GetVideoFileName(video);
-            
+
             var filePath = fileName;
             if (!string.IsNullOrEmpty(destinationFolder))
             {
@@ -119,7 +119,7 @@ namespace YoutubePlayer
             await YoutubeDownloader.DownloadAsync(video, filePath, cancellationToken);
             return filePath;
         }
-        
+
         static string GetVideoFileName(YoutubeVideoMetaData video)
         {
             if (!string.IsNullOrWhiteSpace(video.FileName))
@@ -137,7 +137,5 @@ namespace YoutubePlayer
 
             return fileName;
         }
-
     }
-    
 }

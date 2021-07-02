@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace YoutubePlayer
 {
@@ -18,10 +18,10 @@ namespace YoutubePlayer
 
         [JsonProperty("height")]
         public int? Height;
-        
+
         [JsonProperty("fps")]
         public int? Fps;
-        
+
         [JsonProperty("vcodec")]
         public string AudioCodec;
 

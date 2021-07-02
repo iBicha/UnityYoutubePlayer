@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -6,14 +6,14 @@ using UnityEngine.Video;
 
 namespace YoutubePlayer
 {
-    public static class VideoPlayerExtensions 
+    public static class VideoPlayerExtensions
     {
         public static async Task PrepareAsync(this VideoPlayer videoPlayer, CancellationToken cancellationToken = default)
         {
-            if(videoPlayer.isPrepared) return;
+            if (videoPlayer.isPrepared) return;
 
             var tcs = new TaskCompletionSource<bool>();
-            
+
             void OnPrepare(VideoPlayer source)
             {
                 videoPlayer.prepareCompleted -= OnPrepare;
@@ -38,7 +38,7 @@ namespace YoutubePlayer
         {
             var metaData = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(youtubeUrl, YoutubeDlOptions.Default, cancellationToken);
             var rawUrl = metaData.Url;
-                
+
             videoPlayer.source = VideoSource.Url;
 
             //Resetting the same url restarts the video...
@@ -49,5 +49,4 @@ namespace YoutubePlayer
             videoPlayer.Play();
         }
     }
- 
 }
