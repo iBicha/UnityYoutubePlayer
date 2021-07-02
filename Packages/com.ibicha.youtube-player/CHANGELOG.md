@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - For playing a video, only the `url` field is requested.
   - For downloading a video, only `title`, `_filename` , `ext` and `url` fields are requeted.
 
+### Changed
+- Changed Unity minimum version to 2019.4
 
 ### Fixed 
 - `JsonSerializationException` on IL2CPP by adding a default .ctor to model files
