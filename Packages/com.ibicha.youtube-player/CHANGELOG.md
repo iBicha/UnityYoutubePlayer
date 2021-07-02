@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- A CHANGELOG.md file.
+- A CHANGELOG.md, README.md and LICENSE files.
 - Schema to allow downloading only needed fields
   - For playing a video, only the `url` field is requested.
   - For downloading a video, only `title`, `_filename` , `ext` and `url` fields are requeted.
