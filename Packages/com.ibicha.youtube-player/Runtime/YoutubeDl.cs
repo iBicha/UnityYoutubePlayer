@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +16,7 @@ namespace YoutubePlayer
             return await GetVideoMetaDataAsync<T>(youtubeUrl, YoutubeDlOptions.Default, cancellationToken);
         }
 
-        public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options, 
+        public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
             CancellationToken cancellationToken = default)
         {
             var optionFlags = new List<string>();
@@ -32,7 +32,7 @@ namespace YoutubePlayer
             {
                 optionFlags.Add(options.Custom);
             }
-            
+
             var requestUrl = $"{ServerUrl}/v1/video?url={youtubeUrl}";
             if (optionFlags.Count > 0)
             {
@@ -74,9 +74,8 @@ namespace YoutubePlayer
                 ((UnityWebRequest)obj).Abort();
                 tcs.TrySetCanceled(cancellationToken);
             }, request);
-            
+
             return await tcs.Task;
         }
-        
     }
 }

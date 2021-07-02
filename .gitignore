@@ -45,3 +45,4 @@ Assets/StreamingAssets/crashlytics-build.properties
 .idea
 Assets/Plugins/Editor/JetBrains
 JetBrains.meta
+.vsconfig

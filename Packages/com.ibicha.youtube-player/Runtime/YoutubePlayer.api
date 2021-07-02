@@ -1,0 +1,71 @@
+// This file is generated. Do not modify by hand.
+// XML documentation file not found. To check if public methods have XML comments,
+// make sure the XML doc file is present and located next to the scraped dll
+public class YoutubeDownloader
+{
+    public YoutubeDownloader() {}
+    public static System.Threading.Tasks.Task DownloadAsync(YoutubePlayer.YoutubeVideoMetaData video, string filePath, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+}
+
+namespace YoutubePlayer
+{
+    [System.Runtime.CompilerServices.Extension] public static class VideoPlayerExtensions
+    {
+        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.VideoPlayerExtensions.<PlayYoutubeVideoAsync>d__1))] [System.Runtime.CompilerServices.Extension] public static System.Threading.Tasks.Task PlayYoutubeVideoAsync(UnityEngine.Video.VideoPlayer videoPlayer, string youtubeUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.VideoPlayerExtensions.<PrepareAsync>d__0))] [System.Runtime.CompilerServices.Extension] public static System.Threading.Tasks.Task PrepareAsync(UnityEngine.Video.VideoPlayer videoPlayer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
+
+    public class YoutubeDl
+    {
+        public static string ServerUrl { get; set; }
+        public YoutubeDl() {}
+        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubeDl.<GetVideoMetaDataAsync>d__4<>))] public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubeDl.<GetVideoMetaDataAsync>d__5<>))] public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubePlayer.YoutubeDlOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
+
+    public class YoutubeDlOptions
+    {
+        public string Custom;
+        public static readonly YoutubePlayer.YoutubeDlOptions Default;
+        public string Format;
+        public static readonly YoutubePlayer.YoutubeDlOptions Three60;
+        public string UserAgent;
+        public YoutubeDlOptions(string format, string userAgent = default(string), string custom = default(string)) {}
+    }
+
+    [UnityEngine.RequireComponent(typeof(UnityEngine.Video.VideoPlayer))] public class YoutubePlayer : UnityEngine.MonoBehaviour
+    {
+        public bool is360Video;
+        public string youtubeUrl;
+        public UnityEngine.Video.VideoPlayer VideoPlayer { get; }
+        public YoutubePlayer() {}
+        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubePlayer.<DownloadVideoAsync>d__11))] public System.Threading.Tasks.Task<string> DownloadVideoAsync(string destinationFolder = default(string), string videoUrl = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubePlayer.<GetRawVideoUrlAsync>d__8))] public static System.Threading.Tasks.Task<string> GetRawVideoUrlAsync(string videoUrl, YoutubePlayer.YoutubeDlOptions options = default(YoutubePlayer.YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubePlayer.<PlayVideoAsync>d__10))] public System.Threading.Tasks.Task PlayVideoAsync(string videoUrl = default(string), YoutubePlayer.YoutubeDlOptions options = default(YoutubePlayer.YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubePlayer.<PrepareVideoAsync>d__9))] public System.Threading.Tasks.Task PrepareVideoAsync(string videoUrl = default(string), YoutubePlayer.YoutubeDlOptions options = default(YoutubePlayer.YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
+
+    public class YoutubeVideoFormat
+    {
+        [Newtonsoft.Json.JsonProperty(@"vcodec")] public string AudioCodec;
+        [Newtonsoft.Json.JsonProperty(@"ext")] public string Extension;
+        [Newtonsoft.Json.JsonProperty(@"format_id")] public string FormatId;
+        [Newtonsoft.Json.JsonProperty(@"fps")] public System.Nullable<int> Fps;
+        [Newtonsoft.Json.JsonProperty(@"height")] public System.Nullable<int> Height;
+        [Newtonsoft.Json.JsonProperty(@"url")] public string Url;
+        [Newtonsoft.Json.JsonProperty(@"acodec")] public string VideoCodec;
+        [Newtonsoft.Json.JsonProperty(@"width")] public System.Nullable<int> Width;
+        public YoutubeVideoFormat() {}
+    }
+
+    public class YoutubeVideoMetaData
+    {
+        [Newtonsoft.Json.JsonProperty(@"ext")] public string Extension;
+        [Newtonsoft.Json.JsonProperty(@"_filename")] public string FileName;
+        [Newtonsoft.Json.JsonProperty(@"formats")] public YoutubePlayer.YoutubeVideoFormat[] Formats;
+        [Newtonsoft.Json.JsonProperty(@"requested_formats")] public YoutubePlayer.YoutubeVideoFormat[] requestedFormats;
+        [Newtonsoft.Json.JsonProperty(@"title")] public string Title;
+        [Newtonsoft.Json.JsonProperty(@"url")] public string Url;
+        public YoutubeVideoMetaData() {}
+    }
+}

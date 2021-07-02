@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -15,7 +15,7 @@ namespace YoutubePlayer
         /// Is seeking through the video enabled?
         /// </summary>
         public bool SeekingEnabled;
-        
+
         /// <summary>
         /// The VideoPlayer to synchronize with
         /// </summary>
@@ -28,7 +28,7 @@ namespace YoutubePlayer
         {
             m_RectTransform = GetComponent<RectTransform>();
             m_PlaybackProgress = GetComponent<Image>();
-            
+
             if (m_PlaybackProgress.sprite == null)
             {
                 var texture = Texture2D.whiteTexture;
@@ -43,7 +43,7 @@ namespace YoutubePlayer
             if (videoPlayer.isPlaying)
             {
                 m_PlaybackProgress.fillAmount =
-                    (float) (videoPlayer.length > 0 ? videoPlayer.time / videoPlayer.length : 0);
+                    (float)(videoPlayer.length > 0 ? videoPlayer.time / videoPlayer.length : 0);
             }
         }
 
@@ -69,10 +69,10 @@ namespace YoutubePlayer
 
         void Seek(Vector2 cursorPosition)
         {
-            if(!SeekingEnabled || !videoPlayer.canSetTime)
+            if (!SeekingEnabled || !videoPlayer.canSetTime)
                 return;
 
-            if(!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 m_RectTransform, cursorPosition, null, out var localPoint))
                 return;
 

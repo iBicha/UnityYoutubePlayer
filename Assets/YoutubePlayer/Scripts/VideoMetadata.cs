@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace YoutubePlayer
@@ -11,7 +11,7 @@ namespace YoutubePlayer
         {
             [JsonProperty("description")]
             public string Description;
-            
+
             [JsonProperty("view_count")]
             public long ViewCount;
         }

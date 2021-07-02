@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -10,12 +10,12 @@ namespace YoutubePlayer
         public VideoPlayer videoPlayer;
 
         Button m_Button;
-        
+
         void Awake()
         {
             m_Button = GetComponent<Button>();
             m_Button.interactable = videoPlayer.isPrepared;
-           videoPlayer.prepareCompleted += VideoPlayerOnPrepareCompleted;    
+            videoPlayer.prepareCompleted += VideoPlayerOnPrepareCompleted;
         }
 
         void VideoPlayerOnPrepareCompleted(VideoPlayer source)
@@ -30,7 +30,7 @@ namespace YoutubePlayer
 
         void OnDestroy()
         {
-            videoPlayer.prepareCompleted -= VideoPlayerOnPrepareCompleted;    
+            videoPlayer.prepareCompleted -= VideoPlayerOnPrepareCompleted;
         }
     }
 }
