@@ -11,8 +11,8 @@ namespace YoutubePlayer
 {
     [System.Runtime.CompilerServices.Extension] public static class VideoPlayerExtensions
     {
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.VideoPlayerExtensions.<PlayYoutubeVideoAsync>d__1))] [System.Runtime.CompilerServices.Extension] public static System.Threading.Tasks.Task PlayYoutubeVideoAsync(UnityEngine.Video.VideoPlayer videoPlayer, string youtubeUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.VideoPlayerExtensions.<PrepareAsync>d__0))] [System.Runtime.CompilerServices.Extension] public static System.Threading.Tasks.Task PrepareAsync(UnityEngine.Video.VideoPlayer videoPlayer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.VideoPlayerExtensions.<PlayYoutubeVideoAsync>d__2))] [System.Runtime.CompilerServices.Extension] public static System.Threading.Tasks.Task PlayYoutubeVideoAsync(UnityEngine.Video.VideoPlayer videoPlayer, string youtubeUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.VideoPlayerExtensions.<PrepareAsync>d__1))] [System.Runtime.CompilerServices.Extension] public static System.Threading.Tasks.Task PrepareAsync(UnityEngine.Video.VideoPlayer videoPlayer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 
     public class YoutubeDl
