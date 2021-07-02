@@ -85,6 +85,6 @@ For reference, the default instance is
 ```
 YoutubeDl.ServerUrl = "https://unity-youtube-dl-server.herokuapp.com";
 ```
-And you can test it in the browser: https://unity-youtube-dl-server.herokuapp.com/v1/video?url=https://www.youtube.com/watch?v=1PuGuqpHQGo
+And you can test it in the browser: https://unity-youtube-dl-server.herokuapp.com/v1/video?url=https://www.youtube.com/watch?v=1PuGuqpHQGo&schema=url
 ## Older version
 For the version used with [YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode), see the [legacy/youtube-explode](https://github.com/iBicha/UnityYoutubePlayer/tree/legacy/youtube-explode) branch. Please note that it has a different license than the current version.
