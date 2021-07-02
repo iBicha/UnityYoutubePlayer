@@ -8,6 +8,9 @@ namespace YoutubePlayer
 {
     public static class VideoPlayerExtensions
     {
+        // The needed fields to play a video
+        static readonly string[] k_PlayFields = { "url" };
+
         public static async Task PrepareAsync(this VideoPlayer videoPlayer, CancellationToken cancellationToken = default)
         {
             if (videoPlayer.isPrepared) return;
@@ -36,7 +39,7 @@ namespace YoutubePlayer
 
         public static async Task PlayYoutubeVideoAsync(this VideoPlayer videoPlayer, string youtubeUrl, CancellationToken cancellationToken = default)
         {
-            var metaData = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(youtubeUrl, YoutubeDlOptions.Default, cancellationToken);
+            var metaData = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(youtubeUrl, YoutubeDlOptions.Default, k_PlayFields, cancellationToken);
             var rawUrl = metaData.Url;
 
             videoPlayer.source = VideoSource.Url;

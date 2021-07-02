@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -11,6 +12,12 @@ namespace YoutubePlayer
     {
         public static string ServerUrl { get; set; } = "https://unity-youtube-dl-server.herokuapp.com";
 
+        public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, IEnumerable<string> schema,
+            CancellationToken cancellationToken = default)
+        {
+            return await GetVideoMetaDataAsync<T>(youtubeUrl, YoutubeDlOptions.Default, schema, cancellationToken);
+        }
+
         public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, CancellationToken cancellationToken = default)
         {
             return await GetVideoMetaDataAsync<T>(youtubeUrl, YoutubeDlOptions.Default, cancellationToken);
@@ -18,6 +25,13 @@ namespace YoutubePlayer
 
         public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
             CancellationToken cancellationToken = default)
+        {
+            var schema = GetJsonSchema<T>();
+            return await GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, cancellationToken);
+        }
+
+        public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
+            IEnumerable<string> schema = null, CancellationToken cancellationToken = default)
         {
             var optionFlags = new List<string>();
             if (!string.IsNullOrWhiteSpace(options.Format))
@@ -37,6 +51,14 @@ namespace YoutubePlayer
             if (optionFlags.Count > 0)
             {
                 requestUrl += $"&options={UnityWebRequest.EscapeURL(string.Join(" ", optionFlags))}";
+            }
+
+            if (schema != null)
+            {
+                foreach (var schemaKey in schema)
+                {
+                    requestUrl += $"&schema={schemaKey}";
+                }
             }
 
             var request = UnityWebRequest.Get(requestUrl);
@@ -76,6 +98,29 @@ namespace YoutubePlayer
             }, request);
 
             return await tcs.Task;
+        }
+
+        static IEnumerable<string> GetJsonSchema<T>()
+        {
+            var keys = new List<string>();
+            var fieldInfos = typeof(T).GetFields();
+            foreach (var fieldInfo in fieldInfos)
+            {
+                var attributes = fieldInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), true);
+                if (attributes.Length == 0)
+                {
+                    keys.Add(fieldInfo.Name);
+                    continue;
+                }
+                var propertyName = ((JsonPropertyAttribute)attributes.First()).PropertyName;
+                if (string.IsNullOrWhiteSpace(propertyName))
+                {
+                    keys.Add(fieldInfo.Name);
+                    continue;
+                }
+                keys.Add(propertyName);
+            }
+            return keys;
         }
     }
 }

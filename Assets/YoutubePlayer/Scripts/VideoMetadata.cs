@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace YoutubePlayer
 {
@@ -22,12 +23,26 @@ namespace YoutubePlayer
 
         public string videoUrl;
 
+        public Text Info;
+
         async void Start()
         {
-            Debug.Log("Loading...");
-            var metadata = await YoutubeDl.GetVideoMetaDataAsync<MyYoutubeVideoMetadata>(videoUrl);
-            Debug.Log($"Video description: {metadata.Description}");
-            Debug.Log($"View count: {metadata.ViewCount}");
+            Log("Loading...");
+
+            // Optimize by specifying the fields we're interested in, to avoid downloading everything.
+            // Optional. When omitted, the fields will be read from the type by reflection.
+            string[] fields = {"title", "description", "view_count"};
+
+            var metadata = await YoutubeDl.GetVideoMetaDataAsync<MyYoutubeVideoMetadata>(videoUrl, fields);
+            Log($"- Video title: {metadata.Title}");
+            Log($"- Video description: {metadata.Description}");
+            Log($"- View count: {metadata.ViewCount}");
+        }
+
+        void Log(string message)
+        {
+            Debug.Log(message);
+            Info.text += message + '\n';
         }
     }
 }
