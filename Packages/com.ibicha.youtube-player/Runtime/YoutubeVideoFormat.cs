@@ -4,6 +4,10 @@ namespace YoutubePlayer
 {
     public class YoutubeVideoFormat
     {
+        public YoutubeVideoFormat()
+        {
+        }
+
         [JsonProperty("format_id")]
         public string FormatId;
 
