@@ -11,6 +11,12 @@ namespace YoutubePlayer
     {
         public static string ServerUrl { get; set; } = "https://unity-youtube-dl-server.herokuapp.com";
 
+        public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, IEnumerable<string> schema,
+            CancellationToken cancellationToken = default)
+        {
+            return await GetVideoMetaDataAsync<T>(youtubeUrl, YoutubeDlOptions.Default, schema, cancellationToken);
+        }
+
         public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, CancellationToken cancellationToken = default)
         {
             return await GetVideoMetaDataAsync<T>(youtubeUrl, YoutubeDlOptions.Default, cancellationToken);
@@ -18,6 +24,13 @@ namespace YoutubePlayer
 
         public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
             CancellationToken cancellationToken = default)
+        {
+            var schema = GetJsonSchema<T>();
+            return await GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, cancellationToken);
+        }
+
+        public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
+            IEnumerable<string> schema = null, CancellationToken cancellationToken = default)
         {
             var optionFlags = new List<string>();
             if (!string.IsNullOrWhiteSpace(options.Format))
@@ -39,10 +52,12 @@ namespace YoutubePlayer
                 requestUrl += $"&options={UnityWebRequest.EscapeURL(string.Join(" ", optionFlags))}";
             }
 
-            var schema = GetJsonSchema<T>();
-            foreach (var schemaKey in schema)
+            if (schema != null)
             {
-                requestUrl += $"&schema={schemaKey}";
+                foreach (var schemaKey in schema)
+                {
+                    requestUrl += $"&schema={schemaKey}";
+                }
             }
 
             var request = UnityWebRequest.Get(requestUrl);
@@ -84,9 +99,14 @@ namespace YoutubePlayer
             return await tcs.Task;
         }
 
-        private static string[] GetJsonSchema<T>()
+        static IEnumerable<string> GetJsonSchema<T>()
         {
-            return new[] { "url", "title" };
+            return typeof(T).GetFields()
+                .Select(fieldInfo => fieldInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), true))
+                .Where(attributes => attributes.Length > 0)
+                .Select(attributes => ((JsonPropertyAttribute)attributes.First()).PropertyName)
+                .Where(propertyName => !string.IsNullOrWhiteSpace(propertyName))
+                .ToArray();
         }
     }
 }

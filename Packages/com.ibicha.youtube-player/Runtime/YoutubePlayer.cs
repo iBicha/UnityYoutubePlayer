@@ -13,6 +13,12 @@ namespace YoutubePlayer
     [RequireComponent(typeof(VideoPlayer))]
     public class YoutubePlayer : MonoBehaviour
     {
+        // The needed fields to play a video
+        static readonly string[] k_PlayFields = { "url" };
+
+        // The needed fields to download a video
+        static readonly string[] k_DownloadFields = { "title", "_filename" , "ext", "url" };
+
         /// <summary>
         /// Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)
         /// </summary>
@@ -49,7 +55,7 @@ namespace YoutubePlayer
         public static async Task<string> GetRawVideoUrlAsync(string videoUrl, YoutubeDlOptions options = null, CancellationToken cancellationToken = default)
         {
             options = options ?? YoutubeDlOptions.Default;
-            var metaData = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(videoUrl, options, cancellationToken);
+            var metaData = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(videoUrl, options, k_PlayFields, cancellationToken);
             return metaData.Url;
         }
 
@@ -103,7 +109,7 @@ namespace YoutubePlayer
         {
             videoUrl = videoUrl ?? youtubeUrl;
 
-            var video = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(videoUrl, cancellationToken);
+            var video = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(videoUrl, k_DownloadFields, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
 
