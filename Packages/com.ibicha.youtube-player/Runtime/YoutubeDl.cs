@@ -102,12 +102,25 @@ namespace YoutubePlayer
 
         static IEnumerable<string> GetJsonSchema<T>()
         {
-            return typeof(T).GetFields()
-                .Select(fieldInfo => fieldInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), true))
-                .Where(attributes => attributes.Length > 0)
-                .Select(attributes => ((JsonPropertyAttribute)attributes.First()).PropertyName)
-                .Where(propertyName => !string.IsNullOrWhiteSpace(propertyName))
-                .ToArray();
+            var keys = new List<string>();
+            var fieldInfos = typeof(T).GetFields();
+            foreach (var fieldInfo in fieldInfos)
+            {
+                var attributes = fieldInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), true);
+                if (attributes.Length == 0)
+                {
+                    keys.Add(fieldInfo.Name);
+                    continue;
+                }
+                var propertyName = ((JsonPropertyAttribute)attributes.First()).PropertyName;
+                if (string.IsNullOrWhiteSpace(propertyName))
+                {
+                    keys.Add(fieldInfo.Name);
+                    continue;
+                }
+                keys.Add(propertyName);
+            }
+            return keys;
         }
     }
 }
