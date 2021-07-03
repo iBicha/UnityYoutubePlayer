@@ -29,6 +29,7 @@ namespace YoutubePlayer
     {
         public string Custom;
         public static readonly YoutubePlayer.YoutubeDlOptions Default;
+        public static readonly YoutubePlayer.YoutubeDlOptions FlatPlaylist;
         public string Format;
         public static readonly YoutubePlayer.YoutubeDlOptions Three60;
         public string UserAgent;
@@ -45,6 +46,20 @@ namespace YoutubePlayer
         [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubePlayer.<GetRawVideoUrlAsync>d__10))] public static System.Threading.Tasks.Task<string> GetRawVideoUrlAsync(string videoUrl, YoutubePlayer.YoutubeDlOptions options = default(YoutubePlayer.YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubePlayer.<PlayVideoAsync>d__12))] public System.Threading.Tasks.Task PlayVideoAsync(string videoUrl = default(string), YoutubePlayer.YoutubeDlOptions options = default(YoutubePlayer.YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubePlayer.<PrepareVideoAsync>d__11))] public System.Threading.Tasks.Task PrepareVideoAsync(string videoUrl = default(string), YoutubePlayer.YoutubeDlOptions options = default(YoutubePlayer.YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
+
+    public class YoutubePlaylistFlatEntry
+    {
+        [Newtonsoft.Json.JsonProperty(@"title")] public string Title;
+        [Newtonsoft.Json.JsonProperty(@"url")] public string Url;
+        public YoutubePlaylistFlatEntry() {}
+    }
+
+    public class YoutubePlaylistFlatMetadata
+    {
+        [Newtonsoft.Json.JsonProperty(@"entries")] public YoutubePlayer.YoutubePlaylistFlatEntry[] Entries;
+        [Newtonsoft.Json.JsonProperty(@"title")] public string Title;
+        public YoutubePlaylistFlatMetadata() {}
     }
 
     public class YoutubeVideoFormat

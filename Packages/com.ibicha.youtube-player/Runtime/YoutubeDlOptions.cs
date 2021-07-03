@@ -4,6 +4,7 @@ namespace YoutubePlayer
     {
         public static readonly YoutubeDlOptions Default = new YoutubeDlOptions("best");
         public static readonly YoutubeDlOptions Three60 = new YoutubeDlOptions("bestvideo[height<=?1080]", "");
+        public static readonly YoutubeDlOptions FlatPlaylist = new YoutubeDlOptions("best", null, "--flat-playlist");
 
         public YoutubeDlOptions(string format, string userAgent = null, string custom = null)
         {
