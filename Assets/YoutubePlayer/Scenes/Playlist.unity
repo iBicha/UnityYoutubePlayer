@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.49641287, b: 0.5748173, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.5748171, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -202,8 +202,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 436317876}
   m_HandleRect: {fileID: 436317875}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1202,7 +1202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da46a402b0f0442979bdf82b7a2010a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playlistUrl: https://www.youtube.com/watch?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj
+  playlistUrl: https://www.youtube.com/watch?list=PLX2vGYjWbI0S9-X2Q021GUtolTqbUBB9B
   PlaylistTitle: {fileID: 1432189241}
   PlaylistContent: {fileID: 1268259473}
   PlaylistScrollView: {fileID: 2060790964}

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -28,23 +27,40 @@ namespace YoutubePlayer
             foreach (var entry in playList.Entries)
             {
                 var button = Instantiate(PlaylistItemPrefab, PlaylistContent);
+                button.name = entry.Url;
                 button.GetComponentInChildren<Text>().text = entry.Title;
-                button.GetComponent<Button>().onClick.AddListener(() =>
+                button.GetComponent<Button>().onClick.AddListener(OnItemClicked);
+
+                async void OnItemClicked()
                 {
                     PlaylistTitle.text = entry.Title;
                     PlaylistScrollView.SetActive(false);
                     var playerObject = Instantiate(PlaylistItemPlayerPrefab);
                     playerObject.GetComponent<VideoPlayer>().targetCamera = Camera.main;
-                    playerObject.GetComponentInChildren<Button>().onClick.AddListener(() =>
+                    playerObject.GetComponentInChildren<Button>().onClick.AddListener(OnCloseButtonClicked);
+                    var player = playerObject.GetComponent<YoutubePlayer>();
+                    await player.PlayVideoAsync(GetFullUrl(entry.Url));
+
+                    void OnCloseButtonClicked()
                     {
                         Destroy(playerObject);
                         PlaylistScrollView.SetActive(true);
                         PlaylistTitle.text = playList.Title;
-                    });
-                    var player = playerObject.GetComponent<YoutubePlayer>();
-                    player.PlayVideoAsync(entry.Url);
-                });
+                    }
+                }
             }
+        }
+
+        // Because Urls in the playlist are only the video ID, they can start with a
+        // "-" (hyphen) character which causes an issue with youtube-dl
+        // A workaround is to provide the full youtube url.
+        static string GetFullUrl(string Url)
+        {
+            if (Url.StartsWith("http", StringComparison.Ordinal))
+            {
+                return Url;
+            }
+            return $"https://www.youtube.com/watch?v={Url}";
         }
     }
 }
