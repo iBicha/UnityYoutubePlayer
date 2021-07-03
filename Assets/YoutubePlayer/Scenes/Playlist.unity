@@ -202,8 +202,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 436317876}
   m_HandleRect: {fileID: 436317875}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.9999998
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1208,7 +1208,7 @@ MonoBehaviour:
   PlaylistScrollView: {fileID: 2060790964}
   PlaylistItemPrefab: {fileID: 254052727867993223, guid: 6645f63fa64334323b985835e7f946e2,
     type: 3}
-  PlaylistItemPlayerPrefab: {fileID: 8968693956842449949, guid: c99e8610492034d729d14f05fbcd9f74,
+  PlaylistItemPlayerPrefab: {fileID: 8958240123754884578, guid: a87b7deaf6b484c09b4fb03b70037622,
     type: 3}
 --- !u!4 &1824912979
 Transform:
