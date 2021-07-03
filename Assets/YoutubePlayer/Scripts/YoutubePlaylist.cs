@@ -18,11 +18,6 @@ namespace YoutubePlayer
         public GameObject PlaylistItemPrefab;
         public GameObject PlaylistItemPlayerPrefab;
 
-        void Awake()
-        {
-            YoutubeDl.ServerUrl = "http://localhost:3000";
-        }
-
         async void Start()
         {
             var playList = await YoutubeDl.GetVideoMetaDataAsync<YoutubePlaylistFlatMetadata>(playlistUrl,
