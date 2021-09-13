@@ -5,6 +5,21 @@ Please note that WebGL is not supported because of [CORS](https://github.com/iBi
 ## Preview
 <img src="screenshot.png" width="400" />
 
+## Play youtube videos without this package
+That's right, **you don't even need to install this package do play youtube videos in Unity.**
+
+Just change the url you want to play from
+```
+https://www.youtube.com/watch?v=1PuGuqpHQGo
+```
+To
+```
+https://unity-youtube-dl-server.herokuapp.com/watch?v=1PuGuqpHQGo
+```
+And use it directly in a [VideoPlayer](https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.html) component. It will automatically redirect to the raw video format that can be played in Unity (in most cases)
+
+But for a better reliability, you might want to [host your own youtube-dl-server](#how-do-i-host-my-own-youtube-dl-server)
+
 ## How To Install
 
 This package uses the [scoped registry](https://docs.unity3d.com/Manual/upm-scoped.html) feature to import dependent
