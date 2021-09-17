@@ -6,7 +6,7 @@ Please note that WebGL is not supported because of [CORS](https://github.com/iBi
 <img src="screenshot.png" width="400" />
 
 ## Play youtube videos without this package
-That's right, **you don't even need to install this package do play youtube videos in Unity.**
+That's right, **you don't even need to install this package to play youtube videos in Unity.**
 
 Just change the url you want to play from
 ```
