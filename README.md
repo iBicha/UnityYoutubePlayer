@@ -20,6 +20,8 @@ And use it directly in a [VideoPlayer](https://docs.unity3d.com/ScriptReference/
 
 But for a better reliability, you might want to [host your own youtube-dl-server](#how-do-i-host-my-own-youtube-dl-server)
 
+If you are targetting **desktop platforms, it is recommended that you use the package**, since it will be faster, and does not need a server.
+
 ## How To Install
 
 This package uses the [scoped registry](https://docs.unity3d.com/Manual/upm-scoped.html) feature to import dependent
