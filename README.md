@@ -39,7 +39,7 @@ To the `scopedRegistries` section:
 To the `dependencies` section:
 
 ```
-"com.ibicha.youtube-player": "1.4.1"
+"com.ibicha.youtube-player": "1.5.1"
 ```
 
 After changes, the manifest file should look like below:
@@ -54,7 +54,7 @@ After changes, the manifest file should look like below:
     }
   ],
   "dependencies": {
-    "com.ibicha.youtube-player": "1.4.1",
+    "com.ibicha.youtube-player": "1.5.1",
     ...
 ```
 
@@ -85,7 +85,9 @@ UnityYoutubePlayer uses [youtube-dl](https://github.com/ytdl-org/youtube-dl) for
 To allow maximum platform compatibilty (e.g. mobile, desktop) and to be able to update the library without rebuilding the game, we're using [youtube-dl-server](https://github.com/iBicha/youtube-dl-server) web API.
 
 The package uses a free instance of the server hosted on heroku (shared between everyone). 
-For better reliability and performance, it is recommanded to host this on your own.
+For better reliability and performance, it is recommended to host this on your own.
+
+Starting with 1.5.1, this package downloads and uses `youtube-dl` locally on Desktop platforms.
 
 ### How do I host my own youtube-dl server?
  - Go to [youtube-dl-server](https://github.com/iBicha/youtube-dl-server)
