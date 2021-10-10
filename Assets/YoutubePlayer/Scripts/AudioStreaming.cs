@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -19,8 +21,8 @@ namespace YoutubePlayer
             // Server requires an ffmpeg installation
             // https://github.com/iBicha/youtube-dl-server/tree/feature/audio-stream
 
-            var outputFormat = GetOutputFormat();
-            var requestUrl = $"http://localhost:3000/v1/stream/audio?url={UnityWebRequest.EscapeURL(youtubeUrl)}&output={outputFormat}";
+            var requestUrl = BuildRequestUrl();
+            Debug.Log($"Request url: {requestUrl}");
             var downloadHandler = new DownloadHandlerAudioClip(requestUrl, audioType)
             {
                 streamAudio = true,
@@ -36,6 +38,22 @@ namespace YoutubePlayer
                 audioSource.clip = downloadHandler.audioClip;
                 audioSource.Play();
             };
+        }
+
+        string BuildRequestUrl()
+        {
+            var baseUrl = "http://localhost:3000/v1/stream/audio";
+            // youtube-dl format
+            var inputFormat = "bestaudio";
+            // ffmpeg output format
+            var outputFormat = GetOutputFormat();
+            var options = new Dictionary<string, string>
+            {
+                ["input"] = inputFormat,
+                ["output"] = outputFormat,
+                ["url"] = UnityWebRequest.EscapeURL(youtubeUrl),
+            };
+            return $"{baseUrl}?{string.Join("&", options.Select(pair => $"{pair.Key}={pair.Value}"))}";
         }
 
         string GetOutputFormat()
