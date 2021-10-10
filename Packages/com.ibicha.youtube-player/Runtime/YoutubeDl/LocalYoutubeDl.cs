@@ -17,15 +17,18 @@ namespace YoutubePlayer
         {
             if (m_LocalYoutubeDlUpdater.NeedsUpdate || m_LocalYoutubeDlUpdater.IsUpdating)
             {
-                await m_LocalYoutubeDlUpdater.UpdateAsync(cancellationToken);
+                // Update method does not get passed the cancellation token, since it is a global operation
+                // Where multiple video requests might be waiting on.
+                // TODO: A better design. Maybe expose updating to the public API?
+                await m_LocalYoutubeDlUpdater.UpdateAsync();
             }
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             if (!File.Exists(m_LocalYoutubeDlUpdater.BinaryLocation))
             {
                 throw new FileNotFoundException("youtube-dl binary not found.", "youtube-dl");
             }
-
-            cancellationToken.ThrowIfCancellationRequested();
 
             var arguments = BuildArguments(youtubeUrl, options);
             var stdout = await ReadProcessOutputAsync(m_LocalYoutubeDlUpdater.BinaryLocation, arguments, cancellationToken);
