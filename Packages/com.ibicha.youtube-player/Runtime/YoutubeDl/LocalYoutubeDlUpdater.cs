@@ -78,7 +78,8 @@ namespace YoutubePlayer
 
         public LocalYoutubeDlUpdater()
         {
-            BinaryLocation = Path.Combine(Application.persistentDataPath, k_BinaryFile);
+            // Application.persistentDataPath causes permission issues on Windows.
+            BinaryLocation = Path.Combine(Application.temporaryCachePath, k_BinaryFile);
         }
 
         public async Task UpdateAsync(CancellationToken cancellationToken = default)
