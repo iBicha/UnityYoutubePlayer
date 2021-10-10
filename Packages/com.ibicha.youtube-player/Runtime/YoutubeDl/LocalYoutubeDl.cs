@@ -93,6 +93,7 @@ namespace YoutubePlayer
                 if (process.ExitCode != 0)
                 {
                     taskCompletionSource.TrySetException(new Exception($"youtube-dl existed with code {process.ExitCode}. \n{output}"));
+                    return;
                 }
 
                 taskCompletionSource.TrySetResult(output);
