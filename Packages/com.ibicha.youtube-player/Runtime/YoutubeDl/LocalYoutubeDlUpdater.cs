@@ -101,7 +101,9 @@ namespace YoutubePlayer
                 }
 
                 await DownloadFileAsync(k_BinaryUrl, BinaryLocation);
+#if !UNITY_WINDOWS
                 await MakeBinaryExecutableAsync(BinaryLocation);
+#endif
                 LocalVersion = latestVersion;
                 m_DidUpdate = true;
                 updateCompletionSource.TrySetResult(null);
@@ -183,9 +185,6 @@ namespace YoutubePlayer
 
         Task MakeBinaryExecutableAsync(string filename)
         {
-#if UNITY_WINDOWS
-            return Task.CompletedTask;
-#else
             var taskCompletionSource = new TaskCompletionSource<object>();
             var process = new Process
             {
@@ -220,7 +219,6 @@ namespace YoutubePlayer
             }
 
             return taskCompletionSource.Task;
-#endif
         }
     }
 }
