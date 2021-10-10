@@ -50,11 +50,10 @@ namespace YoutubePlayer
                 {
                     return await s_LocalYoutubeDl.GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, cancellationToken);
                 }
-                catch (FileNotFoundException e)
+                catch (FileNotFoundException e) when (e.FileName == "youtube-dl")
                 {
-                    // If we fail to use the local binary, fallback to using the server instance.
                     Debug.LogException(e);
-                    Debug.LogWarning("local youtube-dl failed, trying remote server...");
+                    Debug.LogWarning("local youtube-dl does not exist, trying remote server...");
                 }
             }
 #endif

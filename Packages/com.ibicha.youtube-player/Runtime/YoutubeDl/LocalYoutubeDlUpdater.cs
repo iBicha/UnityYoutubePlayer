@@ -29,7 +29,27 @@ namespace YoutubePlayer
 
         public string BinaryLocation { get; }
 
-        public bool DidUpdate { get; private set; }
+        public bool NeedsUpdate
+        {
+            get
+            {
+                if (m_DidUpdate)
+                {
+                    return false;
+                }
+
+                if (!File.Exists(BinaryLocation))
+                {
+                    return true;
+                }
+
+                return LastUpdateCheckUtc + k_UpdateCheckInterval < DateTime.UtcNow;
+            }
+        }
+
+        public bool IsUpdating => m_CurrentUpdateTask != null;
+
+        bool m_DidUpdate;
 
         Task m_CurrentUpdateTask;
 
@@ -80,10 +100,10 @@ namespace YoutubePlayer
                     return;
                 }
 
-                await DownloadFile(k_BinaryUrl, BinaryLocation);
+                await DownloadFileAsync(k_BinaryUrl, BinaryLocation);
                 await MakeBinaryExecutableAsync(BinaryLocation);
                 LocalVersion = latestVersion;
-                DidUpdate = true;
+                m_DidUpdate = true;
                 updateCompletionSource.TrySetResult(null);
             }
             catch (Exception exception)
@@ -100,15 +120,6 @@ namespace YoutubePlayer
         {
             try
             {
-                var localBinaryExists = File.Exists(BinaryLocation);
-                if (localBinaryExists)
-                {
-                    if (LastUpdateCheckUtc + k_UpdateCheckInterval > DateTime.UtcNow)
-                    {
-                        return null;
-                    }
-                }
-
                 var latestVersion = await GetLatestVersionAsync(cancellationToken);
                 if (string.IsNullOrEmpty(latestVersion))
                 {
@@ -117,7 +128,7 @@ namespace YoutubePlayer
 
                 LastUpdateCheckUtc = DateTime.UtcNow;
 
-                if (!localBinaryExists)
+                if (!File.Exists(BinaryLocation))
                 {
                     return latestVersion;
                 }
@@ -151,7 +162,7 @@ namespace YoutubePlayer
             return taskCompletionSource.Task;
         }
 
-        Task DownloadFile(string url, string destination)
+        Task DownloadFileAsync(string url, string destination)
         {
             var requestTaskSource = new TaskCompletionSource<object>();
             var request = new UnityWebRequest(url, "GET");

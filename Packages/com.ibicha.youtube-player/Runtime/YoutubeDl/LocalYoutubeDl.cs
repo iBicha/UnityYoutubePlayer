@@ -15,14 +15,14 @@ namespace YoutubePlayer
 
         public async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options, IEnumerable<string> schema, CancellationToken cancellationToken = default)
         {
-            if (!m_LocalYoutubeDlUpdater.DidUpdate)
+            if (m_LocalYoutubeDlUpdater.NeedsUpdate || m_LocalYoutubeDlUpdater.IsUpdating)
             {
                 await m_LocalYoutubeDlUpdater.UpdateAsync(cancellationToken);
             }
 
             if (!File.Exists(m_LocalYoutubeDlUpdater.BinaryLocation))
             {
-                throw new FileNotFoundException("youtube-dl binary not found.");
+                throw new FileNotFoundException("youtube-dl binary not found.", "youtube-dl");
             }
 
             cancellationToken.ThrowIfCancellationRequested();
