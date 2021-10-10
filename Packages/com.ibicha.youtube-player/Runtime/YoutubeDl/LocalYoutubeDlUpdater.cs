@@ -84,7 +84,7 @@ namespace YoutubePlayer
 
         public async Task UpdateAsync(CancellationToken cancellationToken = default)
         {
-            if (m_CurrentUpdateTask != null)
+            if (IsUpdating)
             {
                 await m_CurrentUpdateTask;
                 return;
