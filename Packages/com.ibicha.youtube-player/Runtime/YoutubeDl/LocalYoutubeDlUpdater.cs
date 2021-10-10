@@ -1,3 +1,7 @@
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+#define UNITY_WINDOWS
+#endif
+
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -5,10 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
-
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-#define UNITY_WINDOWS
-#endif
 
 namespace YoutubePlayer
 {
