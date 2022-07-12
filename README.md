@@ -83,13 +83,15 @@ The `YoutubePlayer` will follow the `Play On Awake` setting of the video player.
 - See `Assets\YoutubePlayer\Scenes` for more examples.
 
 ## Dependencies
-UnityYoutubePlayer uses [youtube-dl](https://github.com/ytdl-org/youtube-dl) for parsing webpages and getting a raw video url that Unity's VideoPlayer can play.
+UnityYoutubePlayer uses [youtube-dl](https://github.com/ytdl-org/youtube-dl) and [yt-dlp](https://github.com/yt-dlp/yt-dlp) for parsing webpages and getting a raw video url that Unity's VideoPlayer can play.
 To allow maximum platform compatibilty (e.g. mobile, desktop) and to be able to update the library without rebuilding the game, we're using [youtube-dl-server](https://github.com/iBicha/youtube-dl-server) web API.
 
 The package uses a free instance of the server hosted on heroku (shared between everyone). 
 For better reliability and performance, it is recommended to host this on your own.
 
 Starting with 1.5.1, this package downloads and uses `youtube-dl` locally on Desktop platforms.
+
+Starting with 1.7.0, this package downloads and uses `yt-dlp` locally on Desktop platforms, in addition to `youtube-dl`.
 
 ### How do I host my own youtube-dl server?
  - Go to [youtube-dl-server](https://github.com/iBicha/youtube-dl-server)
