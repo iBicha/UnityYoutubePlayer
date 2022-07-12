@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - yt-dlp is now the default tool to use in YoutubePlayer.cs, as it is able to bypass the download speed limit when using a local instance of the tool.
   - youtube-dl-server also supports yt-dlp, but might still hit download speed limits, as it has a different IP address than the machine running Unity.
 
+### Changed
+- Updated Json.NET - Newtonsoft dependency 
+
 ## [1.6.0] - 2021-10-10
 ### Added
 - Example scene to load a playlist
