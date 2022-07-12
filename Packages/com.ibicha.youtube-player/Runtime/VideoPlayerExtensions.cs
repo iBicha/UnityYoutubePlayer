@@ -39,7 +39,8 @@ namespace YoutubePlayer
 
         public static async Task PlayYoutubeVideoAsync(this VideoPlayer videoPlayer, string youtubeUrl, CancellationToken cancellationToken = default)
         {
-            var metaData = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(youtubeUrl, YoutubeDlOptions.Default, k_PlayFields, cancellationToken);
+            var metaData = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(youtubeUrl, YoutubeDlOptions.Default,
+                k_PlayFields, YoutubeDlCli.YtDlp, cancellationToken);
             var rawUrl = metaData.Url;
 
             videoPlayer.source = VideoSource.Url;

@@ -14,20 +14,19 @@ namespace YoutubePlayer
 {
     class LocalYoutubeDlUpdater
     {
-#if UNITY_WINDOWS
-        const string k_BinaryFile = "youtube-dl.exe";
-        const string k_BinaryUrl = "https://yt-dl.org/downloads/latest/youtube-dl.exe";
-#else
-        const string k_BinaryFile = "youtube-dl";
-        const string k_BinaryUrl = "https://yt-dl.org/downloads/latest/youtube-dl";
-#endif
         const string k_LocalVersionKey = "youtube-dl-version";
         const string k_LastUpdateCheckKey = "youtube-dl-last-update-check";
+
+        public string BinaryFile { get; }
+        public string BinaryLocation { get; }
+
+        readonly string m_BinaryUrl;
+        readonly string m_LocalVersionKey;
+        readonly string m_LastUpdateCheckKey;
 
         // If we checked for updates less than 1 day ago, no need to check again.
         static readonly TimeSpan k_UpdateCheckInterval = new TimeSpan(1, 0 , 0, 0);
 
-        public string BinaryLocation { get; }
 
         public bool NeedsUpdate
         {
@@ -58,7 +57,7 @@ namespace YoutubePlayer
             get
             {
                 // DateTime.MinValue.Ticks is 0
-                var ticksString = PlayerPrefs.GetString(k_LastUpdateCheckKey, "0");
+                var ticksString = PlayerPrefs.GetString(m_LastUpdateCheckKey, "0");
 
                 if (!long.TryParse(ticksString, out var ticks))
                 {
@@ -67,19 +66,29 @@ namespace YoutubePlayer
 
                 return new DateTime(ticks, DateTimeKind.Utc);
             }
-            set => PlayerPrefs.SetString(k_LastUpdateCheckKey, value.Ticks.ToString());
+            set => PlayerPrefs.SetString(m_LastUpdateCheckKey, value.Ticks.ToString());
         }
 
         string LocalVersion
         {
-            get => PlayerPrefs.GetString(k_LocalVersionKey, null);
-            set => PlayerPrefs.SetString(k_LocalVersionKey, value);
+            get => PlayerPrefs.GetString(m_LocalVersionKey, null);
+            set => PlayerPrefs.SetString(m_LocalVersionKey, value);
         }
 
-        public LocalYoutubeDlUpdater()
+        public LocalYoutubeDlUpdater(string binaryFile, string binaryUrl)
         {
+#if UNITY_WINDOWS
+            binaryFile += ".exe";
+            binaryUrl += ".exe";
+#endif
+            BinaryFile = binaryFile;
+            m_BinaryUrl = binaryUrl;
+
+            m_LocalVersionKey = k_LocalVersionKey + BinaryFile;
+            m_LastUpdateCheckKey = k_LastUpdateCheckKey + BinaryFile;
+
             // Application.persistentDataPath causes permission issues on Windows.
-            BinaryLocation = Path.Combine(Application.temporaryCachePath, k_BinaryFile);
+            BinaryLocation = Path.Combine(Application.temporaryCachePath, BinaryFile);
         }
 
         public async Task UpdateAsync(CancellationToken cancellationToken = default)
@@ -101,7 +110,7 @@ namespace YoutubePlayer
                     return;
                 }
 
-                await DownloadFileAsync(k_BinaryUrl, BinaryLocation);
+                await DownloadFileAsync(m_BinaryUrl, BinaryLocation);
 #if !UNITY_WINDOWS
                 await MakeBinaryExecutableAsync(BinaryLocation);
 #endif
@@ -147,9 +156,9 @@ namespace YoutubePlayer
         Task<string> GetLatestVersionAsync(CancellationToken cancellationToken = default)
         {
             var taskCompletionSource = new TaskCompletionSource<string>();
-            var request = new UnityWebRequest(k_BinaryUrl, "HEAD");
+            var request = new UnityWebRequest(m_BinaryUrl, "HEAD");
             request.downloadHandler = new DownloadHandlerBuffer();
-            request.redirectLimit = 1;
+            request.redirectLimit = 0;
             request.SendWebRequest().completed += operation =>
             {
                 var location = request.GetResponseHeader("Location");

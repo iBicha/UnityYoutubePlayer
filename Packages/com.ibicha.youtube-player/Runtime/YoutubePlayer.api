@@ -9,10 +9,10 @@ public class YoutubeDownloader
 
 namespace YoutubePlayer
 {
-    [System.Runtime.CompilerServices.Extension] public static class VideoPlayerExtensions
+    public static class VideoPlayerExtensions
     {
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.VideoPlayerExtensions.<PlayYoutubeVideoAsync>d__2))] [System.Runtime.CompilerServices.Extension] public static System.Threading.Tasks.Task PlayYoutubeVideoAsync(UnityEngine.Video.VideoPlayer videoPlayer, string youtubeUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.VideoPlayerExtensions.<PrepareAsync>d__1))] [System.Runtime.CompilerServices.Extension] public static System.Threading.Tasks.Task PrepareAsync(UnityEngine.Video.VideoPlayer videoPlayer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task PlayYoutubeVideoAsync(this UnityEngine.Video.VideoPlayer videoPlayer, string youtubeUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task PrepareAsync(this UnityEngine.Video.VideoPlayer videoPlayer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 
     public class YoutubeDl
@@ -20,33 +20,50 @@ namespace YoutubePlayer
         public static string ServerUrl { get; set; }
         public static bool UseLocalInstance { get; set; }
         public YoutubeDl() {}
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubeDl.<GetVideoMetaDataAsync>d__10<>))] public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubeDl.<GetVideoMetaDataAsync>d__11<>))] public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, System.Collections.Generic.IEnumerable<string> schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubeDl.<GetVideoMetaDataAsync>d__12<>))] public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubePlayer.YoutubeDlOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubeDl.<GetVideoMetaDataAsync>d__13<>))] public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubePlayer.YoutubeDlOptions options, System.Collections.Generic.IEnumerable<string> schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, System.Collections.Generic.IEnumerable<string> schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options, System.Collections.Generic.IEnumerable<string> schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options, YoutubeDlCli cli, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options, System.Collections.Generic.IEnumerable<string> schema, YoutubeDlCli cli, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
+
+    public class YoutubeDlCli
+    {
+        public string Value { get; }
+        public static YoutubeDlCli YoutubeDl { get; }
+        public static YoutubeDlCli YtDlp { get; }
+        public YoutubeDlCli(string value) {}
     }
 
     public class YoutubeDlOptions
     {
         public string Custom;
-        public static readonly YoutubePlayer.YoutubeDlOptions Default;
-        public static readonly YoutubePlayer.YoutubeDlOptions FlatPlaylist;
+        public static readonly YoutubeDlOptions Default;
+        public static readonly YoutubeDlOptions FlatPlaylist;
         public string Format;
-        public static readonly YoutubePlayer.YoutubeDlOptions Three60;
+        public static readonly YoutubeDlOptions Three60;
         public string UserAgent;
         public YoutubeDlOptions(string format, string userAgent = default(string), string custom = default(string)) {}
     }
 
     [UnityEngine.RequireComponent(typeof(UnityEngine.Video.VideoPlayer))] public class YoutubePlayer : UnityEngine.MonoBehaviour
     {
+        public YoutubePlayer.Cli cli = YoutubePlayer.Cli.YtDlp;
         public bool is360Video;
         public string youtubeUrl;
         public UnityEngine.Video.VideoPlayer VideoPlayer { get; }
         public YoutubePlayer() {}
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubePlayer.<DownloadVideoAsync>d__13))] public System.Threading.Tasks.Task<string> DownloadVideoAsync(string destinationFolder = default(string), string videoUrl = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubePlayer.<GetRawVideoUrlAsync>d__10))] public static System.Threading.Tasks.Task<string> GetRawVideoUrlAsync(string videoUrl, YoutubePlayer.YoutubeDlOptions options = default(YoutubePlayer.YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubePlayer.<PlayVideoAsync>d__12))] public System.Threading.Tasks.Task PlayVideoAsync(string videoUrl = default(string), YoutubePlayer.YoutubeDlOptions options = default(YoutubePlayer.YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        [System.Diagnostics.DebuggerStepThrough] [System.Runtime.CompilerServices.AsyncStateMachine(typeof(YoutubePlayer.YoutubePlayer.<PrepareVideoAsync>d__11))] public System.Threading.Tasks.Task PrepareVideoAsync(string videoUrl = default(string), YoutubePlayer.YoutubeDlOptions options = default(YoutubePlayer.YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public System.Threading.Tasks.Task<string> DownloadVideoAsync(string destinationFolder = default(string), string videoUrl = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task<string> GetRawVideoUrlAsync(string videoUrl, YoutubeDlOptions options = default(YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task<string> GetRawVideoUrlAsync(string videoUrl, YoutubeDlCli cli, YoutubeDlOptions options = default(YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public System.Threading.Tasks.Task PlayVideoAsync(string videoUrl = default(string), YoutubeDlOptions options = default(YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public System.Threading.Tasks.Task PrepareVideoAsync(string videoUrl = default(string), YoutubeDlOptions options = default(YoutubeDlOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public enum Cli
+        {
+            YoutubeDl = 0,
+            YtDlp = 1,
+        }
     }
 
     public class YoutubePlaylistFlatEntry
@@ -58,7 +75,7 @@ namespace YoutubePlayer
 
     public class YoutubePlaylistFlatMetadata
     {
-        [Newtonsoft.Json.JsonProperty(@"entries")] public YoutubePlayer.YoutubePlaylistFlatEntry[] Entries;
+        [Newtonsoft.Json.JsonProperty(@"entries")] public YoutubePlaylistFlatEntry[] Entries;
         [Newtonsoft.Json.JsonProperty(@"title")] public string Title;
         public YoutubePlaylistFlatMetadata() {}
     }
@@ -80,8 +97,8 @@ namespace YoutubePlayer
     {
         [Newtonsoft.Json.JsonProperty(@"ext")] public string Extension;
         [Newtonsoft.Json.JsonProperty(@"_filename")] public string FileName;
-        [Newtonsoft.Json.JsonProperty(@"formats")] public YoutubePlayer.YoutubeVideoFormat[] Formats;
-        [Newtonsoft.Json.JsonProperty(@"requested_formats")] public YoutubePlayer.YoutubeVideoFormat[] requestedFormats;
+        [Newtonsoft.Json.JsonProperty(@"formats")] public YoutubeVideoFormat[] Formats;
+        [Newtonsoft.Json.JsonProperty(@"requested_formats")] public YoutubeVideoFormat[] requestedFormats;
         [Newtonsoft.Json.JsonProperty(@"title")] public string Title;
         [Newtonsoft.Json.JsonProperty(@"url")] public string Url;
         public YoutubeVideoMetaData() {}

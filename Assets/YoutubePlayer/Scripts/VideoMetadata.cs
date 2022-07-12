@@ -33,7 +33,8 @@ namespace YoutubePlayer
             // Optional. When omitted, the fields will be read from the type by reflection.
             string[] fields = {"title", "description", "view_count"};
 
-            var metadata = await YoutubeDl.GetVideoMetaDataAsync<MyYoutubeVideoMetadata>(videoUrl, fields);
+            var metadata = await YoutubeDl.GetVideoMetaDataAsync<MyYoutubeVideoMetadata>(videoUrl,
+                YoutubeDlOptions.Default, fields, YoutubeDlCli.YtDlp);
             Log($"- Video title: {metadata.Title}");
             Log($"- Video description: {metadata.Description}");
             Log($"- View count: {metadata.ViewCount}");

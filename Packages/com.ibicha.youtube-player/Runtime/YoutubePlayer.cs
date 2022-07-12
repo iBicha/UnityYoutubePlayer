@@ -13,6 +13,12 @@ namespace YoutubePlayer
     [RequireComponent(typeof(VideoPlayer))]
     public class YoutubePlayer : MonoBehaviour
     {
+        public enum Cli
+        {
+            YoutubeDl,
+            YtDlp,
+        }
+
         // The needed fields to play a video
         static readonly string[] k_PlayFields = { "url" };
 
@@ -28,6 +34,11 @@ namespace YoutubePlayer
         /// Specify whether to use 360 configuration
         /// </summary>
         public bool is360Video;
+
+        /// <summary>
+        /// The cli tool to be used (youtube-dl | yt-dlp)
+        /// </summary>
+        public Cli cli = Cli.YtDlp;
 
         /// <summary>
         /// VideoPlayer component associated with the current YoutubePlayer instance
@@ -60,6 +71,21 @@ namespace YoutubePlayer
         }
 
         /// <summary>
+        /// Triggers a request to youtube-dl to parse the webpage for the raw video url
+        /// </summary>
+        /// <param name="videoUrl">Youtube url (e.g. https://www.youtube.com/watch?v=VIDEO_ID)</param>
+        /// <param name="cli">The cli tool that will be used to download the video or parse its raw url</param>
+        /// <param name="options">Options for downloading the raw video</param>
+        /// <param name="cancellationToken">A CancellationToken used to cancel the current async task</param>
+        /// <returns>A Task to await</returns>
+        public static async Task<string> GetRawVideoUrlAsync(string videoUrl, YoutubeDlCli cli, YoutubeDlOptions options = null, CancellationToken cancellationToken = default)
+        {
+            options = options ?? YoutubeDlOptions.Default;
+            var metaData = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(videoUrl, options, k_PlayFields, cli, cancellationToken);
+            return metaData.Url;
+        }
+
+        /// <summary>
         /// Prepare the video for playing. This includes a web request to youtube-dl, as well as preparing/warming up
         /// the VideoPlayer.
         /// </summary>
@@ -71,7 +97,8 @@ namespace YoutubePlayer
         {
             videoUrl = videoUrl ?? youtubeUrl;
             options = options ?? (is360Video ? YoutubeDlOptions.Three60 : YoutubeDlOptions.Default);
-            var rawUrl = await GetRawVideoUrlAsync(videoUrl, options, cancellationToken);
+            var downloader = GetCli(cli);
+            var rawUrl = await GetRawVideoUrlAsync(videoUrl, downloader, options, cancellationToken);
 
             VideoPlayer.source = VideoSource.Url;
 
@@ -108,8 +135,9 @@ namespace YoutubePlayer
         public async Task<string> DownloadVideoAsync(string destinationFolder = null, string videoUrl = null, CancellationToken cancellationToken = default)
         {
             videoUrl = videoUrl ?? youtubeUrl;
-
-            var video = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(videoUrl, k_DownloadFields, cancellationToken);
+            var downloader = GetCli(cli);
+            var video = await YoutubeDl.GetVideoMetaDataAsync<YoutubeVideoMetaData>(videoUrl, YoutubeDlOptions.Default,
+                k_DownloadFields, downloader, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -142,6 +170,19 @@ namespace YoutubePlayer
             }
 
             return fileName;
+        }
+
+        static YoutubeDlCli GetCli(Cli cli)
+        {
+            switch (cli)
+            {
+                case Cli.YoutubeDl:
+                    return YoutubeDlCli.YoutubeDl;
+                case Cli.YtDlp:
+                    return YoutubeDlCli.YtDlp;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(cli), cli, "value of cli not supported");
+            }
         }
     }
 }
