@@ -4,6 +4,12 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2022-07-12
+### Added
+- Added support for yt-dlp fork - see https://github.com/yt-dlp/yt-dlp
+  - yt-dlp is now the default tool to use in YoutubePlayer.cs, as it is able to bypass the download speed limit when using a local instance of the tool.
+  - youtube-dl-server also supports yt-dlp, but might still hit download speed limits, as it has a different IP address than the machine running Unity.
+
 ## [1.6.0] - 2021-10-10
 ### Added
 - Example scene to load a playlist

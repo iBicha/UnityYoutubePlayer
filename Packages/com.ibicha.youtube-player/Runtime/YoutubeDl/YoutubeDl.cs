@@ -41,14 +41,27 @@ namespace YoutubePlayer
         }
 
         public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
+            YoutubeDlCli cli, CancellationToken cancellationToken = default)
+        {
+            var schema = GetJsonSchema<T>();
+            return await GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, cli, cancellationToken);
+        }
+
+        public static Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
             IEnumerable<string> schema, CancellationToken cancellationToken = default)
+        {
+            return GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, YoutubeDlCli.YoutubeDl, cancellationToken);
+        }
+
+        public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
+            IEnumerable<string> schema, YoutubeDlCli cli, CancellationToken cancellationToken = default)
         {
 #if UNITY_EDITOR || UNITY_STANDALONE
             if (UseLocalInstance)
             {
                 try
                 {
-                    return await s_LocalYoutubeDl.GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, cancellationToken);
+                    return await s_LocalYoutubeDl.GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, cli, cancellationToken);
                 }
                 catch (FileNotFoundException e) when (e.FileName == "youtube-dl")
                 {
@@ -57,7 +70,7 @@ namespace YoutubePlayer
                 }
             }
 #endif
-            return await s_RemoteYoutubeDl.GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, cancellationToken);
+            return await s_RemoteYoutubeDl.GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, cli, cancellationToken);
         }
 
         static IEnumerable<string> GetJsonSchema<T>()

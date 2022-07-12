@@ -7,6 +7,6 @@ namespace YoutubePlayer
     interface IYoutubeDl
     {
         Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
-            IEnumerable<string> schema, CancellationToken cancellationToken = default);
+            IEnumerable<string> schema, YoutubeDlCli cli, CancellationToken cancellationToken = default);
     }
 }

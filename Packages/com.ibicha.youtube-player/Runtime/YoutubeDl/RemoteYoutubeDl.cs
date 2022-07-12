@@ -9,9 +9,10 @@ namespace YoutubePlayer
 {
     class RemoteYoutubeDl : IYoutubeDl
     {
-        public async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options, IEnumerable<string> schema, CancellationToken cancellationToken = default)
+        public async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
+            IEnumerable<string> schema, YoutubeDlCli cli, CancellationToken cancellationToken = default)
         {
-            var requestUrl = BuildRequestUrl(youtubeUrl, options, schema);
+            var requestUrl = BuildRequestUrl(youtubeUrl, options, schema, cli);
             var request = UnityWebRequest.Get(requestUrl);
             var tcs = new TaskCompletionSource<T>();
             request.SendWebRequest().completed += operation =>
@@ -51,7 +52,8 @@ namespace YoutubePlayer
             return await tcs.Task;
         }
 
-        string BuildRequestUrl(string youtubeUrl, YoutubeDlOptions options, IEnumerable<string> schema)
+        string BuildRequestUrl(string youtubeUrl, YoutubeDlOptions options,
+            IEnumerable<string> schema, YoutubeDlCli cli)
         {
             var optionFlags = new List<string>();
             if (!string.IsNullOrWhiteSpace(options.Format))
@@ -67,7 +69,7 @@ namespace YoutubePlayer
                 optionFlags.Add(options.Custom);
             }
 
-            var requestUrl = $"{YoutubeDl.ServerUrl}/v1/video?url={youtubeUrl}";
+            var requestUrl = $"{YoutubeDl.ServerUrl}/v1/video?url={youtubeUrl}&cli={cli.Value}";
             if (optionFlags.Count > 0)
             {
                 requestUrl += $"&options={UnityWebRequest.EscapeURL(string.Join(" ", optionFlags))}";

@@ -11,27 +11,42 @@ namespace YoutubePlayer
 {
     class LocalYoutubeDl : IYoutubeDl
     {
-        LocalYoutubeDlUpdater m_LocalYoutubeDlUpdater = new LocalYoutubeDlUpdater();
+        LocalYoutubeDlUpdater m_LocalYoutubeDlUpdater = new LocalYoutubeDlUpdater("youtube-dl", "https://github.com/ytdl-org/youtube-dl/releases/latest/download/youtube-dl");
+        LocalYoutubeDlUpdater m_LocalYtDlpUpdater = new LocalYoutubeDlUpdater("yt-dlp", "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp");
 
-        public async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options, IEnumerable<string> schema, CancellationToken cancellationToken = default)
+        public async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
+            IEnumerable<string> schema, YoutubeDlCli cli, CancellationToken cancellationToken = default)
         {
-            if (m_LocalYoutubeDlUpdater.NeedsUpdate || m_LocalYoutubeDlUpdater.IsUpdating)
+            LocalYoutubeDlUpdater updater = null;
+            switch (cli.Value)
+            {
+                case "youtube-dl":
+                    updater = m_LocalYoutubeDlUpdater;
+                    break;
+                case "yt-dlp":
+                    updater = m_LocalYtDlpUpdater;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(cli), cli, null);
+            }
+
+            if (updater.NeedsUpdate || updater.IsUpdating)
             {
                 // Update method does not get passed the cancellation token, since it is a global operation
                 // Where multiple video requests might be waiting on.
                 // TODO: A better design. Maybe expose updating to the public API?
-                await m_LocalYoutubeDlUpdater.UpdateAsync();
+                await updater.UpdateAsync();
             }
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (!File.Exists(m_LocalYoutubeDlUpdater.BinaryLocation))
+            if (!File.Exists(updater.BinaryLocation))
             {
-                throw new FileNotFoundException("youtube-dl binary not found.", "youtube-dl");
+                throw new FileNotFoundException($"{updater.BinaryFile} binary not found.", "youtube-dl");
             }
 
             var arguments = BuildArguments(youtubeUrl, options);
-            var stdout = await ReadProcessOutputAsync(m_LocalYoutubeDlUpdater.BinaryLocation, arguments, cancellationToken);
+            var stdout = await ReadProcessOutputAsync(updater.BinaryLocation, arguments, cancellationToken);
 
             return JsonConvert.DeserializeObject<T>(stdout);
         }
