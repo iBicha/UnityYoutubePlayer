@@ -63,10 +63,15 @@ namespace YoutubePlayer
                 {
                     return await s_LocalYoutubeDl.GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, cli, cancellationToken);
                 }
-                catch (FileNotFoundException e) when (e.FileName == "youtube-dl")
+                catch (FileNotFoundException e) when (Path.GetFileNameWithoutExtension(e.FileName) == "youtube-dl")
                 {
                     Debug.LogException(e);
                     Debug.LogWarning("local youtube-dl does not exist, trying remote server...");
+                }
+                catch (FileNotFoundException e) when (Path.GetFileNameWithoutExtension(e.FileName) == "yt-dlp")
+                {
+                    Debug.LogException(e);
+                    Debug.LogWarning("local yt-dlp does not exist, trying remote server...");
                 }
             }
 #endif
