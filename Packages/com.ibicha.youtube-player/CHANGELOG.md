@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Added exception for when yt-dlp is missing locally
 
+### Changed
+- **BREAKING CHANGE:** Changed type `YoutubeVideoFormat.Fps` from `int` to `float`. 
+  - This is needed since youtube-dl started returning decimal numbers for frame rate, causing deserialization errors.
+
 ## [1.7.0] - 2022-07-12
 ### Added
 - Added support for yt-dlp fork - see https://github.com/yt-dlp/yt-dlp
