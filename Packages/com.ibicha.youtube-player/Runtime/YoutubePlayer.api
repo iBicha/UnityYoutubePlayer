@@ -85,7 +85,7 @@ namespace YoutubePlayer
         [Newtonsoft.Json.JsonProperty(@"vcodec")] public string AudioCodec;
         [Newtonsoft.Json.JsonProperty(@"ext")] public string Extension;
         [Newtonsoft.Json.JsonProperty(@"format_id")] public string FormatId;
-        [Newtonsoft.Json.JsonProperty(@"fps")] public System.Nullable<int> Fps;
+        [Newtonsoft.Json.JsonProperty(@"fps")] public System.Nullable<double> Fps;
         [Newtonsoft.Json.JsonProperty(@"height")] public System.Nullable<int> Height;
         [Newtonsoft.Json.JsonProperty(@"url")] public string Url;
         [Newtonsoft.Json.JsonProperty(@"acodec")] public string VideoCodec;

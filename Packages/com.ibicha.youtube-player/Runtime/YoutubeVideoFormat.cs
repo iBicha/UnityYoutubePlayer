@@ -24,7 +24,7 @@ namespace YoutubePlayer
         public int? Height;
 
         [JsonProperty("fps")]
-        public int? Fps;
+        public double? Fps;
 
         [JsonProperty("vcodec")]
         public string AudioCodec;
