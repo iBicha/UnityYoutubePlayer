@@ -14,7 +14,7 @@ https://www.youtube.com/watch?v=1PuGuqpHQGo
 ```
 To
 ```
-https://unity-youtube-dl-server.herokuapp.com/watch?v=1PuGuqpHQGo
+https://unity-youtube-dl-server.herokuapp.com/watch?v=1PuGuqpHQGo&cli=yt-dlp
 ```
 And use it directly in a [VideoPlayer](https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.html) component. It will automatically redirect to the raw video format that can be played in Unity (in most cases)
 
