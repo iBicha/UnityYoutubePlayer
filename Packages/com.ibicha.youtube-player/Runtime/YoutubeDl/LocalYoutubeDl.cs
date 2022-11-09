@@ -74,6 +74,8 @@ namespace YoutubePlayer
 
         Task<string> ReadProcessOutputAsync(string filename, string arguments, CancellationToken cancellationToken = default)
         {
+            var execName = Path.GetFileName(filename);
+
             var process = new Process
             {
                 StartInfo = new ProcessStartInfo
@@ -93,21 +95,30 @@ namespace YoutubePlayer
 
             process.OutputDataReceived += (sender, args) =>
             {
-                stdout.AppendLine(args.Data);
+                if (!string.IsNullOrEmpty(args.Data))
+                {
+                    stdout.AppendLine(args.Data);
+                }
             };
             process.ErrorDataReceived += (sender, args) =>
             {
-                stderr.AppendLine(args.Data);
+                if (!string.IsNullOrEmpty(args.Data))
+                {
+                    stderr.AppendLine(args.Data);
+                }
             };
 
             var taskCompletionSource = new TaskCompletionSource<string>();
 
             process.Exited += (sender, args) =>
             {
+                // It's possible that Exited fires before ErrorDataReceived event.
+                // WaitForExit would for us to wait until we receive the EOF on the output stream.
+                process.WaitForExit();
                 var output = stdout + "\n" + stderr;
                 if (process.ExitCode != 0)
                 {
-                    taskCompletionSource.TrySetException(new Exception($"youtube-dl existed with code {process.ExitCode}. \n{output}"));
+                    taskCompletionSource.TrySetException(new Exception($"{execName} existed with code {process.ExitCode}. \n{output}"));
                     return;
                 }
 

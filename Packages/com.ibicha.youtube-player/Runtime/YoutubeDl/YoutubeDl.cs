@@ -50,7 +50,7 @@ namespace YoutubePlayer
         public static Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
             IEnumerable<string> schema, CancellationToken cancellationToken = default)
         {
-            return GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, YoutubeDlCli.YoutubeDl, cancellationToken);
+            return GetVideoMetaDataAsync<T>(youtubeUrl, options, schema, YoutubeDlCli.YtDlp, cancellationToken);
         }
 
         public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
