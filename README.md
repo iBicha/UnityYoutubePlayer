@@ -41,7 +41,7 @@ To the `scopedRegistries` section:
 To the `dependencies` section:
 
 ```
-"com.ibicha.youtube-player": "2.0.0"
+"com.ibicha.youtube-player": "2.0.1"
 ```
 
 After changes, the manifest file should look like below:
@@ -56,7 +56,7 @@ After changes, the manifest file should look like below:
     }
   ],
   "dependencies": {
-    "com.ibicha.youtube-player": "2.0.0",
+    "com.ibicha.youtube-player": "2.0.1",
     ...
 ```
 
