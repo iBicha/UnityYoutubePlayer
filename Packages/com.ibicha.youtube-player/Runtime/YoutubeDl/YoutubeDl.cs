@@ -1,3 +1,7 @@
+#if UNITY_EDITOR || (UNITY_STANDALONE && !ENABLE_IL2CPP)
+    #define CAN_USE_LOCAL_INSTANCE
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -56,7 +60,7 @@ namespace YoutubePlayer
         public static async Task<T> GetVideoMetaDataAsync<T>(string youtubeUrl, YoutubeDlOptions options,
             IEnumerable<string> schema, YoutubeDlCli cli, CancellationToken cancellationToken = default)
         {
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if CAN_USE_LOCAL_INSTANCE
             if (UseLocalInstance)
             {
                 try
@@ -80,7 +84,7 @@ namespace YoutubePlayer
 
         static IEnumerable<string> GetJsonSchema<T>()
         {
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if CAN_USE_LOCAL_INSTANCE
             if (UseLocalInstance)
             {
                 return null;
