@@ -9,6 +9,19 @@ public class YoutubeDownloader
 
 namespace YoutubePlayer
 {
+    [UnityEngine.RequireComponent(typeof(UnityEngine.Video.VideoPlayer))] public class InvidiousPlayer : UnityEngine.MonoBehaviour
+    {
+        [UnityEngine.Header(@"Automatically find an invidious instance")] public bool AutomaticInstance = true;
+        [UnityEngine.Header(@"Use a custom instance.")] [UnityEngine.Header(@"Used if AutomaticInstance is set to false")] public string CustomInstance;
+        [UnityEngine.Header(@"Indicates the quality of the video")] public string Itag = @"22";
+        [UnityEngine.Header(@"Stream the video through instance.")] [UnityEngine.Header(@"Use if video is geoblocked. (fails to load)")] public bool UseProxy;
+        [UnityEngine.Header(@"Video identifier (not the full url)")] public string videoId;
+        public UnityEngine.Video.VideoPlayer VideoPlayer { get; }
+        public InvidiousPlayer() {}
+        public System.Threading.Tasks.Task PlayVideoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public System.Threading.Tasks.Task PrepareVideoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
+
     public static class VideoPlayerExtensions
     {
         public static System.Threading.Tasks.Task PlayYoutubeVideoAsync(this UnityEngine.Video.VideoPlayer videoPlayer, string youtubeUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
