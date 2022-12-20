@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Process.Start not supported on IL2CPP
+- Json parsing error when yt-dlp logs a warning on a successful request
 
 ## [2.0.1] - 2022-11-08
 ### Fixed
