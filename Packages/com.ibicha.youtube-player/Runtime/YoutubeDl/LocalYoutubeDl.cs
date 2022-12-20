@@ -115,14 +115,13 @@ namespace YoutubePlayer
                 // It's possible that Exited fires before ErrorDataReceived event.
                 // WaitForExit would for us to wait until we receive the EOF on the output stream.
                 process.WaitForExit();
-                var output = stdout + "\n" + stderr;
                 if (process.ExitCode != 0)
                 {
-                    taskCompletionSource.TrySetException(new Exception($"{execName} existed with code {process.ExitCode}. \n{output}"));
+                    taskCompletionSource.TrySetException(new Exception($"{execName} existed with code {process.ExitCode}. \n{stdout}\n{stderr}"));
                     return;
                 }
 
-                taskCompletionSource.TrySetResult(output);
+                taskCompletionSource.TrySetResult(stdout.ToString());
             };
 
             try
