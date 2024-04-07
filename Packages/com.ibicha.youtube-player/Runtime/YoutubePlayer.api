@@ -1,16 +1,68 @@
 // This file is generated. Do not modify by hand.
 // XML documentation file not found. To check if public methods have XML comments,
 // make sure the XML doc file is present and located next to the scraped dll
-public class InvidiousInstance
+namespace YoutubePlayer.Api
 {
-    public InvidiousInstance() {}
+    public class InvidiousApi
+    {
+        public InvidiousApi() {}
+        public static System.Threading.Tasks.Task<System.Collections.Generic.List<YoutubePlayer.Models.InvidiousInstanceInfo>> GetPublicInstances(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task<YoutubePlayer.Models.VideoInfo> GetVideoInfo(string invidiousUrl, string videoId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
 }
 
-namespace YoutubePlayer
+namespace YoutubePlayer.Components
 {
-    public class InvidiousInstance
+    public class InvidiousInstance : UnityEngine.MonoBehaviour
     {
-        public string InstanceUrl { get; set; }
+        public string CustomInstanceUrl;
+        public InvidiousInstance.InvidiousInstanceType InstanceType;
         public InvidiousInstance() {}
+        public System.Threading.Tasks.Task<string> GetInstanceUrl(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public System.Threading.Tasks.Task<string> GetVideoUrl(string videoId, bool proxyVideo, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public enum InvidiousInstanceType
+        {
+            Custom = 1,
+            Public = 0,
+        }
+    }
+
+    [UnityEngine.RequireComponent(typeof(UnityEngine.Video.VideoPlayer))] public class InvidiousVideoPlayer : UnityEngine.MonoBehaviour
+    {
+        public InvidiousInstance InvidiousInstance;
+        public string VideoId;
+        public UnityEngine.Video.VideoPlayer VideoPlayer { get; }
+        public InvidiousVideoPlayer() {}
+        public System.Threading.Tasks.Task PlayVideoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public System.Threading.Tasks.Task PrepareVideoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
+}
+
+namespace YoutubePlayer.Models
+{
+    public class InvidiousInstanceInfo
+    {
+        [Newtonsoft.Json.JsonProperty(@"api")] public bool Api { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"cors")] public bool Cors { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"flag")] public string Flag { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public string Health { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"region")] public string Region { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public bool Signup { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"type")] public string Type { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"uri")] public string Uri { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public int Users { get; set; }
+        [Newtonsoft.Json.JsonIgnore] public string Version { get; set; }
+        public InvidiousInstanceInfo() {}
+        public override string ToString();
+    }
+
+    public class VideoInfo
+    {
+        [Newtonsoft.Json.JsonProperty(@"author")] public string Author { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"authorId")] public string AuthorId { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"title")] public string Title { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"videoId")] public string VideoId { get; set; }
+        public VideoInfo() {}
+        public override string ToString();
     }
 }

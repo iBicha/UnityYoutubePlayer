@@ -4,17 +4,5 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/YoutubePlayer/Scenes/Player.unity
-    guid: 7e885db72e79341f4ba2bfe93f865240
-  - enabled: 1
-    path: Assets/YoutubePlayer/Scenes/Panoramic.unity
-    guid: 1bebc975b3ae4410992c0452b2323406
-  - enabled: 1
-    path: Assets/YoutubePlayer/Scenes/Simple.unity
-    guid: 2183a6daa37f2417284080e9f45174e4
-  - enabled: 1
-    path: Assets/YoutubePlayer/Scenes/Metadata.unity
-    guid: 1ae4b359c867845e0a1cd9e1ae82e578
+  m_Scenes: []
   m_configObjects: {}
