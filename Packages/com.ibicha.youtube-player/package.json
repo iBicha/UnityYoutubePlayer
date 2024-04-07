@@ -15,9 +15,14 @@
   },
   "samples": [
     {
-      "displayName": "Play Video",
+      "displayName": "PlayVideo",
       "description": "A basic example that uses an Invidious public instance to play a video.",
       "path": "Samples~/PlayVideo"
+    },
+    {
+      "displayName": "VideoInfo",
+      "description": "Fetch video metadata and print them to the console.",
+      "path": "Samples~/VideoInfo"
     }
   ]
 }

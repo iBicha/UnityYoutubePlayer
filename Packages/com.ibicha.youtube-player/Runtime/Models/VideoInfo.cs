@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 
 namespace YoutubePlayer.Models
@@ -9,6 +10,21 @@ namespace YoutubePlayer.Models
 
         [JsonProperty("title")]
         public string Title { get; set;}
+
+        [JsonProperty("description")]
+        public string Description { get; set;}
+
+        [JsonProperty("published")]
+        public long Published { get; set;}
+
+        [JsonProperty("publishedText")]
+        public string PublishedText { get; set;}
+
+        [JsonProperty("viewCount")]
+        public long ViewCount { get; set;}
+
+        [JsonProperty("lengthSeconds")]
+        public int LengthSeconds { get; set;}
 
         [JsonProperty("author")]
         public string Author { get; set;}

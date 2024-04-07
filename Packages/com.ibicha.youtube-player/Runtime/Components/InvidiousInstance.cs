@@ -40,19 +40,5 @@ namespace YoutubePlayer.Components
                     throw new System.ArgumentOutOfRangeException("InstanceType");
             }
         }
-
-        public async Task<string> GetVideoUrl(string videoId, bool proxyVideo, CancellationToken cancellationToken = default)
-        {
-            var instanceUrl = await GetInstanceUrl(cancellationToken);
-
-            if (proxyVideo)
-            {
-                return $"{instanceUrl}/latest_version?id={videoId}&local=true";
-            }
-            else
-            {
-                return $"{instanceUrl}/latest_version?id={videoId}";
-            }
-        }
     }
 }

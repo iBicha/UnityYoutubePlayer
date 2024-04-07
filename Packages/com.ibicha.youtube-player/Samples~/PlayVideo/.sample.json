@@ -1,5 +1,0 @@
-{
-	"displayName":"Play Video",
-	"description": "A basic example that uses an Invidious public instance to play a video.",
-	"createSeparatePackage": false
-}

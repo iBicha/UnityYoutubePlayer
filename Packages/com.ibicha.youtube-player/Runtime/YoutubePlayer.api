@@ -19,7 +19,6 @@ namespace YoutubePlayer.Components
         public InvidiousInstance.InvidiousInstanceType InstanceType;
         public InvidiousInstance() {}
         public System.Threading.Tasks.Task<string> GetInstanceUrl(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        public System.Threading.Tasks.Task<string> GetVideoUrl(string videoId, bool proxyVideo, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         public enum InvidiousInstanceType
         {
             Custom = 1,
@@ -35,6 +34,15 @@ namespace YoutubePlayer.Components
         public InvidiousVideoPlayer() {}
         public System.Threading.Tasks.Task PlayVideoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         public System.Threading.Tasks.Task PrepareVideoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
+}
+
+namespace YoutubePlayer.Extensions
+{
+    public static class InvidiousInstanceExtensions
+    {
+        public static System.Threading.Tasks.Task<YoutubePlayer.Models.VideoInfo> GetVideoInfo(this YoutubePlayer.Components.InvidiousInstance invidiousInstance, string videoId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task<string> GetVideoUrl(this YoutubePlayer.Components.InvidiousInstance invidiousInstance, string videoId, bool proxyVideo, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 
@@ -60,8 +68,13 @@ namespace YoutubePlayer.Models
     {
         [Newtonsoft.Json.JsonProperty(@"author")] public string Author { get; set; }
         [Newtonsoft.Json.JsonProperty(@"authorId")] public string AuthorId { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"description")] public string Description { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"lengthSeconds")] public int LengthSeconds { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"published")] public long Published { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"publishedText")] public string PublishedText { get; set; }
         [Newtonsoft.Json.JsonProperty(@"title")] public string Title { get; set; }
         [Newtonsoft.Json.JsonProperty(@"videoId")] public string VideoId { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"viewCount")] public long ViewCount { get; set; }
         public VideoInfo() {}
         public override string ToString();
     }
