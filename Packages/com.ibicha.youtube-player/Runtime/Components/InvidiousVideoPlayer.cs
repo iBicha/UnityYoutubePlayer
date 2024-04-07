@@ -13,6 +13,9 @@ namespace YoutubePlayer.Components
 
         public string VideoId;
 
+        [Tooltip("The itag of the video to play. If not set, 720p video will be played.")]
+        public string Itag = null;
+
         /// <summary>
         /// VideoPlayer component associated with the current YoutubePlayer instance
         /// </summary>
@@ -40,17 +43,22 @@ namespace YoutubePlayer.Components
 
             // WebGL will not work because of YouTube's CORS. We need to use the proxy option.
             // TODO: WebGL will not work before CORS fix https://github.com/iv-org/invidious/pull/4571
+
+
+            var proxyVideos = false;
 #if UNITY_WEBGL && !UNITY_EDITOR
-            var videoUrl = await InvidiousInstance.GetVideoUrl(VideoId, true, cancellationToken);
-#else
-            var videoUrl = await InvidiousInstance.GetVideoUrl(VideoId, false, cancellationToken);
+            var proxyVideos = true;
 #endif
+            var videoUrl = await InvidiousInstance.GetVideoUrl(VideoId, proxyVideos, Itag, cancellationToken);
 
             VideoPlayer.source = VideoSource.Url;
 
             //Resetting the same url restarts the video...
             if (VideoPlayer.url != videoUrl)
+            {
+                Debug.Log($"Setting video url to {videoUrl}");
                 VideoPlayer.url = videoUrl;
+            }
 
             await VideoPlayer.PrepareAsync(cancellationToken);
         }

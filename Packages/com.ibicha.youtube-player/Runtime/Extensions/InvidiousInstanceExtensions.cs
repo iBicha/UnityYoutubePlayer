@@ -8,18 +8,23 @@ namespace YoutubePlayer.Extensions
 {
     public static class InvidiousInstanceExtensions
     {
-        public static async Task<string> GetVideoUrl(this InvidiousInstance invidiousInstance, string videoId, bool proxyVideo, CancellationToken cancellationToken = default)
+        public static async Task<string> GetVideoUrl(this InvidiousInstance invidiousInstance, string videoId, bool proxyVideo = false, string itag = null, CancellationToken cancellationToken = default)
         {
-            var instanceUrl = await invidiousInstance.GetInstanceUrl(cancellationToken);
+            var url = await invidiousInstance.GetInstanceUrl(cancellationToken);
+
+            url = $"{url}/latest_version?id={videoId}";
 
             if (proxyVideo)
             {
-                return $"{instanceUrl}/latest_version?id={videoId}&local=true";
+                url += "&local=true";
             }
-            else
+
+            if (!string.IsNullOrEmpty(itag))
             {
-                return $"{instanceUrl}/latest_version?id={videoId}";
+                url += $"&itag={itag}";
             }
+
+            return url;
         }
 
         public static async Task<VideoInfo> GetVideoInfo(this InvidiousInstance invidiousInstance, string videoId, CancellationToken cancellationToken = default)

@@ -16,7 +16,7 @@ namespace YoutubePlayer.Samples
         {
             var videoId = videoPlayer.VideoId;
 
-            var videoUrl = await videoPlayer.InvidiousInstance.GetVideoUrl(videoId, false);
+            var videoUrl = await videoPlayer.InvidiousInstance.GetVideoUrl(videoId);
 
             var filePath = System.IO.Path.Combine(Application.persistentDataPath, $"{videoId}.mp4");
 

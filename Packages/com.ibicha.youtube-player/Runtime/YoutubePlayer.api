@@ -29,6 +29,7 @@ namespace YoutubePlayer.Components
     [UnityEngine.RequireComponent(typeof(UnityEngine.Video.VideoPlayer))] public class InvidiousVideoPlayer : UnityEngine.MonoBehaviour
     {
         public InvidiousInstance InvidiousInstance;
+        [UnityEngine.Tooltip(@"The itag of the video to play. If not set, 720p video will be played.")] public string Itag;
         public string VideoId;
         public UnityEngine.Video.VideoPlayer VideoPlayer { get; }
         public InvidiousVideoPlayer() {}
@@ -42,7 +43,7 @@ namespace YoutubePlayer.Extensions
     public static class InvidiousInstanceExtensions
     {
         public static System.Threading.Tasks.Task<YoutubePlayer.Models.VideoInfo> GetVideoInfo(this YoutubePlayer.Components.InvidiousInstance invidiousInstance, string videoId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        public static System.Threading.Tasks.Task<string> GetVideoUrl(this YoutubePlayer.Components.InvidiousInstance invidiousInstance, string videoId, bool proxyVideo, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static System.Threading.Tasks.Task<string> GetVideoUrl(this YoutubePlayer.Components.InvidiousInstance invidiousInstance, string videoId, bool proxyVideo = false, string itag = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 
