@@ -26,10 +26,10 @@ namespace YoutubePlayer.Components
                 case InvidiousInstanceType.Public:
                     if (string.IsNullOrEmpty(m_PublicInstanceUrl))
                     {
-                        Debug.Log("Fetching Invidious public instance...");
+                        Debug.Log("Fetching Invidious public instances...");
                         var instances = await InvidiousApi.GetPublicInstances(cancellationToken);
                         m_PublicInstanceUrl = instances[0].Uri;
-                        Debug.Log($"Invidious public instance: {m_PublicInstanceUrl}");
+                        Debug.Log($"Using Invidious public instance: {m_PublicInstanceUrl}");
                     }
 
                     return m_PublicInstanceUrl;
