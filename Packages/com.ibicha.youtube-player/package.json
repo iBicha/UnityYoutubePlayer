@@ -12,5 +12,12 @@
   "description": "Allows playing youtube videos in Unity.",
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "3.0.2"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Play Video",
+      "description": "A basic example that uses an Invidious public instance to play a video.",
+      "path": "Samples~/PlayVideo"
+    }
+  ]
 }
