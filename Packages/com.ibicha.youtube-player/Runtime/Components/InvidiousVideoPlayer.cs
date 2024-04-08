@@ -41,15 +41,7 @@ namespace YoutubePlayer.Components
 
             // TODO: use destroyCancellationToken in 2022.3
 
-            // WebGL will not work because of YouTube's CORS. We need to use the proxy option.
-            // TODO: WebGL will not work before CORS fix https://github.com/iv-org/invidious/pull/4571
-
-
-            var proxyVideos = false;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            var proxyVideos = true;
-#endif
-            var videoUrl = await InvidiousInstance.GetVideoUrl(VideoId, proxyVideos, Itag, cancellationToken);
+            var videoUrl = await InvidiousInstance.GetVideoUrl(VideoId, false, Itag, cancellationToken);
 
             VideoPlayer.source = VideoSource.Url;
 

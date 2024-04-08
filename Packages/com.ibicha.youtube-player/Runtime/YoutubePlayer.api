@@ -65,11 +65,20 @@ namespace YoutubePlayer.Models
         public override string ToString();
     }
 
+    public class VideoFormatInfo
+    {
+        [Newtonsoft.Json.JsonProperty(@"itag")] public string Itag { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"url")] public string Url { get; set; }
+        public VideoFormatInfo() {}
+        public override string ToString();
+    }
+
     public class VideoInfo
     {
         [Newtonsoft.Json.JsonProperty(@"author")] public string Author { get; set; }
         [Newtonsoft.Json.JsonProperty(@"authorId")] public string AuthorId { get; set; }
         [Newtonsoft.Json.JsonProperty(@"description")] public string Description { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"formatStreams")] public System.Collections.Generic.List<VideoFormatInfo> FormatStreams { get; set; }
         [Newtonsoft.Json.JsonProperty(@"lengthSeconds")] public int LengthSeconds { get; set; }
         [Newtonsoft.Json.JsonProperty(@"published")] public long Published { get; set; }
         [Newtonsoft.Json.JsonProperty(@"publishedText")] public string PublishedText { get; set; }

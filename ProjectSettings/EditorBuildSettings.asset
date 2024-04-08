@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Samples/Youtube Player/3.0.0/PlayVideo/PlayVideo.unity
     guid: 2b6c73b04dfb2400cb64b1d09ae8265e
+  - enabled: 1
+    path: Assets/Samples/Youtube Player/3.0.0/VideoInfo/VideoInfo.unity
+    guid: 32f48c36c760b478596fadb938faf866
   m_configObjects: {}

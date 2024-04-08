@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace YoutubePlayer.Models
@@ -31,6 +31,9 @@ namespace YoutubePlayer.Models
 
         [JsonProperty("authorId")]
         public string AuthorId { get; set;}
+
+        [JsonProperty("formatStreams")]
+        public List<VideoFormatInfo> FormatStreams { get; set;}
 
         public override string ToString()
         {
