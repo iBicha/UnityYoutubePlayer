@@ -48,14 +48,22 @@ namespace YoutubePlayer.Extensions
             var format = videoInfo.FormatStreams.FirstOrDefault(f => f.Itag == itag);
             if (format == null)
             {
-                return null;
+                // On older videos, itag 22 may not be available
+                // Get any format at this point
+                format = videoInfo.FormatStreams.LastOrDefault();
+            }
+
+            if (format == null)
+            {
+                throw new InvalidOperationException("No video format found");
             }
 
             var uri = new Uri(format.Url);
             var builder = new UriBuilder(uri)
             {
+                Scheme = new Uri(instanceUrl).Scheme,
                 Host = new Uri(instanceUrl).Host,
-                Scheme = new Uri(instanceUrl).Scheme
+                Port = new Uri(instanceUrl).Port,
             };
 
             return builder.Uri.ToString();

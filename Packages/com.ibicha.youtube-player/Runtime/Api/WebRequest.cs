@@ -17,6 +17,7 @@ namespace YoutubePlayer
                 if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.DataProcessingError)
                 {
                     tcs.TrySetException(new Exception(request.error));
+                    request.Dispose();
                     return;
                 }
 
@@ -25,17 +26,21 @@ namespace YoutubePlayer
                 if (request.result == UnityWebRequest.Result.ProtocolError)
                 {
                     tcs.TrySetException(new Exception(request.error + "\nResponseError:" + text));
+                    request.Dispose();
                     return;
                 }
 
                 var video = JsonConvert.DeserializeObject<T>(text);
                 tcs.TrySetResult(video);
+                request.Dispose();
             };
 
             cancellationToken.Register(obj =>
             {
-                ((UnityWebRequest)obj).Abort();
                 tcs.TrySetCanceled(cancellationToken);
+                var request = (UnityWebRequest)obj;
+                request.Abort();
+                request.Dispose();
             }, request);
 
             return tcs.Task;

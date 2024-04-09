@@ -19,9 +19,13 @@ namespace YoutubePlayer.Extensions
                 {
                     tcs.TrySetCanceled(cancellationToken);
                 }
-                else
+                else if (source.isPrepared)
                 {
                     tcs.TrySetResult(true);
+                }
+                else
+                {
+                    tcs.TrySetException(new System.Exception("Failed to prepare video player"));
                 }
             }
 
