@@ -9,13 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- The package has been rewritten. Please check the package samples for the API / usage.
+- The package has been rewritten. Please check the package samples for the API / usage
 - It now relies on [Invidious](https://invidious.io/) to fetch the video stream
-- It's possible to use an Invidious public instance (for demo/prototyping purposes) or setup a custom instance.
+- It's possible to use an Invidious public instance (for demo/prototyping purposes) or setup a custom instance
 
 ### Removed
 
 - 360 video. This was not working properly due to the video projection, and because the 360 video formats do not have the video and audio in the same file
+- Playlist support. This will be reimplemented in a later version
 
 ## [2.0.2] - 2023-01-05
 
