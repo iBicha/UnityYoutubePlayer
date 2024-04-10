@@ -5,7 +5,7 @@ using YoutubePlayer.Components;
 namespace YoutubePlayer.Editor
 {
     [CustomEditor(typeof(InvidiousInstance))]
-    public class InvidiousInstanceEditor : UnityEditor.Editor
+    class InvidiousInstanceEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
@@ -15,7 +15,7 @@ namespace YoutubePlayer.Editor
             var instanceType = (InvidiousInstance.InvidiousInstanceType)instanceTypeProperty.enumValueIndex;
             if (instanceType == InvidiousInstance.InvidiousInstanceType.Public)
             {
-                EditorGUILayout.HelpBox("The public instance is fetched at runtime from https://api.invidious.io", MessageType.Info);
+                EditorGUILayout.HelpBox("The public instances is fetched at runtime from https://api.invidious.io and the first from the list will be used.", MessageType.Info);
             }
             else if (instanceType == InvidiousInstance.InvidiousInstanceType.Custom)
             {
