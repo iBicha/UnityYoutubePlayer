@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- The package has been rewritten.
+- The package has been rewritten. Please check the package samples for the API / usage.
 - It now relies on [Invidious](https://invidious.io/) to fetch the video stream
 - It's possible to use an Invidious public instance (for demo/prototyping purposes) or setup a custom instance.
 
