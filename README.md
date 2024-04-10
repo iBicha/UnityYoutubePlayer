@@ -1,29 +1,14 @@
+<!-- markdownlint-disable MD033 -->
+
 # UnityYoutubePlayer
-Play and download youtube videos in Unity using [youtube-dl](https://github.com/ytdl-org/youtube-dl) and Unity's VideoPlayer, and uses [youtube-dl-server](https://github.com/iBicha/youtube-dl-server) to fetch metadata from youtube-dl.
 
-Please note that WebGL is not supported because of [CORS](https://github.com/iBicha/UnityYoutubePlayer/issues/40)
+Play YouTube videos in Unity. Uses [Invidious](https://github.com/iv-org/invidious) to fetch the video metadata and Unity's VideoPlayer to play the video.
+
+**Important:** The package is now at 3.0.0 and contains breaking changes. If you want to know why this package evolved this way, please see [this document](./adr-backend.md)
+
 ## Preview
-<img src="screenshot.png" width="400" />
 
-## Play youtube videos without this package
-##### :warning: https://unity-youtube-dl-server.herokuapp.com is a demo server that you were able to use in the past, but now is no longer available. This is due to Heroku getting rid of their free tier plan. See [comment](https://github.com/iBicha/UnityYoutubePlayer/issues/96#issuecomment-1422901605)
-
-That's right, **you don't even need to install this package to play youtube videos in Unity.**
-
-Just change the url you want to play from
-```
-https://www.youtube.com/watch?v=1PuGuqpHQGo
-```
-To
-```
-https://unity-youtube-dl-server.herokuapp.com/watch?v=1PuGuqpHQGo&cli=yt-dlp
-```
-
-And use it directly in a [VideoPlayer](https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.html) component. It will automatically redirect to the raw video format that can be played in Unity (in most cases)
-
-But for a better reliability, you might want to [host your own youtube-dl-server](#how-do-i-host-my-own-youtube-dl-server)
-
-If you are targetting **desktop platforms, it is recommended that you use the package**, since it will be faster, and does not need a server.
+<img alt="Preview" src="screenshot.png" width="400" />
 
 ## How To Install
 
@@ -33,7 +18,7 @@ packages. Please add the following sections to the package manifest file
 
 To the `scopedRegistries` section:
 
-```
+```json
 {
   "name": "iBicha",
   "url": "https://registry.npmjs.com",
@@ -43,13 +28,13 @@ To the `scopedRegistries` section:
 
 To the `dependencies` section:
 
-```
-"com.ibicha.youtube-player": "2.0.2"
+```json
+"com.ibicha.youtube-player": "3.0.0"
 ```
 
 After changes, the manifest file should look like below:
 
-```
+```json
 {
   "scopedRegistries": [
     {
@@ -59,59 +44,24 @@ After changes, the manifest file should look like below:
     }
   ],
   "dependencies": {
-    "com.ibicha.youtube-player": "2.0.2",
+    "com.ibicha.youtube-player": "3.0.0",
     ...
 ```
 
 ## Usage
-- A minimalistic example:
-```
-public class SimpleYoutubeVideo : MonoBehaviour
-{
-    void Start()
-    {
-        GetComponent<VideoPlayer>().PlayYoutubeVideoAsync("https://www.youtube.com/watch?v=1PuGuqpHQGo");
-    }
-}
-```
-Or,
 
-- Add a `YoutubePlayer` component on a `GameObject` with a `VideoPlayer`. Set the url in the inspector.
-The `YoutubePlayer` will follow the `Play On Awake` setting of the video player. You can also call `YoutubePlayer.PlayVideoAsync`.
+See the package samples for more usage examples. They can be imported from the package maanger.
 
-- In addition, you can call `YoutubePlayer.DownloadVideoAsync` to download the video to a file instead. See the `DownloadYoutubeVideo` as an example.
+## Invidious instances
 
-- `VideoPlayerProgress` allows to display the progress of the video, as well as seeking.
+Starting with UnityYoutubePlayer 3.0.0, we're using [https://github.com/iv-org/invidious](https://github.com/iv-org/invidious), a self-hosted alternative front-end to YouTube.
 
-- See `Assets\YoutubePlayer\Scenes` for more examples.
+Invidious has a community of volenteers who provided public instances, which can be found at [https://api.invidious.io](https://api.invidious.io). These are great for getting familiar with Invidious, and for testing, prototyping, and demos. Once you're ready for scaling your game and anticipate a lot of traffic, please consider hosting your own instances to avoid abusing these resources.
 
-## Dependencies
-UnityYoutubePlayer uses [youtube-dl](https://github.com/ytdl-org/youtube-dl) and [yt-dlp](https://github.com/yt-dlp/yt-dlp) for parsing webpages and getting a raw video url that Unity's VideoPlayer can play.
-To allow maximum platform compatibilty (e.g. mobile, desktop) and to be able to update the library without rebuilding the game, we're using [youtube-dl-server](https://github.com/iBicha/youtube-dl-server) web API.
+## Older versions
 
-The package uses a free instance of the server hosted on heroku (shared between everyone). 
-For better reliability and performance, it is recommended to host this on your own.
-
-Starting with 1.5.1, this package downloads and uses `youtube-dl` locally on Desktop platforms.
-
-Starting with 1.7.0, this package downloads and uses `yt-dlp` locally on Desktop platforms, in addition to `youtube-dl`.
-
-### How do I host my own youtube-dl server?
- - Go to [youtube-dl-server](https://github.com/iBicha/youtube-dl-server)
- - Click the `Deploy to Heroku` purple button
- - Finish the setup on Heroku.
- - Make `YoutubePlayer` use your newly hosted instance:
-To make `YoutubePlayer` use your instance of the server, make sure to set the `ServerUrl` before making calls to youtube APIs, e.g.
-```
-YoutubeDl.ServerUrl = "http://your-self-hosted-server.com";
-```
-For reference, the default instance is 
-```
-YoutubeDl.ServerUrl = "https://unity-youtube-dl-server.herokuapp.com";
-```
-And you can test it in the browser: https://unity-youtube-dl-server.herokuapp.com/v1/video?url=https://www.youtube.com/watch?v=1PuGuqpHQGo&schema=url
-
-or https://unity-youtube-dl-server.herokuapp.com/watch?v=1PuGuqpHQGo
-
-## Older version
 For the version used with [YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode), see the [legacy/youtube-explode](https://github.com/iBicha/UnityYoutubePlayer/tree/legacy/youtube-explode) branch. Please note that it has a different license than the current version.
+
+For other versions, see the git tags.
+Starting with 1.5.1, this package downloads and uses `youtube-dl` locally on Desktop platforms.
+Starting with 1.7.0, this package downloads and uses `yt-dlp` locally on Desktop platforms, in addition to `youtube-dl`.
