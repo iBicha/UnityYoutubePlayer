@@ -50,7 +50,7 @@ After changes, the manifest file should look like below:
 
 ## Usage
 
-See the package samples for more usage examples. They can be imported from the package maanger.
+See the package samples for more usage examples. They can be imported from the package manager.
 
 ## Invidious instances
 
