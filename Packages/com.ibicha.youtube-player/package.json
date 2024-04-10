@@ -1,16 +1,30 @@
 {
   "name": "com.ibicha.youtube-player",
   "displayName": "Youtube Player",
-  "version": "2.0.2",
-  "unity": "2019.4",
+  "version": "3.0.0",
+  "unity": "2021.3",
   "keywords": [
     "video",
     "youtube",
-    "youtube-dl",
+    "invidious",
     "yt-dlp"
   ],
   "description": "Allows playing youtube videos in Unity.",
   "dependencies": {
-    "com.unity.nuget.newtonsoft-json": "3.0.2"
-  }
+    "com.unity.nuget.newtonsoft-json": "3.2.1",
+    "com.unity.ugui": "1.0.0",
+    "com.unity.modules.unitywebrequest": "1.0.0"
+  },
+  "samples": [
+    {
+      "displayName": "PlayVideo",
+      "description": "A basic example that uses an Invidious public instance to play a video.",
+      "path": "Samples~/PlayVideo"
+    },
+    {
+      "displayName": "VideoInfo",
+      "description": "Fetch video metadata and print them to the console.",
+      "path": "Samples~/VideoInfo"
+    }
+  ]
 }
