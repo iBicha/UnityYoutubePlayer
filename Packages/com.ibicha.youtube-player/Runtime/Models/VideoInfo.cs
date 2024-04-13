@@ -35,6 +35,9 @@ namespace YoutubePlayer.Models
         [JsonProperty("formatStreams")]
         public List<VideoFormatInfo> FormatStreams { get; set;}
 
+        [JsonProperty("adaptiveFormats")]
+        public List<VideoFormatInfo> AdaptiveFormats { get; set;}
+
         public override string ToString()
         {
             return $"VideoId: {VideoId}, Title: {Title}";

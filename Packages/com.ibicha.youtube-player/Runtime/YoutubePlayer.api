@@ -75,6 +75,7 @@ namespace YoutubePlayer.Models
 
     public class VideoInfo
     {
+        [Newtonsoft.Json.JsonProperty(@"adaptiveFormats")] public System.Collections.Generic.List<VideoFormatInfo> AdaptiveFormats { get; set; }
         [Newtonsoft.Json.JsonProperty(@"author")] public string Author { get; set; }
         [Newtonsoft.Json.JsonProperty(@"authorId")] public string AuthorId { get; set; }
         [Newtonsoft.Json.JsonProperty(@"description")] public string Description { get; set; }

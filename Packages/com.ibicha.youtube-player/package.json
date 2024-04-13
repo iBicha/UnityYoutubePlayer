@@ -25,6 +25,11 @@
       "displayName": "VideoInfo",
       "description": "Fetch video metadata and print them to the console.",
       "path": "Samples~/VideoInfo"
+    },
+    {
+      "displayName": "Three60",
+      "description": "Play a 360 video on an equi-angular (cubed) sphere.",
+      "path": "Samples~/Three60"
     }
   ]
 }
