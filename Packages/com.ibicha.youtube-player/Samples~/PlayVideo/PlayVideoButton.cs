@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
-namespace YoutubePlayer.Samples
+namespace YoutubePlayer.Samples.PlayVideo
 {
     [RequireComponent(typeof(Button))]
     public class PlayVideoButton : MonoBehaviour

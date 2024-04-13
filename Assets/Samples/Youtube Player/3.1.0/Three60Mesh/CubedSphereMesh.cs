@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace YoutubePlayer.Samples
+namespace YoutubePlayer.Samples.Three60Mesh
 {
     // Generates a cubed sphere mesh with normals pointing inwards
     // It will be used to display the 360 video

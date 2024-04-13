@@ -2,7 +2,7 @@ using UnityEngine;
 using YoutubePlayer.Components;
 using YoutubePlayer.Extensions;
 
-namespace YoutubePlayer.Samples
+namespace YoutubePlayer.Samples.VideoInfo
 {
     public class PrintVideoInfo : MonoBehaviour
     {

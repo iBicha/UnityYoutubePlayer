@@ -1,7 +1,7 @@
 using UnityEngine;
 using YoutubePlayer.Components;
 
-namespace YoutubePlayer.Samples
+namespace YoutubePlayer.Samples.PlayVideo
 {
     public class PrepareVideoButton : MonoBehaviour
     {

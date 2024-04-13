@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
-namespace YoutubePlayer.Samples
+namespace YoutubePlayer.Samples.PlayVideo
 {
     /// <summary>
     /// A progress bar for VideoPlayer

@@ -1,7 +1,7 @@
 {
   "name": "com.ibicha.youtube-player",
   "displayName": "Youtube Player",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "unity": "2021.3",
   "keywords": [
     "video",
@@ -27,9 +27,14 @@
       "path": "Samples~/VideoInfo"
     },
     {
-      "displayName": "Three60",
-      "description": "Play a 360 video on an equi-angular (cubed) sphere.",
-      "path": "Samples~/Three60"
+      "displayName": "Three60Mesh",
+      "description": "Play a 360 video on an equi-angular (cubed) sphere mesh.",
+      "path": "Samples~/Three60Mesh"
+    },
+    {
+      "displayName": "Three60EquiRectangular",
+      "description": "Play a 360 video on the skybox with equi-rectangular projection.",
+      "path": "Samples~/Three60EquiRectangular"
     }
   ]
 }

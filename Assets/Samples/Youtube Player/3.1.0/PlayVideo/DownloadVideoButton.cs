@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 using YoutubePlayer.Components;
 using YoutubePlayer.Extensions;
 
-namespace YoutubePlayer.Samples
+namespace YoutubePlayer.Samples.PlayVideo
 {
     public class DownloadVideoButton : MonoBehaviour
     {

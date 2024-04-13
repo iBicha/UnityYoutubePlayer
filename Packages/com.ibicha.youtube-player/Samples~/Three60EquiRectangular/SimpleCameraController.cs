@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace YoutubePlayer.Samples
+namespace YoutubePlayer.Samples.Three60EquiRectangular
 {
     public class SimpleCameraController : MonoBehaviour
     {
