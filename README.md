@@ -4,7 +4,7 @@
 
 Play YouTube videos in Unity. Uses [Invidious](https://github.com/iv-org/invidious) to fetch the video metadata and Unity's VideoPlayer to play the video.
 
-**Important:** The package is now at 3.0.0 and contains breaking changes. If you want to know why this package evolved this way, please see [this document](./adr-backend.md)
+**Important:** The package is now at version 3 and contains breaking changes. If you want to know why this package evolved this way, please see [this document](./adr-backend.md)
 
 ## Preview
 
@@ -29,7 +29,7 @@ To the `scopedRegistries` section:
 To the `dependencies` section:
 
 ```json
-"com.ibicha.youtube-player": "3.0.0"
+"com.ibicha.youtube-player": "3.1.0"
 ```
 
 After changes, the manifest file should look like below:
@@ -44,7 +44,7 @@ After changes, the manifest file should look like below:
     }
   ],
   "dependencies": {
-    "com.ibicha.youtube-player": "3.0.0",
+    "com.ibicha.youtube-player": "3.1.0",
     ...
 ```
 
