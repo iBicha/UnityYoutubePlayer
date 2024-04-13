@@ -45,7 +45,13 @@ namespace YoutubePlayer.Extensions
                 itag = "22";
             }
 
-            var format = videoInfo.FormatStreams.FirstOrDefault(f => f.Itag == itag);
+            var format = videoInfo.FormatStreams.Find(f => f.Itag == itag);
+            if (format == null)
+            {
+                // Maybe we're looking for an adaptive format?
+                format = videoInfo.AdaptiveFormats.Find(f => f.Itag == itag);
+            }
+
             if (format == null)
             {
                 // On older videos, itag 22 may not be available
