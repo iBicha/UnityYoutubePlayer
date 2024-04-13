@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Samples/Youtube Player/3.0.0/VideoInfo/VideoInfo.unity
     guid: 32f48c36c760b478596fadb938faf866
+  - enabled: 1
+    path: Assets/Samples/Youtube Player/3.0.0/Three60/Three60.unity
+    guid: 6442b50b5504b44df8be61da16e4ef4a
   m_configObjects: {}
