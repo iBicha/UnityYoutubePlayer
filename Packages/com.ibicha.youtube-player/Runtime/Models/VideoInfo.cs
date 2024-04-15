@@ -32,6 +32,9 @@ namespace YoutubePlayer.Models
         [JsonProperty("authorId")]
         public string AuthorId { get; set;}
 
+        [JsonProperty("videoThumbnails")]
+        public List<VideoThumbnailInfo> VideoThumbnails { get; set;}
+
         [JsonProperty("formatStreams")]
         public List<VideoFormatInfo> FormatStreams { get; set;}
 

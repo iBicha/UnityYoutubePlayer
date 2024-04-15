@@ -80,5 +80,16 @@ namespace YoutubePlayer.Extensions
             var instanceUrl = await invidiousInstance.GetInstanceUrl(cancellationToken);
             return await InvidiousApi.GetVideoInfo(instanceUrl, videoId, cancellationToken);
         }
+
+        public static string GetVideoThumbnailUrl(this InvidiousInstance invidiousInstance, string videoId)
+        {
+            var instanceUrl = invidiousInstance.InstanceUrl;
+            if (string.IsNullOrEmpty(instanceUrl))
+            {
+                throw new InvalidOperationException("InstanceUrl is null or empty. Call InvidiousInstance.GetInstanceUrl() first.");
+            }
+
+            return $"{instanceUrl}/vi/{videoId}/mqdefault.jpg";
+        }
     }
 }
