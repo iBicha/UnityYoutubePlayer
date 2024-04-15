@@ -13,7 +13,18 @@ namespace YoutubePlayer.Api
         public static async Task<VideoInfo> GetVideoInfo(string invidiousUrl, string videoId, CancellationToken cancellationToken = default)
         {
             var requestUrl = $"{invidiousUrl}/api/v1/videos/{videoId}";
-            return await WebRequest.GetAsync<VideoInfo>(requestUrl, cancellationToken);
+            var videoInfo = await WebRequest.GetAsync<VideoInfo>(requestUrl, cancellationToken);
+            if (videoInfo?.VideoThumbnails != null)
+            {
+                foreach (var thumbnail in videoInfo.VideoThumbnails)
+                {
+                    if (thumbnail.Url.StartsWith("/"))
+                    {
+                        thumbnail.Url = invidiousUrl + thumbnail.Url;
+                    }
+                }
+            }
+            return videoInfo;
         }
 
         public static async Task<List<InvidiousInstanceInfo>> GetPublicInstances(CancellationToken cancellationToken = default)

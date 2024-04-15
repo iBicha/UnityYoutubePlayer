@@ -17,6 +17,8 @@ namespace YoutubePlayer.Components
 
         public string CustomInstanceUrl;
 
+        public string InstanceUrl => InstanceType == InvidiousInstanceType.Public ? m_PublicInstanceUrl : CustomInstanceUrl;
+
         private string m_PublicInstanceUrl;
 
         public async Task<string> GetInstanceUrl(CancellationToken cancellationToken = default)

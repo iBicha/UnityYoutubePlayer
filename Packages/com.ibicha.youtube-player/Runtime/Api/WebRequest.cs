@@ -3,47 +3,25 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using YoutubePlayer.Extensions;
 
 namespace YoutubePlayer
 {
     class WebRequest
     {
-        public static Task<T> GetAsync<T>(string requestUrl, CancellationToken cancellationToken = default)
+        public static async Task<T> GetAsync<T>(string requestUrl, CancellationToken cancellationToken = default)
         {
             var request = UnityWebRequest.Get(requestUrl);
-            var tcs = new TaskCompletionSource<T>();
-            request.SendWebRequest().completed += operation =>
+            try
             {
-                if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.DataProcessingError)
-                {
-                    tcs.TrySetException(new Exception(request.error));
-                    request.Dispose();
-                    return;
-                }
-
+                await request.SendWebRequestAsync(cancellationToken);
                 var text = request.downloadHandler.text;
-
-                if (request.result == UnityWebRequest.Result.ProtocolError)
-                {
-                    tcs.TrySetException(new Exception(request.error + "\nResponseError:" + text));
-                    request.Dispose();
-                    return;
-                }
-
-                var video = JsonConvert.DeserializeObject<T>(text);
-                tcs.TrySetResult(video);
-                request.Dispose();
-            };
-
-            cancellationToken.Register(obj =>
+                return JsonConvert.DeserializeObject<T>(text);
+            }
+            finally
             {
-                tcs.TrySetCanceled(cancellationToken);
-                var request = (UnityWebRequest)obj;
-                request.Abort();
                 request.Dispose();
-            }, request);
-
-            return tcs.Task;
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ namespace YoutubePlayer.Components
     {
         public string CustomInstanceUrl;
         public InvidiousInstance.InvidiousInstanceType InstanceType;
+        public string InstanceUrl { get; }
         public InvidiousInstance() {}
         public System.Threading.Tasks.Task<string> GetInstanceUrl(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         public enum InvidiousInstanceType
@@ -43,7 +44,13 @@ namespace YoutubePlayer.Extensions
     public static class InvidiousInstanceExtensions
     {
         public static System.Threading.Tasks.Task<YoutubePlayer.Models.VideoInfo> GetVideoInfo(this YoutubePlayer.Components.InvidiousInstance invidiousInstance, string videoId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public static string GetVideoThumbnailUrl(this YoutubePlayer.Components.InvidiousInstance invidiousInstance, string videoId);
         public static System.Threading.Tasks.Task<string> GetVideoUrl(this YoutubePlayer.Components.InvidiousInstance invidiousInstance, string videoId, bool proxyVideo = false, string itag = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
+
+    public static class VideoThumbnailInfoExtensions
+    {
+        public static System.Threading.Tasks.Task<UnityEngine.Texture2D> ToTextureAsync(this YoutubePlayer.Models.VideoThumbnailInfo videoThumbnailInfo, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 
@@ -85,8 +92,18 @@ namespace YoutubePlayer.Models
         [Newtonsoft.Json.JsonProperty(@"publishedText")] public string PublishedText { get; set; }
         [Newtonsoft.Json.JsonProperty(@"title")] public string Title { get; set; }
         [Newtonsoft.Json.JsonProperty(@"videoId")] public string VideoId { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"videoThumbnails")] public System.Collections.Generic.List<VideoThumbnailInfo> VideoThumbnails { get; set; }
         [Newtonsoft.Json.JsonProperty(@"viewCount")] public long ViewCount { get; set; }
         public VideoInfo() {}
         public override string ToString();
+    }
+
+    public class VideoThumbnailInfo
+    {
+        [Newtonsoft.Json.JsonProperty(@"height")] public int Height { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"quality")] public string Quality { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"url")] public string Url { get; set; }
+        [Newtonsoft.Json.JsonProperty(@"width")] public int Width { get; set; }
+        public VideoThumbnailInfo() {}
     }
 }
