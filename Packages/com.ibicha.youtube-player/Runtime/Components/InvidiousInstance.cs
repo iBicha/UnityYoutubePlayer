@@ -28,6 +28,7 @@ namespace YoutubePlayer.Components
                 case InvidiousInstanceType.Public:
                     if (string.IsNullOrEmpty(m_PublicInstanceUrl))
                     {
+                        Debug.LogWarning("Instance type is set to \"Public\". Fetching public instances every time is slow, and are only used for the sample to work. Please set a custom instance in the InvidiousInstance component.");
                         Debug.Log("Fetching Invidious public instances...");
                         var instances = await InvidiousApi.GetPublicInstances(cancellationToken);
                         m_PublicInstanceUrl = instances[0].Uri;

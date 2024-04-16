@@ -548,6 +548,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InvidiousInstance: {fileID: 889647316}
   VideoId: 1PuGuqpHQGo
+  ProxyVideo: 1
+  Itag: 
 --- !u!4 &928526531
 Transform:
   m_ObjectHideFlags: 0

@@ -31,11 +31,18 @@ namespace YoutubePlayer.Components
     {
         public InvidiousInstance InvidiousInstance;
         [UnityEngine.Tooltip(@"The itag of the video to play. If not set, 720p video will be played.")] public string Itag;
+        [UnityEngine.Tooltip(@"Whether to use a proxy to play the video. This is useful when a video gets geoblocked. Not used in WebGL builds.")] public InvidiousVideoPlayer.ProxyVideoType ProxyVideo = InvidiousVideoPlayer.ProxyVideoType.OnlyIfNeeded;
         public string VideoId;
         public UnityEngine.Video.VideoPlayer VideoPlayer { get; }
         public InvidiousVideoPlayer() {}
         public System.Threading.Tasks.Task PlayVideoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         public System.Threading.Tasks.Task PrepareVideoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public enum ProxyVideoType
+        {
+            Always = 2,
+            Never = 0,
+            OnlyIfNeeded = 1,
+        }
     }
 }
 

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Loading thumbnails into textures
+- A proxy video setting, and the ability to try with proxying, if the video errors on the first try.
 
 ## [3.2.0] - 2024-04-13
 
