@@ -59,8 +59,9 @@ namespace YoutubePlayer.Components
             // TODO: use destroyCancellationToken in 2022.3
 
             m_PlayingVideoId = VideoId;
-            m_PlayingVideoUrlIndex = 0;
             m_StartedPlayingVideoId = null;
+            m_PlayingVideoUrls.Clear();
+            m_PlayingVideoUrlIndex = 0;
             await PrepareVideoUrls(cancellationToken);
 
             VideoPlayer.source = VideoSource.Url;
@@ -74,8 +75,6 @@ namespace YoutubePlayer.Components
             {
                 throw new System.InvalidOperationException("InvidiousInstance is not set");
             }
-
-            m_PlayingVideoUrls.Clear();
 
             switch (ProxyVideo)
             {
