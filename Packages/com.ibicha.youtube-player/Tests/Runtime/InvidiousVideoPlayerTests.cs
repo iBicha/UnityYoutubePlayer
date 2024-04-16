@@ -20,15 +20,34 @@ namespace YoutubePlayer.Tests
             SetInstanceUrl(InvidiousTestingUrl);
         }
 
+        public struct PlayVideoTestCase
+        {
+            public string VideoId;
+            public InvidiousVideoPlayer.ProxyVideoType ProxyVideo;
+
+            public override string ToString()
+            {
+                return $"{VideoId} - proxy: {ProxyVideo}";
+            }
+        }
+
         static IEnumerable PlayVideoTestCases()
         {
-            yield return "jNQXAC9IVRw";
-            yield return "1PuGuqpHQGo";
+            foreach (var videoId in new[] {"jNQXAC9IVRw", "1PuGuqpHQGo"})
+            {
+                foreach (var proxyVideo in System.Enum.GetValues(typeof(InvidiousVideoPlayer.ProxyVideoType)))
+                {
+                    yield return new PlayVideoTestCase { VideoId = videoId, ProxyVideo = (InvidiousVideoPlayer.ProxyVideoType)proxyVideo };
+                }
+            }
         }
 
         [UnityTest]
-        public IEnumerator PlayVideo([ValueSource(nameof(PlayVideoTestCases))] string videoId)
+        public IEnumerator PlayVideo([ValueSource(nameof(PlayVideoTestCases))] PlayVideoTestCase testCase)
         {
+            var videoId = testCase.VideoId;
+            var proxyVideo = testCase.ProxyVideo;
+
             var cancellationTokenSource = new CancellationTokenSource();
             yield return AwaitTask(Test(cancellationTokenSource.Token), 10000, cancellationTokenSource);
             async Task Test(CancellationToken cancellationToken)
@@ -43,6 +62,7 @@ namespace YoutubePlayer.Tests
                     var invidiousVideoPlayer = go.AddComponent<InvidiousVideoPlayer>();
                     invidiousVideoPlayer.InvidiousInstance = InvidiousInstance;
                     invidiousVideoPlayer.VideoId = videoId;
+                    invidiousVideoPlayer.ProxyVideo = proxyVideo;
 
                     _ = invidiousVideoPlayer.PlayVideoAsync(cancellationToken);
 
