@@ -56,7 +56,7 @@ See the package samples for more usage examples. They can be imported from the p
 
 Starting with UnityYoutubePlayer 3.0.0, we're using [https://github.com/iv-org/invidious](https://github.com/iv-org/invidious), a self-hosted alternative front-end to YouTube.
 
-Invidious has a community of volenteers who provided public instances, which can be found at [https://api.invidious.io](https://api.invidious.io). These are great for getting familiar with Invidious, and for testing, prototyping, and demos. Once you're ready for scaling your game and anticipate a lot of traffic, please consider hosting your own instances to avoid abusing these resources.
+Invidious has a community of volenteers who provided public instances, which can be found at [https://api.invidious.io](https://api.invidious.io). These are great for getting familiar with Invidious, and for testing, prototyping, and demos. Once you're ready for scaling your game and anticipate a lot of traffic, please consider hosting your own instances to avoid abusing these resources. This will also allow you to be in control of your Invidious instance(s), and generally have a better performance by isolating your game users from other users.
 
 ## Older versions
 
