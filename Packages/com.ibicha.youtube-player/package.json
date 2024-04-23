@@ -36,6 +36,11 @@
       "displayName": "Three60EquiRectangular",
       "description": "Play a 360 video on the skybox with equi-rectangular projection.",
       "path": "Samples~/Three60EquiRectangular"
+    },
+    {
+      "displayName": "PlayFromScript",
+      "description": "Play a video and create the required components from a script.",
+      "path": "Samples~/PlayFromScript"
     }
   ]
 }
