@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Video;
+using YoutubePlayer.Api;
 using YoutubePlayer.Extensions;
+using YoutubePlayer.Models;
 
 namespace YoutubePlayer.Components
 {
@@ -27,6 +31,9 @@ namespace YoutubePlayer.Components
         [Tooltip("The itag of the video to play. If not set, 720p video will be played.")]
         public string Itag = null;
 
+        [Tooltip("Check for blocked streams by making a HEAD request. If a stream is blocked, it will try to play a different one.")]
+        public bool CheckForBlockedStreams = true;
+
         /// <summary>
         /// VideoPlayer component associated with the current YoutubePlayer instance
         /// </summary>
@@ -35,9 +42,15 @@ namespace YoutubePlayer.Components
         // Because video player can fail in some cases, we need to try multiple urls. E.g.
         // - 1. Video without proxying
         // - 2. If that fails, video with proxying
-        // This list contains the urls that we will try to play, depending on the ProxyVideo setting.
-        List<string> m_PlayingVideoUrls = new List<string>();
-        int m_PlayingVideoUrlIndex;
+        // A queue contains the urls that we will try to play, depending on the ProxyVideo setting.
+
+        struct VideoUrl
+        {
+            public string Url;
+            public bool IsProxied;
+        }
+
+        Queue<VideoUrl> m_PlayingVideoUrls = new Queue<VideoUrl>();
         string m_StartedPlayingVideoId;
         string m_PlayingVideoId;
 
@@ -60,59 +73,116 @@ namespace YoutubePlayer.Components
 
             m_PlayingVideoId = VideoId;
             m_StartedPlayingVideoId = null;
-            m_PlayingVideoUrls.Clear();
-            m_PlayingVideoUrlIndex = 0;
             await PrepareVideoUrls(cancellationToken);
 
             VideoPlayer.source = VideoSource.Url;
-            SetVideoPlayerUrl(m_PlayingVideoUrls[m_PlayingVideoUrlIndex]);
+            await TrySetVideoPlayerUrl();
             await VideoPlayer.PrepareAsync(cancellationToken);
         }
 
         async Task PrepareVideoUrls(CancellationToken cancellationToken = default)
         {
+            m_PlayingVideoUrls.Clear();
+
             if (InvidiousInstance == null)
             {
-                throw new System.InvalidOperationException("InvidiousInstance is not set");
+                throw new InvalidOperationException("InvidiousInstance is not set");
             }
 
-            switch (ProxyVideo)
+            var instanceUrl = await InvidiousInstance.GetInstanceUrl(cancellationToken);
+            var videoInfo = await InvidiousApi.GetVideoInfo(instanceUrl, VideoId, cancellationToken);
+            var format = GetCompatibleVideoFormat(videoInfo);
+
+            var proxyVideo = ProxyVideo;
+
+            if (!Application.isEditor && Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                proxyVideo = ProxyVideoType.Always;
+            }
+
+            switch (proxyVideo)
             {
                 case ProxyVideoType.Never:
-                    var videoUrl = await InvidiousInstance.GetVideoUrl(VideoId, false, Itag, cancellationToken);
-                    m_PlayingVideoUrls.Add(videoUrl);
+                    m_PlayingVideoUrls.Enqueue(new VideoUrl { Url = format.Url, IsProxied = false });
                     break;
 
                 case ProxyVideoType.OnlyIfNeeded:
-                    videoUrl = await InvidiousInstance.GetVideoUrl(VideoId, false, Itag, cancellationToken);
-                    m_PlayingVideoUrls.Add(videoUrl);
-
-#if UNITY_EDITOR || !UNITY_WEBGL
-                    // WebGL ignores the proxyVideo parameter, and uses true anyway.
-                    // So no need to add the url twice.
-                    videoUrl = await InvidiousInstance.GetVideoUrl(VideoId, true, Itag, cancellationToken);
-                    m_PlayingVideoUrls.Add(videoUrl);
-#endif
+                    m_PlayingVideoUrls.Enqueue(new VideoUrl { Url = format.Url, IsProxied = false });
+                    m_PlayingVideoUrls.Enqueue(new VideoUrl { Url = GetProxiedUrl(format.Url, instanceUrl), IsProxied = true });
                     break;
 
                 case ProxyVideoType.Always:
-                    videoUrl = await InvidiousInstance.GetVideoUrl(VideoId, true, Itag, cancellationToken);
-                    m_PlayingVideoUrls.Add(videoUrl);
+                    m_PlayingVideoUrls.Enqueue(new VideoUrl { Url = GetProxiedUrl(format.Url, instanceUrl), IsProxied = true });
                     break;
 
                 default:
-                    throw new System.InvalidOperationException($"Unknown ProxyVideoType: {ProxyVideo}");
+                    throw new InvalidOperationException($"Unknown ProxyVideoType: {ProxyVideo}");
             }
         }
 
-        void SetVideoPlayerUrl(string videoUrl)
+        VideoFormatInfo GetCompatibleVideoFormat(VideoInfo videoInfo)
         {
-            // Resetting the same url restarts the video...
-            if (VideoPlayer.url != videoUrl)
+            var itag = Itag;
+            if (string.IsNullOrEmpty(itag))
             {
-                Debug.Log($"Setting video url to {videoUrl}");
-                VideoPlayer.url = videoUrl;
+                // 720p, the highest quality available with the video and audio combined
+                itag = "22";
             }
+
+            var format = videoInfo.FormatStreams.Find(f => f.Itag == itag);
+            if (format != null)
+            {
+                return format;
+            }
+
+            // Maybe we're looking for an adaptive format?
+            format = videoInfo.AdaptiveFormats.Find(f => f.Itag == itag);
+            if (format != null)
+            {
+                return format;
+            }
+
+            return videoInfo.FormatStreams.Last();
+        }
+
+        string GetProxiedUrl(string url, string invidiousUrl)
+        {
+            var uri = new Uri(url);
+            var invidiousUri = new Uri(invidiousUrl);
+            var builder = new UriBuilder(uri)
+            {
+                Host = invidiousUri.Host,
+                Scheme = invidiousUri.Scheme,
+                Port = invidiousUri.Port
+            };
+            return builder.Uri.ToString();
+        }
+
+        async Task<bool> TrySetVideoPlayerUrl()
+        {
+            if (!m_PlayingVideoUrls.TryDequeue(out var videoUrl))
+            {
+                return false;
+            }
+
+            if (CheckForBlockedStreams && !videoUrl.IsProxied)
+            {
+                Debug.Log($"Checking if stream is blocked: {videoUrl.Url}");
+                if (await WebRequest.HeadAsync(videoUrl.Url) == 403)
+                {
+                    Debug.LogWarning($"Blocked stream: {videoUrl.Url}");
+                    return await TrySetVideoPlayerUrl();
+                }
+            }
+
+            // Resetting the same url restarts the video...
+            if (VideoPlayer.url != videoUrl.Url)
+            {
+                Debug.Log($"Setting video url to {videoUrl.Url}");
+                VideoPlayer.url = videoUrl.Url;
+            }
+
+            return true;
         }
 
         public async Task PlayVideoAsync(CancellationToken cancellationToken = default)
@@ -134,10 +204,8 @@ namespace YoutubePlayer.Components
                 return;
             }
 
-            m_PlayingVideoUrlIndex++;
-            if (m_PlayingVideoUrlIndex < m_PlayingVideoUrls.Count)
+            if (await TrySetVideoPlayerUrl())
             {
-                SetVideoPlayerUrl(m_PlayingVideoUrls[m_PlayingVideoUrlIndex]);
                 await VideoPlayer.PrepareAsync();
                 VideoPlayer.Play();
             }

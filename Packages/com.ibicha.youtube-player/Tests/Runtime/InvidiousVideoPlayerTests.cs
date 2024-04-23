@@ -11,8 +11,6 @@ namespace YoutubePlayer.Tests
 {
     public class InvidiousVideoPlayerTests : InvidiousTestFixture
     {
-        const string InvidiousTestingUrl = "http://192.168.1.119:8095";
-
         [OneTimeSetUp]
         public override void OneTimeSetUp()
         {
@@ -73,6 +71,49 @@ namespace YoutubePlayer.Tests
                 finally
                 {
                     Object.Destroy(go);
+                }
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator PlayVideoWithFallback()
+        {
+            // video known to be blocked when stream access is from a different location than the server
+            var videoId = "5jlI4uzZGjU";
+            var instanceUrl = "https://invidious.fdn.fr";
+
+            var cancellationTokenSource = new CancellationTokenSource();
+            yield return AwaitTask(Test(cancellationTokenSource.Token), 20000, cancellationTokenSource);
+            async Task Test(CancellationToken cancellationToken)
+            {
+                var go = new GameObject("VideoPlayer");
+
+                try
+                {
+                    var videoPlayer = go.AddComponent<VideoPlayer>();
+                    videoPlayer.playOnAwake = false;
+
+                    var invidiousInstance = go.AddComponent<InvidiousInstance>();
+                    invidiousInstance.InstanceType = InvidiousInstance.InvidiousInstanceType.Custom;
+                    invidiousInstance.CustomInstanceUrl = instanceUrl;
+
+                    var invidiousVideoPlayer = go.AddComponent<InvidiousVideoPlayer>();
+                    invidiousVideoPlayer.InvidiousInstance = invidiousInstance;
+                    invidiousVideoPlayer.VideoId = videoId;
+
+                    // ignore error message about video being blocked
+                    LogAssert.ignoreFailingMessages = true;
+
+                    _ = invidiousVideoPlayer.PlayVideoAsync(cancellationToken);
+
+                    await WaitForVideoPlayerAsync(invidiousVideoPlayer.VideoPlayer);
+
+                    Assert.IsTrue(videoPlayer.isPlaying);
+                }
+                finally
+                {
+                    Object.Destroy(go);
+                    LogAssert.ignoreFailingMessages = false;
                 }
             }
         }

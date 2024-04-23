@@ -29,6 +29,7 @@ namespace YoutubePlayer.Components
 
     [UnityEngine.RequireComponent(typeof(UnityEngine.Video.VideoPlayer))] public class InvidiousVideoPlayer : UnityEngine.MonoBehaviour
     {
+        [UnityEngine.Tooltip(@"Check for blocked streams by making a HEAD request. If a stream is blocked, it will try to play a different one.")] public bool CheckForBlockedStreams = true;
         public InvidiousInstance InvidiousInstance;
         [UnityEngine.Tooltip(@"The itag of the video to play. If not set, 720p video will be played.")] public string Itag;
         [UnityEngine.Tooltip(@"Whether to use a proxy to play the video. This is useful when a video gets geoblocked. Not used in WebGL builds.")] public InvidiousVideoPlayer.ProxyVideoType ProxyVideo = InvidiousVideoPlayer.ProxyVideoType.OnlyIfNeeded;

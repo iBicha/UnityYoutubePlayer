@@ -65,11 +65,12 @@ namespace YoutubePlayer.Extensions
             }
 
             var uri = new Uri(format.Url);
+            var instanceUri = new Uri(instanceUrl);
             var builder = new UriBuilder(uri)
             {
-                Scheme = new Uri(instanceUrl).Scheme,
-                Host = new Uri(instanceUrl).Host,
-                Port = new Uri(instanceUrl).Port,
+                Host = instanceUri.Host,
+                Scheme = instanceUri.Scheme,
+                Port = instanceUri.Port
             };
 
             return builder.Uri.ToString();
