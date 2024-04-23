@@ -11,8 +11,6 @@ namespace YoutubePlayer.Tests
 {
     public class InvidiousApiTests : InvidiousTestFixture
     {
-        const string InvidiousTestingUrl = "http://192.168.1.119:8095";
-
         [OneTimeSetUp]
         public override void OneTimeSetUp()
         {

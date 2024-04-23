@@ -10,6 +10,8 @@ namespace YoutubePlayer.Tests
     [TestFixture]
     public abstract class InvidiousTestFixture
     {
+        public const string InvidiousTestingUrl = "http://192.168.18.5:8095";
+
         public InvidiousInstance InvidiousInstance;
 
         [OneTimeSetUp]
