@@ -116,7 +116,7 @@ namespace YoutubePlayer.Components
                     break;
 
                 default:
-                    throw new InvalidOperationException($"Unknown ProxyVideoType: {ProxyVideo}");
+                    throw new InvalidOperationException($"Unknown ProxyVideoType: {proxyVideo}");
             }
         }
 
