@@ -8,7 +8,7 @@ Play YouTube videos in Unity. Uses [Invidious](https://github.com/iv-org/invidio
 
 ## Preview
 
-<img alt="Preview" src="screenshot.png" width="400" />
+<img alt="Preview" src="screenshot.png" />
 
 ## How To Install
 
@@ -29,7 +29,7 @@ To the `scopedRegistries` section:
 To the `dependencies` section:
 
 ```json
-"com.ibicha.youtube-player": "3.2.0"
+"com.ibicha.youtube-player": "3.3.0"
 ```
 
 After changes, the manifest file should look like below:
@@ -44,7 +44,7 @@ After changes, the manifest file should look like below:
     }
   ],
   "dependencies": {
-    "com.ibicha.youtube-player": "3.2.0",
+    "com.ibicha.youtube-player": "3.3.0",
     ...
 ```
 
