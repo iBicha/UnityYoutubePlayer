@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Samples/Youtube Player/3.2.0/PlayVideo/PlayVideo.unity
+    path: Assets/Samples/Youtube Player/3.3.0/PlayVideo/PlayVideo.unity
     guid: 2b6c73b04dfb2400cb64b1d09ae8265e
   - enabled: 1
-    path: Assets/Samples/Youtube Player/3.2.0/VideoInfo/VideoInfo.unity
+    path: Assets/Samples/Youtube Player/3.3.0/VideoInfo/VideoInfo.unity
     guid: 32f48c36c760b478596fadb938faf866
   - enabled: 1
-    path: Assets/Samples/Youtube Player/3.2.0/Three60Mesh/Three60Mesh.unity
+    path: Assets/Samples/Youtube Player/3.3.0/Three60Mesh/Three60Mesh.unity
     guid: 6442b50b5504b44df8be61da16e4ef4a
   - enabled: 1
-    path: Assets/Samples/Youtube Player/3.2.0/Three60EquiRectangular/Three60EquiRectangular.unity
+    path: Assets/Samples/Youtube Player/3.3.0/Three60EquiRectangular/Three60EquiRectangular.unity
     guid: ecc6f8598ecb9483d80a5220b1fdd74c
   m_configObjects: {}
