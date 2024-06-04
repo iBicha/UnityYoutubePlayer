@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,12 +16,19 @@ namespace YoutubePlayer.Tests
             yield return AwaitTask(Test(cancellationTokenSource.Token), 10000, cancellationTokenSource);
             async Task Test(CancellationToken cancellationToken)
             {
-                var task = WebRequest.GetAsync<object>(InvidiousTestingUrl + "/api/v1/videos/1PuGuqpHQGo", cancellationToken);
-                cancellationTokenSource.Cancel();
+                try
+                {
+                    var task = WebRequest.GetAsync<object>(InvidiousTestingUrl + "/api/v1/videos/1PuGuqpHQGo", cancellationToken);
+                    cancellationTokenSource.Cancel();
 
-                await task;
+                    await task;
 
-                Assert.IsTrue(task.IsCanceled);
+                    Assert.Fail("Task should have been cancelled");
+                }
+                catch (Exception ex)
+                {
+                    Assert.IsInstanceOf<TaskCanceledException>(ex);
+                }
             }
         }
     }
