@@ -35,20 +35,17 @@ namespace YoutubePlayer.Extensions
 
             var op = request.SendWebRequest();
 
-            var registration = cancellationToken.Register(obj =>
+            using (var registration = cancellationToken.Register(obj =>
             {
                 op.completed -= OnComplete;
                 tcs.TrySetCanceled(cancellationToken);
                 var request = (UnityWebRequest)obj;
                 request.Abort();
-            }, request);
-
-            op.completed += OnComplete;
-            var webRequest = await tcs.Task;
-
-            registration.Dispose();
-
-            return webRequest;
+            }, request))
+            {
+                op.completed += OnComplete;
+                return await tcs.Task;
+            }
         }
     }
 }
