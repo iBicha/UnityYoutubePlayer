@@ -33,17 +33,19 @@ namespace YoutubePlayer.Extensions
                 }
             }
 
-            cancellationToken.Register(obj =>
+            var op = request.SendWebRequest();
+
+            using (var registration = cancellationToken.Register(obj =>
             {
+                op.completed -= OnComplete;
                 tcs.TrySetCanceled(cancellationToken);
                 var request = (UnityWebRequest)obj;
                 request.Abort();
-            }, request);
-
-            var op = request.SendWebRequest();
-            op.completed += OnComplete;
-
-            return await tcs.Task;
+            }, request))
+            {
+                op.completed += OnComplete;
+                return await tcs.Task;
+            }
         }
     }
 }
