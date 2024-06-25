@@ -24,7 +24,7 @@ But the approach stood its ground for a little while. Since the server was only 
 
 An exploration was made to execute the yt-dlp CLI locally when possible (typically on desktop platforms and Mono), which would reduce the load on servers and also reduce the amount of blocked requests. Using a server to fetch the metadata but accessing the video file from a different machine (the client) could result in blocked requests (403).
 
-A while after this, I decided to stop maintaining the demo server. First because is performed poorly, and also because I did not budget to finance this server, regardless of how people were using it.
+A while after this, I decided to stop maintaining the demo server. First because it performed poorly, and also because I did not budget to finance this server, regardless of how people were using it.
 
 This resulted in many confused developers asking, "Why does it work in the editor, but when I make an Android/iOS build, it doesn't work?"
 
@@ -46,5 +46,5 @@ Using Invidious achieves multiple goals:
 - Reduce the complexity of the previous approach: by unifying across platforms, they work the same way by making a web request to the server.
 - Invidious is designed to be a server for YouTube files and contains some caching mechanisms. This is useful for a Unity project where users are viewing mostly the same videos (e.g., cutscenes in the game). Invidious would return the same metadata of a video if it is less than 10 minutes old (at the time of writing), although streams are known to expire after 6 hours.
 - Invidious is self-hosted and is a good candidate for devs to be in control.
-- Volunteers generously provided a public instance to use, which can be very handy in trying to integrate playing YouTube videos in a Unity game before having to set up a server. This way, public instances are suitable for testing and demo purposes, but once game devs are planning to scale, they have the freedom to host instances as needed.
+- Volunteers generously provided a public instances to use, which can be very handy in trying to integrate playing YouTube videos in a Unity game before having to set up a server. This way, public instances are suitable for testing and demo purposes, but once game devs are planning to scale, they have the freedom to host instances as needed.
 - WebGL support is now possible since Invidious is capable of not only fetching video metadata and streaming data but can also stream the video itself without CORS restrictions.
