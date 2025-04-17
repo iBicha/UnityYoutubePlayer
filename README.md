@@ -6,6 +6,10 @@ Play YouTube videos in Unity. Uses [Invidious](https://github.com/iv-org/invidio
 
 **Important:** The package is now at version 3 and contains breaking changes. If you want to know why this package evolved this way, please see [this document](./adr-backend.md)
 
+⚠️ This package v3 does not work "out of the box" for a few reasons.
+- There might be no public Invidious instances that support API access https://api.invidious.io
+- If Invidious instance is setup with [invidious-companion](https://github.com/iv-org/invidious-companion), [API support might not be available yet](https://github.com/iv-org/invidious-companion/issues/22).
+
 ## Preview
 
 <img alt="Preview" src="screenshot.png" />
